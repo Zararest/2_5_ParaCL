@@ -84,10 +84,10 @@ operand:    VAR                             { std::cout << "var in operand" << s
             | LB expr RB                    { std::cout << "expr in operand" << std::endl; }
 ;
 
-if: IF_ expr RB FLB statement FRB           { std::cout << "if" << std::endl; }
+if: IF_ expr RB FLB statement_list FRB           { std::cout << "if" << std::endl; }
 ;
 
-while:  WHILE_ expr RB FLB statement FRB    { std::cout << "while" << std::endl; }
+while:  WHILE_ expr RB FLB statement_list FRB    { std::cout << "while" << std::endl; }
 ;
 
 assign: VAR ASSIGN_ expr SCOL            { std::cout << "var assign" << std::endl; }

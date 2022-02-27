@@ -2,6 +2,67 @@ var in operand
 mul end -------
 expr mul
 var in operand
+var in operand
+mul end -------
+mul
+expr mul
+num in operand
+mul end -------
+expr mul
+sum end -------
+sum
+sum
+expr sum
+logic end -------
+expr logic
+and end -------
+expr and
+or end -------
+expr or
+var assign
+assign in statement
+var in operand
+var in operand
+mul end -------
+mul
+expr mul
+var in operand
+num in operand
+mul end -------
+mul
+expr mul
+sum end -------
+sum
+expr sum
+logic end -------
+expr logic
+and end -------
+expr and
+or end -------
+expr or
+var assign
+assign in statement
+var in operand
+var in operand
+mul end -------
+expr mul
+var in operand
+mul end -------
+expr mul
+sum end -------
+sum
+expr sum
+logic end -------
+expr logic
+and end -------
+expr and
+or end -------
+expr or
+expr in operand
+mul end -------
+mul
+expr mul
+num in operand
 mul end -------
 expr mul
 sum end -------
@@ -15,3 +76,224 @@ or end -------
 expr or
 var assign
 assign in statement
+num in operand
+mul end -------
+expr mul
+num in operand
+mul end -------
+expr mul
+num in operand
+mul end -------
+expr mul
+sum end -------
+sum
+sum
+expr sum
+logic end -------
+expr logic
+and end -------
+expr and
+or end -------
+expr or
+expr in operand
+mul end -------
+expr mul
+sum end -------
+expr sum
+logic end -------
+expr logic
+and end -------
+expr and
+or end -------
+expr or
+var assign
+assign in statement
+num in operand
+mul end -------
+expr mul
+num in operand
+mul end -------
+expr mul
+num in operand
+mul end -------
+expr mul
+sum end -------
+sum
+expr sum
+logic end -------
+expr logic
+and end -------
+expr and
+or end -------
+expr or
+expr in operand
+mul end -------
+expr mul
+sum end -------
+sum
+expr sum
+logic end -------
+expr logic
+and end -------
+expr and
+or end -------
+expr or
+expr in operand
+mul end -------
+expr mul
+sum end -------
+expr sum
+logic end -------
+expr logic
+and end -------
+expr and
+or end -------
+expr or
+var assign
+assign in statement
+num in operand
+mul end -------
+expr mul
+sum end -------
+expr sum
+logic end -------
+expr logic
+and end -------
+expr and
+or end -------
+expr or
+var assign
+assign in statement
+var in operand
+mul end -------
+expr mul
+var in operand
+mul end -------
+expr mul
+sum end -------
+sum
+expr sum
+var in operand
+mul end -------
+expr mul
+sum end -------
+expr sum
+logic end -------
+logic
+expr logic
+and end -------
+expr and
+or end -------
+expr or
+num in operand
+mul end -------
+expr mul
+sum end -------
+expr sum
+logic end -------
+expr logic
+and end -------
+expr and
+or end -------
+expr or
+var assign
+assign in statement
+if
+if in statement
+num in operand
+mul end -------
+expr mul
+sum end -------
+expr sum
+logic end -------
+expr logic
+and end -------
+expr and
+or end -------
+expr or
+var assign
+assign in statement
+var in operand
+mul end -------
+expr mul
+var in operand
+mul end -------
+expr mul
+sum end -------
+sum
+expr sum
+var in operand
+mul end -------
+expr mul
+sum end -------
+expr sum
+logic end -------
+logic
+expr logic
+and end -------
+expr and
+num in operand
+mul end -------
+expr mul
+var in operand
+mul end -------
+expr mul
+sum end -------
+sum
+expr sum
+var in operand
+mul end -------
+expr mul
+sum end -------
+expr sum
+logic end -------
+logic
+expr logic
+and end -------
+expr and
+or end -------
+or
+expr or
+num in operand
+mul end -------
+expr mul
+sum end -------
+expr sum
+logic end -------
+expr logic
+and end -------
+expr and
+or end -------
+expr or
+var assign
+assign in statement
+var in operand
+var in operand
+mul end -------
+mul
+expr mul
+sum end -------
+expr sum
+logic end -------
+expr logic
+and end -------
+expr and
+or end -------
+expr or
+num in operand
+mul end -------
+expr mul
+sum end -------
+expr sum
+logic end -------
+expr logic
+and end -------
+expr and
+or end -------
+expr or
+var assign
+assign in statement
+if
+if in statement
+if
+if in statement

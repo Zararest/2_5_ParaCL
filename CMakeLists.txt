@@ -18,7 +18,11 @@ bison_target(parser
 
 add_flex_bison_dependency(scanner parser)
 
+include_directories(./src/headers)
+
 add_executable(${PROJECT_NAME} 
+  ./src/Ioperator.cpp
+  ./src/Istatement.cpp
   ./src/test_flex.cpp  
   ${BISON_parser_OUTPUTS}
   ${FLEX_scanner_OUTPUTS}
