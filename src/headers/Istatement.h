@@ -1,5 +1,6 @@
 #pragma once
 #include "Inode.h"
+#include "Ioperator.h"
 
 class Istatement: public Inode{
 
@@ -17,8 +18,6 @@ public:
     virtual ~Istatement() = 0; 
 };
 
-Istatement::~Istatement(){}
-
 
 class If final: public Istatement{
 
@@ -32,7 +31,7 @@ public:
     Iresponse& transfer_req_condition(Irequest& cur_req);
     Iresponse& transfer_req_scope(Irequest& cur_req);
 
-    Iresponse& get_request(Irequest& cur_req) override{ return cur_req.process_req(*this); }
+    Iresponse& get_request(Irequest& cur_req) override;
 };
 
 class While final: public Istatement{
@@ -47,7 +46,7 @@ public:
     Iresponse& transfer_req_condition(Irequest& cur_req);
     Iresponse& transfer_req_scope(Irequest& cur_req);
 
-    Iresponse& get_request(Irequest& cur_req) override{ return cur_req.process_req(*this); }
+    Iresponse& get_request(Irequest& cur_req) override;
 };
 
 class Assign final: public Istatement{
@@ -62,7 +61,7 @@ public:
     Iresponse& transfer_req_lhs(Irequest& cur_req);
     Iresponse& transfer_req_rhs(Irequest& cur_req);
 
-    Iresponse& get_request(Irequest& cur_req) override{ return cur_req.process_req(*this); }
+    Iresponse& get_request(Irequest& cur_req) override;
 };
 
 class Print final: public Istatement{
@@ -74,5 +73,5 @@ public:
     Print(Ioperator* var);
 
     Iresponse& transfer_req_var(Irequest& cur_req);
-    Iresponse& get_request(Irequest& cur_req) override{ return cur_req.process_req(*this); }
+    Iresponse& get_request(Irequest& cur_req) override;
 };

@@ -2,12 +2,10 @@
 #include "Istatement.h"
 #include "Ioperator.h"
 
-
 struct Iresponse{   //response
 
-    virtual ~Iresponse() = 0;
+    virtual ~Iresponse(){}
 };
-Iresponse::~Iresponse(){}
 
 struct Irequest{
     
@@ -23,6 +21,5 @@ struct Irequest{
     virtual Iresponse& process_req(LogicOperator& node){}
     virtual Iresponse& process_req(MathOperator& node){}
 
-    virtual ~Irequest() = 0;
+    virtual ~Irequest(){}
 };
-Irequest::~Irequest(){}

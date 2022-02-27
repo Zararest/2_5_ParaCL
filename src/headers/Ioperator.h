@@ -18,7 +18,6 @@ public:
 
     virtual ~Ioperator() = 0;
 };
-Ioperator::~Ioperator(){}
 
 
 class Var final: public Ioperator{
@@ -32,7 +31,7 @@ public:
     std::string get_name();
     void set_name(std::string& name);
 
-    Iresponse& get_request(Irequest& cur_req) override{ return cur_req.process_req(*this); }
+    Iresponse& get_request(Irequest& cur_req) override;
 };
 
 class Num final: public Ioperator{
@@ -45,14 +44,14 @@ public:
     int get_value(){ return value_; };
     void set_value(int value){ value_ = value; };
 
-    Iresponse& get_request(Irequest& cur_req) override{ return cur_req.process_req(*this); }
+    Iresponse& get_request(Irequest& cur_req) override;
 };
 
 struct Input final: public Ioperator{
 
     Input();
 
-    Iresponse& get_request(Irequest& cur_req) override{ return cur_req.process_req(*this); }
+    Iresponse& get_request(Irequest& cur_req) override;
 };
 
 
@@ -78,7 +77,7 @@ public:
     std::pair<int, bool> get_operator(){ return std::make_pair(type_, equal_); }
     void set_operator(std::pair<int, bool> op);
 
-    Iresponse& get_request(Irequest& cur_req) override{ return cur_req.process_req(*this); }
+    Iresponse& get_request(Irequest& cur_req) override;
 };
 
 
@@ -102,5 +101,5 @@ public:
     int get_operator(){ return type_; }
     void set_operator(int type){ type_ = type; }
 
-    Iresponse& get_request(Irequest& cur_req) override{ return cur_req.process_req(*this); }
+    Iresponse& get_request(Irequest& cur_req) override;
 };

@@ -1,4 +1,4 @@
-#include "./headers/Ioperator.h"
+#include "./headers/Irequest.h"
 #include <utility>
 
 Ioperator::Ioperator(Ioperator* left, Ioperator* right):   
@@ -41,6 +41,8 @@ Iresponse& Ioperator::transfer_req_right(Irequest& cur_req){
     }
 }
 
+Ioperator::~Ioperator(){}
+
 
 Var::Var(const std::string& name):
 
@@ -60,6 +62,11 @@ void Var::set_name(std::string& name){
     std::swap(name_, tmp);
 }
 
+Iresponse& Var::get_request(Irequest& cur_req){
+
+    return cur_req.process_req(*this); 
+}
+
 
 Num::Num(int value):
     
@@ -67,11 +74,21 @@ Num::Num(int value):
     value_{value}   
 {}
 
+Iresponse& Num::get_request(Irequest& cur_req){
+
+    return cur_req.process_req(*this); 
+}
+
 
 Input::Input():
 
     Ioperator{nullptr, nullptr}
 {}
+
+Iresponse& Input::get_request(Irequest& cur_req){
+
+    return cur_req.process_req(*this); 
+}
 
 
 LogicOperator::LogicOperator(int type, bool equal, Ioperator* left, Ioperator* right):
@@ -87,9 +104,19 @@ void LogicOperator::set_operator(std::pair<int, bool> op){
     equal_ = op.second;
 }
 
+Iresponse& LogicOperator::get_request(Irequest& cur_req){
+
+    return cur_req.process_req(*this); 
+}
+
 
 MathOperator::MathOperator(int type, Ioperator* left, Ioperator* right):
 
     Ioperator{left, right},
     type_{type}
 {}
+
+Iresponse& MathOperator::get_request(Irequest& cur_req){
+
+    return cur_req.process_req(*this); 
+}
