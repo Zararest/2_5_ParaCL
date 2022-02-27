@@ -45,6 +45,7 @@
 %token <int> AND
 
 %nterm <int> statement
+%nterm <int> statement_list
 %nterm <int> if
 %nterm <int> while 
 %nterm <int> assign
@@ -64,19 +65,23 @@
 
 %%
 
-program: statement
+program: statement_list
+         | %empty
 ;
 
-statement:  if
-            | while
-            | assign
-            | print
-            | %empty {}
+statement_list: statement
+                | statement_list statement   
+                
+
+statement:  if                              { std::cout << "if in statement" << std::endl; }
+            | while                         { std::cout << "while in statement" << std::endl; }
+            | assign                        { std::cout << "assign in statement" << std::endl; }
+            | print                         { std::cout << "print in statement" << std::endl; }
 ;
 
-operand:    VAR
-            | NUM
-            | LB expr RB
+operand:    VAR                             { std::cout << "var in operand" << std::endl; }
+            | NUM                           { std::cout << "num in operand" << std::endl; }
+            | LB expr RB                    { std::cout << "expr in operand" << std::endl; }
 ;
 
 if: IF_ expr RB FLB statement FRB           { std::cout << "if" << std::endl; }
@@ -85,41 +90,41 @@ if: IF_ expr RB FLB statement FRB           { std::cout << "if" << std::endl; }
 while:  WHILE_ expr RB FLB statement FRB    { std::cout << "while" << std::endl; }
 ;
 
-assign: VAR ASSIGN_ operand SCOL            { std::cout << "assign" << std::endl; }
-        | VAR ASSIGN_ INPUT SCOL
+assign: VAR ASSIGN_ expr SCOL            { std::cout << "var assign" << std::endl; }
+        | VAR ASSIGN_ INPUT SCOL            { std::cout << " var assign input" << std::endl; }
 ;
 
-print:  PRINT_ VAR SCOL                     { std::cout << "print" << std::endl; }
+print:  PRINT_ VAR SCOL                     { std::cout << "print var" << std::endl; }
 ;
 
 expr:   expr_and expr_                      { std::cout << "expr or" << std::endl; }
 ;
 expr_:  OR expr_and expr_                   { std::cout << "or" << std::endl; }
-        | %empty                            {}
+        | %empty                            { std::cout << "or end -------" << std::endl;}
 ;
 
 expr_and:   expr_log expr_and_              { std::cout << "expr and" << std::endl; }
 ;
 expr_and_:  AND expr_log expr_and_          { std::cout << "and" << std::endl; }
-            | %empty                        {}
+            | %empty                        { std::cout << "and end -------" << std::endl;}
 ;
 
 expr_log:   expr_sum expr_log_              { std::cout << "expr logic" << std::endl; }
 ;
 expr_log_:  LOGIC expr_sum expr_log_        { std::cout << "logic" << std::endl; }
-            | %empty                        {}
+            | %empty                        { std::cout << "logic end -------" << std::endl;}
 ;
 
 expr_sum:   expr_mul expr_sum_              { std::cout << "expr sum" << std::endl; }
 ;
 expr_sum_:  OP_SUM expr_mul expr_sum_       { std::cout << "sum" << std::endl; }
-            | %empty                        {}
+            | %empty                        { std::cout << "sum end -------" << std::endl;}
 ;
 
 expr_mul:   operand expr_mul_               { std::cout << "expr mul" << std::endl; }
 ;
 expr_mul_:  OP_MUL operand expr_mul_        { std::cout << "mul" << std::endl; }
-            | %empty                        {}
+            | %empty                        { std::cout << "mul end -------" << std::endl;}
 ;
 
 
@@ -133,5 +138,5 @@ namespace yy{
         return driver->yylex(yylval);
     }
 
-    void parser::error(const std::string&){}    
+    void parser::error(const std::string&){ std::cout << "error" << std::endl; }    
 }

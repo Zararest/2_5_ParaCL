@@ -1,0 +1,17 @@
+var in operand
+mul end -------
+expr mul
+var in operand
+mul end -------
+expr mul
+sum end -------
+sum
+expr sum
+logic end -------
+expr logic
+and end -------
+expr and
+or end -------
+expr or
+var assign
+assign in statement
