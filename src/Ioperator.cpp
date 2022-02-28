@@ -1,6 +1,14 @@
 #include "./headers/Irequest.h"
 #include <utility>
 
+std::pair<int, bool> define_log_op(std::string& op){
+
+}
+
+int define_math_op(std::string& op){
+    
+}
+
 Ioperator::Ioperator(Ioperator* left, Ioperator* right):   
     
     Inode{nullptr},
@@ -91,11 +99,11 @@ Iresponse& Input::get_request(Irequest& cur_req){
 }
 
 
-LogicOperator::LogicOperator(int type, bool equal, Ioperator* left, Ioperator* right):
+LogicOperator::LogicOperator(std::pair<int, bool> type, Ioperator* left, Ioperator* right):
 
     Ioperator{left, right},
-    type_{type},
-    equal_{equal}
+    type_{type.first},
+    equal_{type.second}
 {}
 
 void LogicOperator::set_operator(std::pair<int, bool> op){

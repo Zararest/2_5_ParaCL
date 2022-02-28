@@ -2,6 +2,7 @@
 
 #include "numgrammar.tab.hh"
 #include <FlexLexer.h>
+#include <cstring>
 
 namespace yy {
 
@@ -12,12 +13,23 @@ public:
   ParaDriver(FlexLexer *plex) : plex_(plex) {}
 
   parser::token_type yylex(parser::semantic_type *yylval) {
-    parser::token_type tt = static_cast<parser::token_type>(plex_->yylex());
+    parser::token_type token = static_cast<parser::token_type>(plex_->yylex());
 
-    return tt;
+    if (token == yy::parser::token::VAR){
+
+      yylval->as<std::string>() = std::string(plex_->YYText());
+    }
+
+    if (token == yy::parser::token::NUM){
+
+      yylval->as<int>() = atoi(plex_->YYText());
+    }
+    
+    return token;
   }
 
   bool parse() {
+
     parser parser{this};
     bool res = parser.parse();
     return !res;

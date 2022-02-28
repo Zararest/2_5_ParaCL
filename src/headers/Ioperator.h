@@ -13,6 +13,9 @@ public:
 
     Ioperator(Ioperator* left, Ioperator* right);
 
+    void add_left(Ioperator* new_left);
+    void add_right(Ioperator* new_right);
+
     Iresponse& transfer_req_left(Irequest& cur_req);
     Iresponse& transfer_req_right(Irequest& cur_req);
 
@@ -72,7 +75,7 @@ class LogicOperator final: public Ioperator{
 
 public:
     
-    LogicOperator(int type, bool equal, Ioperator* left, Ioperator* right);
+    LogicOperator(std::pair<int, bool> type, Ioperator* left, Ioperator* right);
 
     std::pair<int, bool> get_operator(){ return std::make_pair(type_, equal_); }
     void set_operator(std::pair<int, bool> op);
