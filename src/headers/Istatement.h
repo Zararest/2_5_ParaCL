@@ -13,7 +13,7 @@ public:
     Istatement(Istatement* next_statement);
 
     void add_next_statement(Istatement* next_statement);
-    Iresponse& transfer_req(Irequest& cur_req);
+    Iresponse* transfer_req(Irequest& cur_req);
 
     virtual ~Istatement() = 0; 
 };
@@ -28,10 +28,10 @@ public:
 
     If(Ioperator* condition, Istatement* scope);
 
-    Iresponse& transfer_req_condition(Irequest& cur_req);
-    Iresponse& transfer_req_scope(Irequest& cur_req);
+    Iresponse* transfer_req_condition(Irequest& cur_req);
+    Iresponse* transfer_req_scope(Irequest& cur_req);
 
-    Iresponse& get_request(Irequest& cur_req) override;
+    Iresponse* get_request(Irequest& cur_req) override;
 };
 
 class While final: public Istatement{
@@ -43,10 +43,10 @@ public:
 
     While(Ioperator* condition, Istatement* scope);
 
-    Iresponse& transfer_req_condition(Irequest& cur_req);
-    Iresponse& transfer_req_scope(Irequest& cur_req);
+    Iresponse* transfer_req_condition(Irequest& cur_req);
+    Iresponse* transfer_req_scope(Irequest& cur_req);
 
-    Iresponse& get_request(Irequest& cur_req) override;
+    Iresponse* get_request(Irequest& cur_req) override;
 };
 
 class Assign final: public Istatement{
@@ -58,10 +58,10 @@ public:
 
     Assign(Ioperator* lhs, Ioperator* rhs);
 
-    Iresponse& transfer_req_lhs(Irequest& cur_req);
-    Iresponse& transfer_req_rhs(Irequest& cur_req);
+    Iresponse* transfer_req_lhs(Irequest& cur_req);
+    Iresponse* transfer_req_rhs(Irequest& cur_req);
 
-    Iresponse& get_request(Irequest& cur_req) override;
+    Iresponse* get_request(Irequest& cur_req) override;
 };
 
 class Print final: public Istatement{
@@ -72,6 +72,6 @@ public:
 
     Print(Ioperator* var);
 
-    Iresponse& transfer_req_var(Irequest& cur_req);
-    Iresponse& get_request(Irequest& cur_req) override;
+    Iresponse* transfer_req_var(Irequest& cur_req);
+    Iresponse* get_request(Irequest& cur_req) override;
 };

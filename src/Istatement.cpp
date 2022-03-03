@@ -29,7 +29,7 @@ void Istatement::add_next_statement(Istatement* next_statement){
     
 }
 
-Iresponse& Istatement::transfer_req(Irequest& cur_req){
+Iresponse* Istatement::transfer_req(Irequest& cur_req){
 
     if (next_statement_ != nullptr){
 
@@ -59,7 +59,7 @@ If::If(Ioperator* condition, Istatement* scope):
     }
 }
 
-Iresponse& If::transfer_req_condition(Irequest& cur_req){
+Iresponse* If::transfer_req_condition(Irequest& cur_req){
 
     if (condition_ != nullptr){
 
@@ -70,7 +70,7 @@ Iresponse& If::transfer_req_condition(Irequest& cur_req){
     }
 }
 
-Iresponse& If::transfer_req_scope(Irequest& cur_req){
+Iresponse* If::transfer_req_scope(Irequest& cur_req){
 
     if (if_scope_ != nullptr){
 
@@ -81,7 +81,7 @@ Iresponse& If::transfer_req_scope(Irequest& cur_req){
     }
 }
 
-Iresponse& If::get_request(Irequest& cur_req){
+Iresponse* If::get_request(Irequest& cur_req){
 
     return cur_req.process_req(*this); 
 }
@@ -104,7 +104,7 @@ While::While(Ioperator* condition, Istatement* scope):
     }
 }
 
-Iresponse& While::transfer_req_condition(Irequest& cur_req){
+Iresponse* While::transfer_req_condition(Irequest& cur_req){
 
     if (condition_ != nullptr){
 
@@ -115,7 +115,7 @@ Iresponse& While::transfer_req_condition(Irequest& cur_req){
     }
 }
 
-Iresponse& While::transfer_req_scope(Irequest& cur_req){
+Iresponse* While::transfer_req_scope(Irequest& cur_req){
 
     if (while_scope_ != nullptr){
 
@@ -126,7 +126,7 @@ Iresponse& While::transfer_req_scope(Irequest& cur_req){
     }
 }
 
-Iresponse& While::get_request(Irequest& cur_req){
+Iresponse* While::get_request(Irequest& cur_req){
 
     return cur_req.process_req(*this); 
 }
@@ -139,7 +139,7 @@ Assign::Assign(Ioperator* lhs, Ioperator* rhs):
     rhs_{rhs}
 {}
 
-Iresponse& Assign::transfer_req_lhs(Irequest& cur_req){
+Iresponse* Assign::transfer_req_lhs(Irequest& cur_req){
 
     if (lhs_ != nullptr){
 
@@ -150,7 +150,7 @@ Iresponse& Assign::transfer_req_lhs(Irequest& cur_req){
     }
 }
 
-Iresponse& Assign::transfer_req_rhs(Irequest& cur_req){
+Iresponse* Assign::transfer_req_rhs(Irequest& cur_req){
 
     if (rhs_ != nullptr){
 
@@ -161,7 +161,7 @@ Iresponse& Assign::transfer_req_rhs(Irequest& cur_req){
     }
 }
 
-Iresponse& Assign::get_request(Irequest& cur_req){
+Iresponse* Assign::get_request(Irequest& cur_req){
 
     return cur_req.process_req(*this); 
 }
@@ -173,7 +173,7 @@ Print::Print(Ioperator* var):
     out_var{var}
 {}
 
-Iresponse& Print::transfer_req_var(Irequest& cur_req){
+Iresponse* Print::transfer_req_var(Irequest& cur_req){
 
     if (out_var != nullptr){
 
@@ -184,7 +184,7 @@ Iresponse& Print::transfer_req_var(Irequest& cur_req){
     }
 }
 
-Iresponse& Print::get_request(Irequest& cur_req){
+Iresponse* Print::get_request(Irequest& cur_req){
 
     return cur_req.process_req(*this); 
 }

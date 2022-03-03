@@ -9,17 +9,17 @@ struct Iresponse{   //response
 
 struct Irequest{
     
-    virtual Iresponse& process_terminal(){}
-    virtual Iresponse& process_req(If& node){}
-    virtual Iresponse& process_req(While& node){}
-    virtual Iresponse& process_req(Assign& node){}
-    virtual Iresponse& process_req(Print& node){}
+    virtual Iresponse* process_terminal(){ return nullptr; }
+    virtual Iresponse* process_req(If& node){ return nullptr; }
+    virtual Iresponse* process_req(While& node){ return nullptr; }
+    virtual Iresponse* process_req(Assign& node){ return nullptr; }
+    virtual Iresponse* process_req(Print& node){ return nullptr; }
 
-    virtual Iresponse& process_req(Var& node){}
-    virtual Iresponse& process_req(Num& node){}
-    virtual Iresponse& process_req(Input& node){}
-    virtual Iresponse& process_req(LogicOperator& node){}
-    virtual Iresponse& process_req(MathOperator& node){}
+    virtual Iresponse* process_req(Var& node){ return nullptr; }
+    virtual Iresponse* process_req(Num& node){ return nullptr; }
+    virtual Iresponse* process_req(Input& node){ return nullptr; }
+    virtual Iresponse* process_req(LogicOperator& node){ return nullptr; }
+    virtual Iresponse* process_req(MathOperator& node){ return nullptr; }
 
     virtual ~Irequest(){}
 };
