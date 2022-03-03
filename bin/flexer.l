@@ -3,7 +3,7 @@
 
 %{
     
-#include "numgrammar.tab.hh"
+#include "Paragrammar.tab.hh"
 
 using std::cerr;
 using std::endl;

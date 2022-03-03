@@ -1,6 +1,6 @@
 #pragma once
 
-#include "numgrammar.tab.hh"
+#include "Paragrammar.tab.hh"
 #include <FlexLexer.h>
 #include <cstring>
 
@@ -17,7 +17,7 @@ public:
 
     if (token == yy::parser::token::VAR){
 
-      yylval->as<std::string>() = std::string(plex_->YYText());
+      yylval->as<Var*>() = new Var(std::string(plex_->YYText()));
     }
 
     if (token == yy::parser::token::NUM){
