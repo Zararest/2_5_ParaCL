@@ -14,12 +14,19 @@ Istatement::Istatement(Istatement* next_statement):
 
 void Istatement::add_next_statement(Istatement* next_statement){
 
-    if (next_statement != nullptr){
+    if (next_statement_ == nullptr){
+    
+        if (next_statement != nullptr){
 
-        next_statement->prev_ = this;
+            next_statement->prev_ = this;
+        }
+
+        next_statement_ = next_statement;
+    } else{
+
+        next_statement_->add_next_statement(next_statement);
     }
-
-    next_statement_ = next_statement;
+    
 }
 
 Iresponse& Istatement::transfer_req(Irequest& cur_req){

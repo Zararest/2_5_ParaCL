@@ -3,10 +3,24 @@
 
 std::pair<int, bool> define_log_op(std::string& op){
 
+    if (op == std::string("==")){ return std::make_pair(Equal, true); }
+    if (op == std::string("!=")){ return std::make_pair(Equal, false); }
+    if (op == std::string(">")){ return std::make_pair(Greater, false); }
+    if (op == std::string(">=")){ return std::make_pair(Greater, true); }
+    if (op == std::string("<")){ return std::make_pair(Less, false); }
+    if (op == std::string("<=")){ return std::make_pair(Less, true); }
+
+    return std::make_pair(Nothing_log, false);
 }
 
 int define_math_op(std::string& op){
     
+    if (op == std::string("+")){ return Plus; }
+    if (op == std::string("-")){ return Minus; }
+    if (op == std::string("*")){ return Mult; }
+    if (op == std::string("/")){ return Div; }
+
+    return Nothing_math;
 }
 
 Ioperator::Ioperator(Ioperator* left, Ioperator* right):   

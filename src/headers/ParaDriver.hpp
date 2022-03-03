@@ -22,7 +22,7 @@ public:
 
     if (token == yy::parser::token::NUM){
 
-      yylval->as<int>() = atoi(plex_->YYText());
+      yylval->as<Num*>() = new Num(atoi(plex_->YYText()));
     }
     
     return token;

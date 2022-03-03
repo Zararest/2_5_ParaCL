@@ -45,7 +45,7 @@
 
 %token <Print*> PRINT_
 %token <Input*> INPUT
-%token <int> NUM
+%token <Num*> NUM
 %token <Var*> VAR
 %token <std::string> LOGIC
 %token <std::string> OP_MUL
@@ -89,7 +89,7 @@ statement:  if                              { $$ = $1; }
 ;
 
 operand:    VAR                             { $$ = $1; }
-            | NUM                           { $$ = new Num($1); }
+            | NUM                           { $$ = $1; }
             | LB expr RB                    { $$ = $2; }
 ;
 
@@ -133,7 +133,7 @@ expr_sum_:  OP_SUM expr_mul expr_sum_       { if ($3.first != nullptr){ $$ = std
 expr_mul:   operand expr_mul_               { if ($2.first != nullptr){ $$ = new MathOperator(define_math_op($2.second), $1, $2.first); }else { $$ = $1; } }
 ;
 expr_mul_:  OP_MUL operand expr_mul_        { if ($3.first != nullptr){ $$ = std::make_pair(new MathOperator(define_math_op($3.second), $2, $3.first), $1); }else { $$ = std::make_pair($2, $1); } }
-            | operand                       { $$ = std::make_pair($1, Nothing_math); }
+            | %empty                        { $$ = std::make_pair(nullptr, Nothing_math); }
 ;
 
 
@@ -141,9 +141,8 @@ expr_mul_:  OP_MUL operand expr_mul_        { if ($3.first != nullptr){ $$ = std
 
 namespace yy{
 
-    parser::token_type yylex(parser::semantic_type* yylval,                         
-                                ParaDriver* driver)
-    {
+    parser::token_type yylex(parser::semantic_type* yylval, ParaDriver* driver){
+
         return driver->yylex(yylval);
     }
 
