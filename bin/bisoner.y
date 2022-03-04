@@ -154,7 +154,7 @@ expr_and_:  AND expr_log expr_and_        { if ($3 != nullptr){
 
 expr_log:   expr_sum expr_log_            { if ($2 != nullptr){ 
                                                 
-                                                $$ = $2->make_math_op($1);
+                                                $$ = $2->make_log_op($1);
                                                 delete $2;
                                             }else { 
 

@@ -4,6 +4,7 @@
 #include <FlexLexer.h>
 #include <cstring>
 #include "Print_req.h"
+#include "Deleter_req.h"
 
 namespace yy {
 
@@ -50,6 +51,15 @@ public:
     Print_req print_tree{"../bin/graph.dot"};
 
     root->get_request(print_tree);
+  }
+
+  void delete_tree(){
+
+    Deleter_req deleter;
+
+    root->get_request(deleter);
+
+    delete root;
   }
 };
 

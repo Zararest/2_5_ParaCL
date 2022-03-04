@@ -27,10 +27,11 @@ VAR     ({LETTER}|{UNDERLI})({UNDERLI}|{NUM}|{LETTER})*
 OP_SUM  [\+\-]
 OP_MUL  [\*\\]
 
+UNEQUAL "!="
 EQUAL   "=="
 GRETEQ  ">="
 LESSEQ  "<="
-LOGIC   {EQUAL}|{GRETEQ}|{LESSEQ}|[\<\>]
+LOGIC   {EQUAL}|{UNEQUAL}|{GRETEQ}|{LESSEQ}|[\<\>]
 
 OR  "||"
 AND "&&"

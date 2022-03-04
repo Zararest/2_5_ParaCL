@@ -12,7 +12,6 @@ void Print_req::print_next_statement(Istatement& node){
         out_file << "\"" << &node << "\" -> \"" << next << "\"" << std::endl; 
 
         node.transfer_req(*this);
-        //next->get_request(*this);
     }
 }
 

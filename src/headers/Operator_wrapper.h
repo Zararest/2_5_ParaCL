@@ -24,12 +24,16 @@ public:
         }
     }
 
+    void set_params(int type, bool equal, Ioperator* node){
+
+        type_ = type;
+        equal_ = equal;
+        node_ = node;
+    }
+
     Ioperator* make_math_op(Ioperator* lhs){
-        printf("in make\n");
-        MathOperator* tmp = nullptr;
-        tmp = new MathOperator(type_, lhs, node_);
-        printf("op = %p lhs = %p node = %p\n", tmp, lhs, node_);
-        return tmp;
+
+        return new MathOperator(type_, lhs, node_);
     }
 
     Ioperator* make_log_op(Ioperator* lhs){
