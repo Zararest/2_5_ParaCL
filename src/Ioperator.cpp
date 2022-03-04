@@ -1,5 +1,6 @@
 #include "./headers/Irequest.h"
 #include <utility>
+#include <iostream>
 
 std::pair<int, bool> define_log_op(std::string& op){
 
@@ -26,7 +27,7 @@ int define_math_op(std::string& op){
 }
 
 std::string get_math_op(int op){
-
+    
     switch (op){
 
         case Plus:

@@ -129,7 +129,7 @@ expr_and:   expr_log expr_and_            { if ($2 != nullptr){
 ;
 expr_and_:  AND expr_log expr_and_        { if ($3 != nullptr){ 
                                                 $$ = new LogicOperator(std::make_pair(And, false), $2, $3); 
-                                                std::cout << "dafuq" << std::endl;
+                                                
                                             }else { 
                                                 $$ = $2;
                                                 
@@ -139,13 +139,13 @@ expr_and_:  AND expr_log expr_and_        { if ($3 != nullptr){
 
 expr_log:   expr_sum expr_log_            { if ($2.first != nullptr){ 
                                                 $$ = new LogicOperator(define_log_op($2.second), $1, $2.first); 
-                                                std::cout << "res = " << $$ << " expr_sum = " << $1 << " expr_log = " << $2.first << std::endl; 
                                             }else { 
                                                 $$ = $1; 
                                             } }
 ;
 expr_log_:  LOGIC expr_sum expr_log_      { if ($3.first != nullptr){ 
-                                                $$ = std::make_pair(new LogicOperator(define_log_op($3.second), $2, $3.first), $1); 
+                                                Ioperator* next_op = new LogicOperator(define_log_op($3.second), $2, $3.first);
+                                                $$ = std::make_pair(next_op, $1); 
                                                 
                                             }else { 
                                                 
@@ -162,7 +162,8 @@ expr_sum:   expr_mul expr_sum_            { if ($2.first != nullptr){
                                             } std::cout << "expr_sum init = " << $$ << std::endl; }
 ;
 expr_sum_:  OP_SUM expr_mul expr_sum_     { if ($3.first != nullptr){ 
-                                                $$ = std::make_pair(new MathOperator(define_math_op($3.second), $2, $3.first), $1); 
+                                                Ioperator* next_op = new MathOperator(define_math_op($3.second), $2, $3.first);
+                                                $$ = std::make_pair(next_op, $1); 
                                             }else { 
                                                 $$ = std::make_pair($2, $1); 
                                             } }
@@ -176,7 +177,8 @@ expr_mul:   operand expr_mul_             { if ($2.first != nullptr){
                                             } }
 ;
 expr_mul_:  OP_MUL operand expr_mul_      { if ($3.first != nullptr){ 
-                                                $$ = std::make_pair(new MathOperator(define_math_op($3.second), $2, $3.first), $1);
+                                                Ioperator* next_op = new MathOperator(define_math_op($3.second), $2, $3.first);
+                                                $$ = std::make_pair(next_op, $1);
                                             }else { 
                                                 $$ = std::make_pair($2, $1); 
                                             } }

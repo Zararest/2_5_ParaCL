@@ -173,8 +173,8 @@ Iresponse* Print_req::process_req(LogicOperator& node){
 }
 
 Iresponse* Print_req::process_req(MathOperator& node){
-    //std::cout << "MathOperator" << std::endl;
-    out_file << "\"" << &node << "\" [label = \"" << get_math_op(node.get_operator()) << "\" fillcolor=cyan" << std::endl;
+    std::cout << "MathOperator: " << node.get_operator() << std::endl;
+    out_file << "\"" << &node << "\" [label = \"" << get_math_op(node.get_operator()) << "\" fillcolor=coral]" << std::endl;
 
     Iresponse* resp = node.transfer_req_left(standart_addr_req);
     Inode* lhs = static_cast<Addr_resp*>(resp)->get_addr();
