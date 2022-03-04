@@ -122,6 +122,8 @@ Iresponse* Print_req::process_req(Print& node){
         node.transfer_req_var(*this);
     }
 
+    print_next_statement(node);
+
     return nullptr;
 }
 

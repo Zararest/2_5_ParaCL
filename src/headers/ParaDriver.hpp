@@ -4,6 +4,7 @@
 #include <FlexLexer.h>
 #include <cstring>
 #include "Print_req.h"
+#include "Check_scope_req.h"
 #include "Deleter_req.h"
 
 namespace yy {
@@ -51,6 +52,13 @@ public:
     Print_req print_tree{"../bin/graph.dot"};
 
     root->get_request(print_tree);
+  }
+
+  void check_scope() {
+
+    Check_scope_req check_scope_tree; // Why there {}? why this and () not the same object [v]
+std::cout << "Start check request" << std::endl;
+    root->get_request(check_scope_tree);
   }
 
   void delete_tree(){

@@ -14,6 +14,7 @@ int main(){
   driver.parse();
 
   driver.print();
+  driver.check_scope();
   driver.delete_tree();
 
   delete lexer;
