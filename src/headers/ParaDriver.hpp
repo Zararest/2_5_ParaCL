@@ -17,14 +17,17 @@ public:
   parser::token_type yylex(parser::semantic_type *yylval) {
     parser::token_type token = static_cast<parser::token_type>(plex_->yylex());
 
-    if (token == yy::parser::token::VAR){
-
-      yylval->as<Var*>() = new Var(std::string(plex_->YYText()));
+    if (token == yy::parser::token::VAR 
+        || token == yy::parser::token::LOGIC
+        || token == yy::parser::token::OP_MUL
+        || token == yy::parser::token::OP_SUM){
+      
+      yylval->as<std::string*>() = new std::string(plex_->YYText());
     }
 
     if (token == yy::parser::token::NUM){
 
-      yylval->as<Num*>() = new Num(atoi(plex_->YYText()));
+      yylval->as<int>() = atoi(plex_->YYText());
     }
     
     return token;

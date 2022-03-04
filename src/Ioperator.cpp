@@ -85,7 +85,7 @@ std::string get_log_op(std::pair<int, bool> op){
             return std::string("");
             break;
     }
-
+    
     return std::string("error");
 }
 
