@@ -1,3 +1,4 @@
+#pragma once
 #include "Irequest.h"
 #include <fstream>
 
@@ -44,10 +45,12 @@ class Print_req: public Irequest{
     std::ofstream out_file;
     Addr_req standart_addr_req;
 
+    void print_next_statement(Istatement& node);
+
 public: 
 
-    Print_req(const char* name): out_file{name}{}    
-    ~Print_req(){ out_file.close(); }
+    Print_req(const char* name);  
+    ~Print_req();
 
     Iresponse* process_req(If& node);
     Iresponse* process_req(While& node);
@@ -59,6 +62,4 @@ public:
     Iresponse* process_req(Input& node);
     Iresponse* process_req(LogicOperator& node);
     Iresponse* process_req(MathOperator& node);
-
-    void print_next_statement(Istatement* node);
 };

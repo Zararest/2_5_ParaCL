@@ -24,6 +24,7 @@ add_executable(${PROJECT_NAME}
   ./src/Ioperator.cpp
   ./src/Istatement.cpp
   ./src/test_flex.cpp  
+  ./src/Print_req.cpp
   ${BISON_parser_OUTPUTS}
   ${FLEX_scanner_OUTPUTS}
 )

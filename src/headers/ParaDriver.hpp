@@ -3,11 +3,13 @@
 #include "Paragrammar.tab.hh"
 #include <FlexLexer.h>
 #include <cstring>
+#include "Print_req.h"
 
 namespace yy {
 
 class ParaDriver {
   FlexLexer *plex_;
+  Inode* root = nullptr;
 
 public:
   ParaDriver(FlexLexer *plex) : plex_(plex) {}
@@ -33,6 +35,18 @@ public:
     parser parser{this};
     bool res = parser.parse();
     return !res;
+  }
+
+  void add_root(Inode* node){
+
+    root = node;
+  }
+
+  void print(){
+
+    Print_req print_tree{"../bin/graph.dot"};
+
+    root->get_request(print_tree);
   }
 };
 

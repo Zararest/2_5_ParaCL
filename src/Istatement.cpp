@@ -1,5 +1,5 @@
 #include "./headers/Irequest.h"
-
+#include <iostream>
 Istatement::Istatement(Istatement* next_statement):
 
     Inode{nullptr},
@@ -62,7 +62,7 @@ If::If(Ioperator* condition, Istatement* scope):
 Iresponse* If::transfer_req_condition(Irequest& cur_req){
 
     if (condition_ != nullptr){
-
+        
         return condition_->get_request(cur_req);
     } else{
 

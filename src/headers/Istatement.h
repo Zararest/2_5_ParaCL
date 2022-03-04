@@ -73,5 +73,6 @@ public:
     Print(Ioperator* var);
 
     Iresponse* transfer_req_var(Irequest& cur_req);
+    
     Iresponse* get_request(Irequest& cur_req) override;
 };

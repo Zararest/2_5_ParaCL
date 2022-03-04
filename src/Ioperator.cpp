@@ -9,6 +9,8 @@ std::pair<int, bool> define_log_op(std::string& op){
     if (op == std::string(">=")){ return std::make_pair(Greater, true); }
     if (op == std::string("<")){ return std::make_pair(Less, false); }
     if (op == std::string("<=")){ return std::make_pair(Less, true); }
+    if (op == std::string("||")){ return std::make_pair(Or, false); }
+    if (op == std::string("&&")){ return std::make_pair(And, false); }
 
     return std::make_pair(Nothing_log, false);
 }
@@ -21,6 +23,69 @@ int define_math_op(std::string& op){
     if (op == std::string("/")){ return Div; }
 
     return Nothing_math;
+}
+
+std::string get_math_op(int op){
+
+    switch (op){
+
+        case Plus:
+            return std::string("+");
+            break;
+        
+        case Minus:
+            return std::string("-");
+            break;
+
+        case Mult: 
+            return std::string("*");
+            break;
+        
+        case Div:
+            return std::string("/");
+            break;
+
+        case Nothing_math:
+            return std::string("");
+            break;
+    }
+
+    return std::string("error");
+}
+
+std::string get_log_op(std::pair<int, bool> op){
+
+    switch (op.first){
+        
+        case Equal:
+            if (op.second){ return std::string("=="); }else
+                { return std::string("!="); }
+            break;
+        
+        case Less:
+            if (op.second){ return std::string("<="); }else
+                { return std::string("<"); }
+            break;
+        
+        case Greater:
+            if (op.second){ return std::string(">="); }else
+                { return std::string(">"); }
+            break;
+
+        case Or:
+            return std::string("||");
+            break;
+
+        case And:
+            return std::string("&&");
+            break;
+
+        case Nothing_log:
+            return std::string("");
+            break;
+    }
+
+    return std::string("error");
 }
 
 Ioperator::Ioperator(Ioperator* left, Ioperator* right):   

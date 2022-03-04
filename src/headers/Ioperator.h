@@ -2,6 +2,11 @@
 #include "Inode.h"
 #include <string>
 
+int define_math_op(std::string& op);
+std::pair<int, bool> define_log_op(std::string& op);
+std::string get_math_op(int op);
+std::string get_log_op(std::pair<int, bool> op);
+
 class Ioperator: public Inode{
 
 protected:

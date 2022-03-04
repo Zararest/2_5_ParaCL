@@ -8,10 +8,12 @@ int yyFlexLexer::yywrap() {
 }
 
 int main(){
-  
+
   FlexLexer* lexer = new yyFlexLexer;
   yy::ParaDriver driver(lexer);
   driver.parse();
+
+  driver.print();
 
   delete lexer;
 }

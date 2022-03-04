@@ -74,8 +74,8 @@
 
 %%
 
-program: statement_list                     { $$ = $1; }
-         | %empty                           { $$ = nullptr; }
+program: statement_list                     { driver->add_root($1); }
+         | %empty                           { driver->add_root(nullptr); }
 ;       
 
 statement_list: statement                   { $$ = $1; }
@@ -106,34 +106,81 @@ assign: VAR ASSIGN_ expr SCOL               { $$ = new Assign($1, $3); }
 print:  PRINT_ VAR SCOL                     { $$ = new Print($2); }
 ;
 
-expr:   expr_and expr_                      { if ($2 != nullptr){ $$ = new LogicOperator(std::make_pair(Or, false), $1, $2); }else { $$ = $1; } }
+expr:   expr_and expr_                    { if ($2 != nullptr){ 
+                                                $$ = new LogicOperator(std::make_pair(Or, false), $1, $2); 
+                                            }else { 
+                                                $$ = $1; 
+                                            } }
 ;
-expr_:  OR expr_and expr_                   { if ($3 != nullptr){ $$ = new LogicOperator(std::make_pair(Or, false), $2, $3); }else { $$ = $2; }  }
-        | %empty                            { $$ = nullptr; }
-;
-
-expr_and:   expr_log expr_and_              { if ($2 != nullptr){ $$ = new LogicOperator(std::make_pair(And, false), $1, $2); }else { $$ = $1; } }
-;
-expr_and_:  AND expr_log expr_and_          { if ($3 != nullptr){ $$ = new LogicOperator(std::make_pair(And, false), $2, $3); }else { $$ = $2;}  }
-            | %empty                        { $$ = nullptr; }
-;
-
-expr_log:   expr_sum expr_log_              { if ($2.first != nullptr){ $$ = new LogicOperator(define_log_op($2.second), $1, $2.first); }else { $$ = $1; } }
-;
-expr_log_:  LOGIC expr_sum expr_log_        { if ($3.first != nullptr){ $$ = std::make_pair(new LogicOperator(define_log_op($3.second), $2, $3.first), $1); }else { $$ = std::make_pair($2, $1); } }
-            | %empty                        { $$ = std::make_pair(nullptr, Nothing_log); }
+expr_:  OR expr_and expr_                 { if ($3 != nullptr){ 
+                                                $$ = new LogicOperator(std::make_pair(Or, false), $2, $3); 
+                                            }else { 
+                                                $$ = $2; 
+                                            }  }
+        | %empty                          { $$ = nullptr; }
 ;
 
-expr_sum:   expr_mul expr_sum_              { if ($2.first != nullptr){ $$ = new MathOperator(define_math_op($2.second), $1, $2.first); }else { $$ = $1; } }
+expr_and:   expr_log expr_and_            { if ($2 != nullptr){ 
+                                                $$ = new LogicOperator(std::make_pair(And, false), $1, $2); 
+                                            }else { 
+                                                $$ = $1;
+                                                std::cout << "expr_log = " << $1 << " expr_and = " << $2  << std::endl; 
+                                            } }
 ;
-expr_sum_:  OP_SUM expr_mul expr_sum_       { if ($3.first != nullptr){ $$ = std::make_pair(new MathOperator(define_math_op($3.second), $2, $3.first), $1); }else { $$ = std::make_pair($2, $1); } }
-            | %empty                        { $$ = std::make_pair(nullptr, Nothing_math); }
+expr_and_:  AND expr_log expr_and_        { if ($3 != nullptr){ 
+                                                $$ = new LogicOperator(std::make_pair(And, false), $2, $3); 
+                                                std::cout << "dafuq" << std::endl;
+                                            }else { 
+                                                $$ = $2;
+                                                
+                                            } }
+            | %empty                      { $$ = nullptr; }
 ;
 
-expr_mul:   operand expr_mul_               { if ($2.first != nullptr){ $$ = new MathOperator(define_math_op($2.second), $1, $2.first); }else { $$ = $1; } }
+expr_log:   expr_sum expr_log_            { if ($2.first != nullptr){ 
+                                                $$ = new LogicOperator(define_log_op($2.second), $1, $2.first); 
+                                                std::cout << "res = " << $$ << " expr_sum = " << $1 << " expr_log = " << $2.first << std::endl; 
+                                            }else { 
+                                                $$ = $1; 
+                                            } }
 ;
-expr_mul_:  OP_MUL operand expr_mul_        { if ($3.first != nullptr){ $$ = std::make_pair(new MathOperator(define_math_op($3.second), $2, $3.first), $1); }else { $$ = std::make_pair($2, $1); } }
-            | %empty                        { $$ = std::make_pair(nullptr, Nothing_math); }
+expr_log_:  LOGIC expr_sum expr_log_      { if ($3.first != nullptr){ 
+                                                $$ = std::make_pair(new LogicOperator(define_log_op($3.second), $2, $3.first), $1); 
+                                                
+                                            }else { 
+                                                
+                                                $$ = std::make_pair($2, $1); 
+                                            } }
+            | %empty                      { $$ = std::make_pair(nullptr, Nothing_log); }
+;
+
+expr_sum:   expr_mul expr_sum_            { if ($2.first != nullptr){ 
+                                                $$ = new MathOperator(define_math_op($2.second), $1, $2.first); 
+                                                
+                                            }else { 
+                                                $$ = $1; 
+                                            } std::cout << "expr_sum init = " << $$ << std::endl; }
+;
+expr_sum_:  OP_SUM expr_mul expr_sum_     { if ($3.first != nullptr){ 
+                                                $$ = std::make_pair(new MathOperator(define_math_op($3.second), $2, $3.first), $1); 
+                                            }else { 
+                                                $$ = std::make_pair($2, $1); 
+                                            } }
+            | %empty                      { $$ = std::make_pair(nullptr, Nothing_math); }
+;
+
+expr_mul:   operand expr_mul_             { if ($2.first != nullptr){ 
+                                                $$ = new MathOperator(define_math_op($2.second), $1, $2.first); 
+                                            }else { 
+                                                $$ = $1; 
+                                            } }
+;
+expr_mul_:  OP_MUL operand expr_mul_      { if ($3.first != nullptr){ 
+                                                $$ = std::make_pair(new MathOperator(define_math_op($3.second), $2, $3.first), $1);
+                                            }else { 
+                                                $$ = std::make_pair($2, $1); 
+                                            } }
+            | %empty                      { $$ = std::make_pair(nullptr, Nothing_math); }
 ;
 
 
