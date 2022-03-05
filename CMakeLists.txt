@@ -26,6 +26,7 @@ add_executable(${PROJECT_NAME}
   ./main.cpp  
   ./src/Print_req.cpp
   ./src/Deleter_req.cpp
+  ./src/Check_scope_req.cpp
   ${BISON_parser_OUTPUTS}
   ${FLEX_scanner_OUTPUTS}
 )
