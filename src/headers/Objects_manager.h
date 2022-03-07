@@ -14,7 +14,7 @@ public:
 };
 
 
-class Objects_stack final{
+class Objects_stack final{//тут память утекает тк мы не освобождаем по указателю
 
     std::string stack_name;
     std::vector<std::pair<Object*, int>> stack_;

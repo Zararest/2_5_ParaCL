@@ -8,29 +8,28 @@ bool operator ==(const Objects_stack& lhs, const Objects_stack& rhs){
 bool Object_manager::add_object(Object* obj){
 
     auto stack_it = objects_.find(obj->get_name());
+    auto stack = stack_it->second; 
+
+    if (stack_it != objects_.end() && stack.top().second == num_of_scopes){
+
+        return false;//это значит переопределение
+    }
+
+    auto new_back = std::make_pair(obj->get_name(), num_of_scopes);
+    objects_stack.push_back(new_back);
 
     if (stack_it == objects_.end()){
-
-        auto new_back = std::make_pair(obj->get_name(), num_of_scopes);
-        objects_stack.push_back(new_back);
 
         auto empl_ret = objects_.emplace(obj->get_name(), obj->get_name());//через emplace создаем новый стек с именем
         auto stack = empl_ret.first->second;
         stack.push_back(obj, num_of_scopes);
 
-        return true;
     } else{
 
-        auto stack = stack_it->second; 
-        if (stack.top().second == num_of_scopes){
-
-            return false;//это значит переопределение
-        }
-
         stack.push_back(obj, num_of_scopes);
-
-        return true;
     }
+
+    return true;
 }
 
 Object* Object_manager::get_object(std::string name){
