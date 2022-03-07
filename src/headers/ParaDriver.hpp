@@ -12,9 +12,11 @@ namespace yy {
 class ParaDriver {
   FlexLexer *plex_;
   Inode* root = nullptr;
+  std::ostream& out = std::cout;
 
 public:
   ParaDriver(FlexLexer *plex) : plex_(plex) {}
+  ParaDriver(FlexLexer *plex, std::ofstream& out_file) : plex_(plex), out(out_file) {}
 
   parser::token_type yylex(parser::semantic_type *yylval) {
     parser::token_type token = static_cast<parser::token_type>(plex_->yylex());

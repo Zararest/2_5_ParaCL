@@ -63,7 +63,7 @@ Iresponse* Check_scope_req::process_req(While& node){
     resp = node.transfer_req_scope(standart_addr_req);
     Inode* scope = static_cast<Addr_resp*>(resp)->get_addr();
 
-    if (scope != nullptr){
+    if (scope != nullptr) {
 
     	std::unordered_set<std::string> decl_ht;
     	decl_var.push_back(decl_ht); 
@@ -90,7 +90,7 @@ Iresponse* Check_scope_req::process_req(Assign& node){
         node.transfer_req_lhs(*this);
 
         auto only_elem = tmp_var.begin();
-        decl_ht.insert(*(only_elem));
+        decl_var.back().insert(*(only_elem));
         tmp_var.clear();
     }
 
@@ -183,23 +183,12 @@ void Check_scope_req::Check_vector() {
 	}
     tmp_var.clear();
 }
-//     This func, not method
+
 void Check_scope_req::Check_var(std::string const &var) {
 	
 	for (auto it = decl_var.begin(); it != decl_var.end(); ++it) {
-    	if (it->end() == std::find(it->begin(), it->end(), var)) { // ?
-    		std::cout << "Var " << var << " don't defined in this scope" << std::endl;
-			break; // ?
-		}
-	}
-}
-/*
-!it.contains(var)
 
-template<class C, class T>
-auto contains(const C& v, const T& x)
--> decltype(end(v), true)
-{
-    return end(v) != std::find(begin(v), end(v), x);
+    	if (it->end() != std::find(it->begin(), it->end(), var)) return;
+	}
+    std::cout << "Var " << var << " don't defined in this scope" << std::endl;
 }
-*/
