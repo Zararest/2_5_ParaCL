@@ -1,3 +1,4 @@
+#pragma once
 #include "Irequest.h"
 #include "Objects_manager.h"
 
@@ -31,7 +32,7 @@ class Var_name_resp: public Iresponse{
 
 public:
 
-    Var_name_resp(const std::string var_name): var_name_ref{var_name}{}
+    Var_name_resp(const std::string& var_name): var_name_ref{var_name}{}
     const std::string& get_var_name() const{ return var_name_ref; }
 };
 

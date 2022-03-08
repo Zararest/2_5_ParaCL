@@ -1,4 +1,5 @@
 #include "headers/Objects_manager.h"
+#include <cassert>
 
 bool operator ==(const Objects_stack& lhs, const Objects_stack& rhs){
 
@@ -8,9 +9,8 @@ bool operator ==(const Objects_stack& lhs, const Objects_stack& rhs){
 bool Object_manager::add_object(Object* obj){
 
     auto stack_it = objects_.find(obj->get_name());
-    auto stack = stack_it->second; 
 
-    if (stack_it != objects_.end() && stack.top().second == num_of_scopes){
+    if (stack_it != objects_.end() && stack_it->second.top().second == num_of_scopes){
 
         return false;//это значит переопределение
     }
@@ -21,25 +21,22 @@ bool Object_manager::add_object(Object* obj){
     if (stack_it == objects_.end()){
 
         auto empl_ret = objects_.emplace(obj->get_name(), obj->get_name());//через emplace создаем новый стек с именем
-        auto stack = empl_ret.first->second;
-        stack.push_back(obj, num_of_scopes);
-
+        empl_ret.first->second.push_back(obj, num_of_scopes);
     } else{
 
-        stack.push_back(obj, num_of_scopes);
+        stack_it->second.push_back(obj, num_of_scopes);
     }
 
     return true;
 }
 
-Object* Object_manager::get_object(std::string name){
+Object* Object_manager::get_object(const std::string& name){
 
     auto stack_it = objects_.find(name);
     if (stack_it == objects_.end()){ return nullptr; }
 
-    auto stack = stack_it->second; 
-
-    return stack.top().first;
+    assert(stack_it->second.size() != 0);
+    return stack_it->second.top().first;
 }
 
 void Object_manager::add_scope(){
@@ -52,11 +49,9 @@ void Object_manager::remove_scope(){
     while (objects_stack.size() != 0 && objects_stack.back().second == num_of_scopes){
 
         auto stack_it = objects_.find(objects_stack.back().first);
-        auto stack = stack_it->second; 
+        stack_it->second.pop_back();
 
-        stack.pop_back();
-
-        if (stack.size() == 0){
+        if (stack_it->second.size() == 0){
 
             objects_.erase(stack_it);
         }

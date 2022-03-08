@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "/home/uwu/Proga/Intel/2_5_ParaCL/build/ParaCL",
-            "args": ["../bin/input"],
+            "args": ["/home/uwu/Proga/Intel/2_5_ParaCL/bin/input"],
             "stopAtEntry": true,
             "cwd": "${fileDirname}",
             "environment": [],

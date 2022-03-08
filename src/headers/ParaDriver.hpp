@@ -54,7 +54,7 @@ public:
     }
 
     void print(){
-        std::cout << "Print" << std::endl;
+        
         Print_req print_tree{"../bin/graph.dot"};
 
         root->get_request(print_tree);

@@ -27,6 +27,7 @@ int main(int argc, char** argv){
     else if (argc == 2) { 
 
         std::ifstream in_file(argv[1]); 
+        assert(in_file.is_open());
         lexer->switch_streams(in_file, std::cout);
 
         yy::ParaDriver driver(lexer);
