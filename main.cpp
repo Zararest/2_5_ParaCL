@@ -4,7 +4,7 @@
 #include "./src/headers/ParaDriver.hpp"
  
 int yyFlexLexer::yywrap() {
-  return 1;
+    return 1;
 }
 
 int main(int argc, char** argv){
@@ -18,6 +18,7 @@ int main(int argc, char** argv){
         driver.parse();
         driver.print();
         driver.check_scope();
+        driver.execute();
         driver.delete_tree();
 
         delete lexer;
@@ -33,6 +34,7 @@ int main(int argc, char** argv){
         driver.parse();
         driver.print();
         driver.check_scope();
+        driver.execute();
         driver.delete_tree();
 
         delete lexer;
@@ -49,6 +51,7 @@ int main(int argc, char** argv){
         driver.parse();
         driver.print();
         driver.check_scope();
+        driver.execute();
         driver.delete_tree();
 
         delete lexer;

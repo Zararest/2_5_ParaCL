@@ -7,10 +7,10 @@ class VarInt final: public Object{
 
 public:
 
-    VarInt(const std::string& name, int value);
+    VarInt(const std::string& name, int value): Object{name}, value_{value}{}
     
-    int get_value();
-    void set_value(int value);
+    int get_value(){ return value_; }
+    void set_value(int value){ value_ = value; }
 };  
 
 class Value: public Iresponse{
@@ -39,7 +39,6 @@ struct Var_name_req: public Irequest{
 
     Iresponse* process_req(Var& node);
 };
-
 
 
 class Interpreter final: public Irequest{

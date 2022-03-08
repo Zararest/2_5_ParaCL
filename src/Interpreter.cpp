@@ -19,6 +19,8 @@ Iresponse* Interpreter::process_req(If& node){
     }
 
     node.transfer_req(*this);
+
+    return nullptr;
 }
 
 Iresponse* Interpreter::process_req(While& node){
@@ -36,13 +38,16 @@ Iresponse* Interpreter::process_req(While& node){
     }
 
     node.transfer_req(*this);
+
+    return nullptr;
 }
 
 Iresponse* Interpreter::process_req(Assign& node){
 
     Iresponse* lhs_ret = node.transfer_req_lhs(standart_var_req);
     assert(lhs_ret != nullptr);
-    std::string lhs_name = static_cast<Var_name_resp*>(lhs_ret)->get_var_name();
+    Var_name_resp* tmp = static_cast<Var_name_resp*>(lhs_ret);
+    const std::string& lhs_name = tmp->get_var_name();
     delete lhs_ret;
 
     VarInt* lhs = static_cast<VarInt*>(obj_manager.get_object(lhs_name));
@@ -68,13 +73,15 @@ Iresponse* Interpreter::process_req(Assign& node){
     lhs->set_value(value);
 
     node.transfer_req(*this);
+
+    return nullptr;
 }
 
 Iresponse* Interpreter::process_req(Print& node){
 
     Iresponse* var_ret = node.transfer_req_var(standart_var_req);
     assert(var_ret != nullptr);
-    std::string var_name = static_cast<Var_name_resp*>(var_ret)->get_var_name();
+    const std::string& var_name = static_cast<Var_name_resp*>(var_ret)->get_var_name();
     delete var_ret;
 
     VarInt* lhs = static_cast<VarInt*>(obj_manager.get_object(var_name));
@@ -82,6 +89,8 @@ Iresponse* Interpreter::process_req(Print& node){
     std::cout << lhs->get_value();
 
     node.transfer_req(*this);
+
+    return nullptr;
 }
 
 Iresponse* Interpreter::process_req(Var& node){
@@ -100,7 +109,7 @@ Iresponse* Interpreter::process_req(Num& node){
     return ret;
 }
 
-Iresponse* Interpreter::process_req(Num& node){
+Iresponse* Interpreter::process_req(Input& node){
 
     return nullptr;
 }

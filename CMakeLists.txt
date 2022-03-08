@@ -3,6 +3,7 @@ project(ParaCL)
 
 find_package(BISON REQUIRED)
 find_package(FLEX REQUIRED)
+find_package(Boost 1.40 COMPONENTS program_options REQUIRED)
 
 set(GRAMMAR "./bin/bisoner.y" CACHE STRING "file with grammar" FORCE)
 
@@ -27,9 +28,16 @@ add_executable(${PROJECT_NAME}
   ./src/Print_req.cpp
   ./src/Deleter_req.cpp
   ./src/Check_scope_req.cpp
+  ./src/Interpreter.cpp
+  ./src/Objects_manager.cpp
   ${BISON_parser_OUTPUTS}
   ${FLEX_scanner_OUTPUTS}
 )
+
+add_executable(Tests  ./tests/test.cpp
+                      ./src/Objects_manager.cpp) 
+
+target_link_libraries(Tests Boost::program_options)
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})

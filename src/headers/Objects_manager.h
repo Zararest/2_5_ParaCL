@@ -10,7 +10,7 @@ public:
 
     Object(const std::string& name): name_{name}{}
     const std::string& get_name() const{ return name_; }
-    virtual ~Object();
+    virtual ~Object(){}
 };
 
 

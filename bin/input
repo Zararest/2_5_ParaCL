@@ -1,5 +1,5 @@
-a = 5 + b;
 b = 3;
+a = 1;
 c = a + b;
 a = a + 5;
 
@@ -7,3 +7,7 @@ if (a > c || b < 1) {
     d = 5;
     a = 5 + d;
 }
+
+print a;
+print b;
+print c;
