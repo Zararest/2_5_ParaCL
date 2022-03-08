@@ -28,12 +28,12 @@ public:
 
 class Var_name_resp: public Iresponse{
 
-    const std::string& var_name_ref;
+    std::string var_name_ref;
 
 public:
 
     Var_name_resp(const std::string& var_name): var_name_ref{var_name}{}
-    const std::string& get_var_name() const{ return var_name_ref; }
+    std::string get_var_name() const{ return var_name_ref; }
 };
 
 struct Var_name_req: public Irequest{

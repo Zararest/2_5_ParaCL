@@ -1,85 +1,42 @@
 digraph Dump{node[color=red,fontsize=14, style=filled]
-"0x55555559bda0" [label = "Assign" fillcolor=green]
-"0x55555559bda0" -> "0x55555559bd50"
-"0x55555559bd50" [label = "Var:b" fillcolor=yellow]
-"0x55555559bda0" -> "0x55555559bd20"
-"0x55555559bd20" [label = "Num:3" fillcolor=yellow]
-"0x55555559bda0" -> "0x55555559be50"
-"0x55555559bda0" -> "0x55555559be50"
-"0x55555559be50" [label = "Assign" fillcolor=green]
-"0x55555559be50" -> "0x55555559be00"
-"0x55555559be00" [label = "Var:a" fillcolor=yellow]
-"0x55555559be50" -> "0x55555559bdd0"
-"0x55555559bdd0" [label = "Num:1" fillcolor=yellow]
-"0x55555559be50" -> "0x55555559bf50"
-"0x55555559be50" -> "0x55555559bf50"
-"0x55555559bf50" [label = "Assign" fillcolor=green]
-"0x55555559bf50" -> "0x55555559beb0"
-"0x55555559beb0" [label = "Var:c" fillcolor=yellow]
-"0x55555559bf50" -> "0x55555559be80"
-"0x55555559be80" [label = "+" fillcolor=coral]
-"0x55555559be80" -> "0x55555559bf00"
-"0x55555559bf00" [label = "Var:a" fillcolor=yellow]
-"0x55555559be80" -> "0x55555559bf80"
-"0x55555559bf80" [label = "Var:b" fillcolor=yellow]
-"0x55555559bf50" -> "0x55555559c0f0"
-"0x55555559bf50" -> "0x55555559c0f0"
-"0x55555559c0f0" [label = "Assign" fillcolor=green]
-"0x55555559c0f0" -> "0x55555559c020"
-"0x55555559c020" [label = "Var:a" fillcolor=yellow]
-"0x55555559c0f0" -> "0x55555559bff0"
-"0x55555559bff0" [label = "+" fillcolor=coral]
-"0x55555559bff0" -> "0x55555559c070"
-"0x55555559c070" [label = "Var:a" fillcolor=yellow]
-"0x55555559bff0" -> "0x55555559c0c0"
-"0x55555559c0c0" [label = "Num:5" fillcolor=yellow]
-"0x55555559c0f0" -> "0x55555559c4b0"
-"0x55555559c0f0" -> "0x55555559c4b0"
-"0x55555559c4b0" [label = "If" fillcolor=lightblue]
-"0x55555559c4b0" -> "0x55555559c2a0"
-"0x55555559c2a0" [label = "||" fillcolor=cyan]
-"0x55555559c2a0" -> "0x55555559c120"
-"0x55555559c120" [label = ">" fillcolor=cyan]
-"0x55555559c120" -> "0x55555559c150"
-"0x55555559c150" [label = "Var:a" fillcolor=yellow]
-"0x55555559c120" -> "0x55555559c1d0"
-"0x55555559c1d0" [label = "Var:c" fillcolor=yellow]
-"0x55555559c2a0" -> "0x55555559c1a0"
-"0x55555559c1a0" [label = "<" fillcolor=cyan]
-"0x55555559c1a0" -> "0x55555559c220"
-"0x55555559c220" [label = "Var:b" fillcolor=yellow]
-"0x55555559c1a0" -> "0x55555559c270"
-"0x55555559c270" [label = "Num:1" fillcolor=yellow]
-"0x55555559c4b0" -> "0x55555559c350"
-"0x55555559c350" [label = "Assign" fillcolor=green]
-"0x55555559c350" -> "0x55555559c300"
-"0x55555559c300" [label = "Var:d" fillcolor=yellow]
-"0x55555559c350" -> "0x55555559c2d0"
-"0x55555559c2d0" [label = "Num:5" fillcolor=yellow]
-"0x55555559c350" -> "0x55555559c430"
-"0x55555559c350" -> "0x55555559c430"
-"0x55555559c430" [label = "Assign" fillcolor=green]
-"0x55555559c430" -> "0x55555559c3b0"
-"0x55555559c3b0" [label = "Var:a" fillcolor=yellow]
-"0x55555559c430" -> "0x55555559c400"
-"0x55555559c400" [label = "+" fillcolor=coral]
-"0x55555559c400" -> "0x55555559c380"
-"0x55555559c380" [label = "Num:5" fillcolor=yellow]
-"0x55555559c400" -> "0x55555559c460"
-"0x55555559c460" [label = "Var:d" fillcolor=yellow]
-"0x55555559c4b0" -> "0x55555559c4e0"
-"0x55555559c4b0" -> "0x55555559c4e0"
-"0x55555559c4e0" [label = "Print" fillcolor=purple]
-"0x55555559c4e0" -> "0x55555559c510"
-"0x55555559c510" [label = "Var:a" fillcolor=yellow]
-"0x55555559c4e0" -> "0x55555559c560"
-"0x55555559c4e0" -> "0x55555559c560"
-"0x55555559c560" [label = "Print" fillcolor=purple]
-"0x55555559c560" -> "0x55555559c590"
-"0x55555559c590" [label = "Var:b" fillcolor=yellow]
-"0x55555559c560" -> "0x55555559c5e0"
-"0x55555559c560" -> "0x55555559c5e0"
-"0x55555559c5e0" [label = "Print" fillcolor=purple]
-"0x55555559c5e0" -> "0x55555559c610"
-"0x55555559c610" [label = "Var:c" fillcolor=yellow]
+"0x562d73e13bc0" [label = "Assign" fillcolor=green]
+"0x562d73e13bc0" -> "0x562d73e13b70"
+"0x562d73e13b70" [label = "Var:a" fillcolor=yellow]
+"0x562d73e13bc0" -> "0x562d73e13b40"
+"0x562d73e13b40" [label = "Num:1" fillcolor=yellow]
+"0x562d73e13bc0" -> "0x562d73e13d10"
+"0x562d73e13bc0" -> "0x562d73e13d10"
+"0x562d73e13d10" [label = "Assign" fillcolor=green]
+"0x562d73e13d10" -> "0x562d73e13c20"
+"0x562d73e13c20" [label = "Var:a" fillcolor=yellow]
+"0x562d73e13d10" -> "0x562d73e13bf0"
+"0x562d73e13bf0" [label = "+" fillcolor=coral]
+"0x562d73e13bf0" -> "0x562d73e13c70"
+"0x562d73e13c70" [label = "Var:a" fillcolor=yellow]
+"0x562d73e13bf0" -> "0x562d73e13cc0"
+"0x562d73e13cc0" [label = "Num:3" fillcolor=yellow]
+"0x562d73e13d10" -> "0x562d73e13f20"
+"0x562d73e13d10" -> "0x562d73e13f20"
+"0x562d73e13f20" [label = "While" fillcolor=red]
+"0x562d73e13f20" -> "0x562d73e13d40"
+"0x562d73e13d40" [label = "<" fillcolor=cyan]
+"0x562d73e13d40" -> "0x562d73e13d70"
+"0x562d73e13d70" [label = "Var:a" fillcolor=yellow]
+"0x562d73e13d40" -> "0x562d73e13dc0"
+"0x562d73e13dc0" [label = "Num:10" fillcolor=yellow]
+"0x562d73e13f20" -> "0x562d73e13ef0"
+"0x562d73e13ef0" [label = "Assign" fillcolor=green]
+"0x562d73e13ef0" -> "0x562d73e13e20"
+"0x562d73e13e20" [label = "Var:a" fillcolor=yellow]
+"0x562d73e13ef0" -> "0x562d73e13df0"
+"0x562d73e13df0" [label = "+" fillcolor=coral]
+"0x562d73e13df0" -> "0x562d73e13e70"
+"0x562d73e13e70" [label = "Var:a" fillcolor=yellow]
+"0x562d73e13df0" -> "0x562d73e13ec0"
+"0x562d73e13ec0" [label = "Num:1" fillcolor=yellow]
+"0x562d73e13f20" -> "0x562d73e13f50"
+"0x562d73e13f20" -> "0x562d73e13f50"
+"0x562d73e13f50" [label = "Print" fillcolor=purple]
+"0x562d73e13f50" -> "0x562d73e13f80"
+"0x562d73e13f80" [label = "Var:a" fillcolor=yellow]
 }

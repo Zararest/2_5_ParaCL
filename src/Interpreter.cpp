@@ -33,6 +33,7 @@ Iresponse* Interpreter::process_req(While& node){
 
         node.transfer_req_scope(*this);
 
+        condition_ret = node.transfer_req_condition(*this);
         condition_val = static_cast<Value*>(condition_ret)->get_value();
         delete condition_ret;
     }
