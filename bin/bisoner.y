@@ -10,9 +10,9 @@
     #include <iostream>
     #include <string>
 
-    #include "../src/headers/Ioperator.h"
-    #include "../src/headers/Istatement.h"
-    #include "../src/headers/Operator_wrapper.h"
+    #include "../src/frontend/headers/Ioperator.h"
+    #include "../src/frontend/headers/Istatement.h"
+    #include "../src/frontend/headers/Operator_wrapper.h"
     
     int define_math_op(std::string& op);
     std::pair<int, bool> define_log_op(std::string& op);
@@ -22,7 +22,7 @@
 
 %code{
 
-    #include "../src/headers/ParaDriver.hpp"
+    #include "../src/ParaDriver.hpp"
 
     namespace yy{
 

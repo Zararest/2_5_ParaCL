@@ -7,6 +7,10 @@ find_package(Boost 1.40 COMPONENTS program_options REQUIRED)
 
 set(GRAMMAR "./bin/bisoner.y" CACHE STRING "file with grammar" FORCE)
 
+set(FRONTEND_DIR "./src/frontend/")
+set(INTERPRETER_DIR "./src/interpreter/")
+set(LINTER_DIR "./src/linter/")
+
 flex_target(scanner
   ./bin/flexer.l
   ${CMAKE_CURRENT_BINARY_DIR}/lexer.cc
@@ -21,21 +25,22 @@ add_flex_bison_dependency(scanner parser)
 
 include_directories(./src/headers)
 
-add_executable(${PROJECT_NAME} 
-  ./src/Ioperator.cpp
-  ./src/Istatement.cpp
-  ./main.cpp  
-  ./src/Print_req.cpp
-  ./src/Deleter_req.cpp
-  ./src/Check_scope_req.cpp
-  ./src/Interpreter.cpp
-  ./src/Objects_manager.cpp
+add_executable(${PROJECT_NAME} ./main.cpp  
+  ${FRONTEND_DIR}Ioperator.cpp
+  ${FRONTEND_DIR}Istatement.cpp
+
+  ${LINTER_DIR}Print_req.cpp
+  ${LINTER_DIR}Check_scope_req.cpp
+  ${INTERPRETER_DIR}Interpreter.cpp
+  ${INTERPRETER_DIR}Objects_manager.cpp
+  ${INTERPRETER_DIR}Deleter_req.cpp
+
   ${BISON_parser_OUTPUTS}
   ${FLEX_scanner_OUTPUTS}
 )
 
 add_executable(Tests  ./tests/test.cpp
-                      ./src/Objects_manager.cpp) 
+                      ${INTERPRETER_DIR}Objects_manager.cpp) 
 
 target_link_libraries(Tests Boost::program_options)
 

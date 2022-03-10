@@ -1,4 +1,6 @@
-#include "Print_req.h"
+#pragma once
+#include "../../frontend/headers/Irequest.h"
+#include "../../linter/headers/Print_req.h"
 
 class Deleter_req: public Irequest{
 

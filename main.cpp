@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include <FlexLexer.h>
-#include "./src/headers/ParaDriver.hpp"
+#include "./src/ParaDriver.hpp"
  
 int yyFlexLexer::yywrap() {
     return 1;
