@@ -17,9 +17,11 @@ int main(int argc, char** argv){
       
         driver.parse();
         driver.print();
-        driver.check_scope();
-        driver.execute();
-        driver.delete_tree();
+
+        if (driver.check_scope()){
+
+            driver.execute();
+        }
 
         delete lexer;
     }
@@ -34,9 +36,11 @@ int main(int argc, char** argv){
       
         driver.parse();
         driver.print();
-        driver.check_scope();
-        driver.execute();
-        driver.delete_tree();
+
+        if (driver.check_scope()){
+
+            driver.execute();
+        }
 
         delete lexer;
     }
@@ -51,9 +55,11 @@ int main(int argc, char** argv){
 
         driver.parse();
         driver.print();
-        driver.check_scope();
-        driver.execute();
-        driver.delete_tree();
+
+        if (driver.check_scope()){
+
+            driver.execute();
+        }
 
         delete lexer;
     } 

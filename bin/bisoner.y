@@ -18,6 +18,7 @@
     std::pair<int, bool> define_log_op(std::string& op);
 
     namespace yy{ class ParaDriver; }
+    using std::pair;
 }
 
 %code{
@@ -30,27 +31,24 @@
     }
 }
 
+%token <int> SCOL
+%token <int> FLB
+%token <int> FRB
+%token <int> LB
+%token <int> RB
+%token <int> IF_
+%token <int> WHILE_
+%token <int> ASSIGN_
+%token <int> OR
+%token <int> AND
+%token <int> PRINT_
+%token <int> INPUT
 
-%token
-    SCOL    ";" 
-    FLB     "{"
-    FRB     "}"
-    LB      "("
-    RB      ")"
-    IF_     "if"
-    WHILE_  "while"
-    ASSIGN_ "="
-    OR      "||"
-    AND     "&&"
-;
-
-%token <Print*> PRINT_
-%token <Input*> INPUT
-%token <int> NUM
-%token <std::string*> VAR
-%token <std::string*> LOGIC
-%token <std::string*> OP_MUL
-%token <std::string*> OP_SUM 
+%token <pair<int, int>> NUM
+%token <pair<std::string*, int>> VAR
+%token <pair<std::string*, int>> LOGIC
+%token <pair<std::string*, int>> OP_MUL
+%token <pair<std::string*, int>> OP_SUM 
 
 %nterm <Num*> num_
 %nterm <Var*> var_
@@ -91,11 +89,13 @@ statement:  if                              { $$ = $1; }
             | print                         { $$ = $1; }
 ;
 
-var_:       VAR                             { $$ = new Var(*$1);
-                                              delete $1; }
+var_:       VAR                             { $$ = new Var(*($1.first));
+                                              $$->set_line_num($1.second);
+                                              delete $1.first; }
 ;
 
-num_:       NUM                             { $$ = new Num($1); }
+num_:       NUM                             { $$ = new Num($1.first);
+                                              $$->set_line_num($1.second); }
 ;
 
 operand:    var_                            { $$ = $1; }
@@ -103,17 +103,20 @@ operand:    var_                            { $$ = $1; }
             | LB expr RB                    { $$ = $2; }
 ;
 
-if: IF_ expr RB FLB statement_list FRB           { $$ = new If($2, $5); }
+if: IF_ expr RB FLB statement_list FRB           { $$ = new If($2, $5);
+                                                   $$->set_line_num($1); }
 ;
 
-while:  WHILE_ expr RB FLB statement_list FRB    { $$ = new While($2, $5); }
+while:  WHILE_ expr RB FLB statement_list FRB    { $$ = new While($2, $5);
+                                                   $$->set_line_num($1); }
 ;
 
-assign: var_ ASSIGN_ expr SCOL               { $$ = new Assign($1, $3); }
-        | var_ ASSIGN_ INPUT SCOL            { $$ = new Assign($1, $3); }
+assign: var_ ASSIGN_ expr SCOL               { $$ = new Assign($1, $3); $$->set_line_num($2); }
+        | var_ ASSIGN_ INPUT SCOL            { $$ = new Assign($1, new Input); $$->set_line_num($2); }
 ;
 
-print:  PRINT_ var_ SCOL                     { $$ = new Print($2); }
+print:  PRINT_ var_ SCOL                     { $$ = new Print($2);
+                                               $$->set_line_num($1); }
 ;
 
 expr:   expr_and expr_                    { if ($2 != nullptr){ 
@@ -164,13 +167,13 @@ expr_log:   expr_sum expr_log_            { if ($2 != nullptr){
 expr_log_:  LOGIC expr_sum expr_log_      { if ($3 != nullptr){ 
 
                                                 Ioperator* next_op = $3->make_log_op($2);
-                                                $$ = new Wrapper(*$1, next_op);
+                                                $$ = new Wrapper(*($1.first), next_op);
                                                 delete $3;  
-                                                delete $1;                                          
+                                                delete $1.first;                                          
                                             }else { 
                                                 
-                                                $$ = new Wrapper(*$1, $2); 
-                                                delete $1;
+                                                $$ = new Wrapper(*($1.first), $2); 
+                                                delete $1.first;
                                             } }
             | %empty                      { $$ = nullptr; }
 ;
@@ -187,13 +190,13 @@ expr_sum:   expr_mul expr_sum_            { if ($2 != nullptr){
 expr_sum_:  OP_SUM expr_mul expr_sum_     { if ($3 != nullptr){ 
 
                                                 Ioperator* next_op = $3->make_math_op($2);
-                                                $$ = new Wrapper(*$1, next_op);
+                                                $$ = new Wrapper(*($1.first), next_op);
                                                 delete $3; 
-                                                delete $1;
+                                                delete $1.first;
                                             }else { 
                                                 
-                                                $$ = new Wrapper(*$1, $2); 
-                                                delete $1;
+                                                $$ = new Wrapper(*($1.first), $2); 
+                                                delete $1.first;
                                             } }
             | %empty                      { $$ = nullptr; }
 ;
@@ -210,13 +213,13 @@ expr_mul:   operand expr_mul_             { if ($2 != nullptr){
 expr_mul_:  OP_MUL operand expr_mul_      { if ($3 != nullptr){ 
 
                                                 Ioperator* next_op = $3->make_math_op($2);                    
-                                                $$ = new Wrapper(*$1, next_op);
+                                                $$ = new Wrapper(*($1.first), next_op);
                                                 delete $3;
-                                                delete $1;
+                                                delete $1.first;
                                             }else { 
 
-                                                $$ = new Wrapper(*$1, $2); 
-                                                delete $1;
+                                                $$ = new Wrapper(*($1.first), $2); 
+                                                delete $1.first;
                                             } }
             | %empty                      { $$ = nullptr; }
 ;
@@ -231,5 +234,8 @@ namespace yy{
         return driver->yylex(yylval);
     }
 
-    void parser::error(const std::string&){ std::cout << "error" << std::endl; }    
+    void parser::error(const std::string& token){ 
+        
+        std::cout << "Undefined expression" << std::endl; // << "in line " << yylloc.first_line << std::endl;  
+    }    
 }

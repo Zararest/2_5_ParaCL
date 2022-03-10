@@ -1,4 +1,4 @@
-
+%option yylineno
 %option c++
 
 %{

@@ -57,6 +57,7 @@ Iresponse* Check_scope_req::process_req(While& node){
     if (condition != nullptr){
 
         node.transfer_req_condition(*this);
+        cur_pos = node.get_line_num();
         Check_vector();
     }
 
@@ -100,6 +101,7 @@ Iresponse* Check_scope_req::process_req(Assign& node){
     if (rhs != nullptr){
 
         node.transfer_req_rhs(*this);
+        cur_pos = node.get_line_num();
         Check_vector();
     }
 
@@ -117,6 +119,7 @@ Iresponse* Check_scope_req::process_req(Print& node){
 
     	node.transfer_req_var(*this);
 // And there we can optimize
+        cur_pos = node.get_line_num();
 		Check_vector();
     }
 
@@ -190,5 +193,6 @@ void Check_scope_req::Check_var(std::string const &var) {
 
     	if (it->end() != std::find(it->begin(), it->end(), var)) return;
 	}
-    std::cout << "Var " << var << " don't defined in this scope" << std::endl;
+    std::cout << "Var " << var << " don't defined in this scope [" << cur_pos << "]" << std::endl;
+    error_occurred = true;
 }

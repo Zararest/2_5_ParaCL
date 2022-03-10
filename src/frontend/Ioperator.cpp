@@ -184,7 +184,12 @@ LogicOperator::LogicOperator(std::pair<int, bool> type, Ioperator* left, Ioperat
     Ioperator{left, right},
     type_{type.first},
     equal_{type.second}
-{}
+{   
+    if (left != nullptr){
+
+        set_line_num(left->get_line_num());
+    }
+}
 
 void LogicOperator::set_operator(std::pair<int, bool> op){
 
@@ -202,7 +207,13 @@ MathOperator::MathOperator(int type, Ioperator* left, Ioperator* right):
 
     Ioperator{left, right},
     type_{type}
-{}
+{
+    if (left != nullptr){
+
+        set_line_num(left->get_line_num());
+    }
+}
+
 
 Iresponse* MathOperator::get_request(Irequest& cur_req){
 
