@@ -6,6 +6,15 @@ bool operator ==(const Objects_stack& lhs, const Objects_stack& rhs){
     return lhs.cmp(rhs);
 }
 
+Objects_stack::~Objects_stack(){
+
+    while (stack_.size() != 0){
+
+        delete stack_.back().first;
+        stack_.pop_back();
+    }
+}
+
 bool Object_manager::add_object(Object* obj){
 
     auto stack_it = objects_.find(obj->get_name());

@@ -15,7 +15,7 @@ public:
 };
 
 
-class Objects_stack final{//тут память утекает тк мы не освобождаем по указателю
+class Objects_stack final{
 
     std::string stack_name;
     std::vector<std::pair<Object*, int>> stack_;
@@ -23,6 +23,13 @@ class Objects_stack final{//тут память утекает тк мы не о
 public:
 
     Objects_stack(const std::string& name): stack_name{name}{}
+    Objects_stack(const Objects_stack&) = delete;
+    Objects_stack(Objects_stack&&) = delete;
+    ~Objects_stack();
+
+    Objects_stack& operator =(const Objects_stack&) = delete;
+    Objects_stack& operator =(Objects_stack&&) = delete;
+
     void push_back(Object* obj, int scope_num){ stack_.push_back(std::make_pair(obj, scope_num)); }
     void pop_back(){ stack_.pop_back(); }
     int size() const{ return stack_.size(); }
