@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <cstdio>
+#include <fstream>
 
 int main(int argc, char** argv) {
 
@@ -14,18 +15,15 @@ int main(int argc, char** argv) {
 	strcat(message, " ");
 	strcat(message, argv[2]);
 	strcat(message, " > tmp_answer.txt");
-	/*
-	std::string message("./ParaCL ");
-	message += argv[1];
-	message += " ";
-	message += argv[2];
-	message += " > tmp_answer";
-	strcpy(message, message);*/
-//"./ParaCL %s %s > tmp_answer", argv[1], argv[2]
-	int result = system(message);
-	printf("%d\n", result);
-std::cout << std::endl << std::endl << result << std::endl;
-	//remove("tmp_answer");
 
-	return result;
+	system(message);
+
+	int res;
+    std::ifstream ret{"ret.txt"};
+    ret >> res;
+
+    std::cout << "res is " << res << std::endl;
+
+    if (res != 0) abort();
+	return res;
 }

@@ -9,12 +9,15 @@ if (foo != bar) {
 	print bar;
 }
 
+с = 6;
+
 if (foo < bar) {
-	print foo;
+	print c;
 }
 
 equal = 10;
+d = 12;
 
 if (foo == equal) {
-	print equal;
+	print d;
 }

@@ -22,7 +22,7 @@ UNDERLI "_"
 VAR     ({LETTER}|{UNDERLI})({UNDERLI}|{NUM}|{LETTER})*
 
 OP_SUM  [\+\-]
-OP_MUL  [\*\\]
+OP_MUL  [\*\/]
 
 UNEQUAL "!="
 EQUAL   "=="

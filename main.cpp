@@ -67,8 +67,9 @@ int main(int argc, char** argv){
 
         std::ifstream prog_answer{"tmp_answer.txt"};
         std::ifstream true_answer{argv[2]};
-        std::ofstream log{"log_str.txt"};
 
+        std::ofstream log{"log.txt"};
+        std::ofstream ret{"ret.txt"};
 
         /*int prog_num, true_num;
 
@@ -80,10 +81,12 @@ int main(int argc, char** argv){
 
             if (prog_num != true_num) {
                 log << "failed" << std::endl;
-                return 3;
+                ret << "1" << std::endl;
+                return 1;
             }
-        }
-                log << "success" << std::endl;
+        }            
+        ret << "0" << std::endl;
+        log << "success" << std::endl;
         return 0;*/
 
         /*
@@ -101,6 +104,7 @@ int main(int argc, char** argv){
             printf("once\n");
             true_data.push_back(tmp);
         }*/
+
         prog_answer.seekg(0, prog_answer.end);
         std::streamsize prog_size = prog_answer.tellg();
         prog_answer.seekg(0, std::ios::beg);
@@ -108,7 +112,7 @@ int main(int argc, char** argv){
         std::vector<char> prog_data(prog_size, 0);
         prog_answer.read(&prog_data[0], prog_size); 
 
-log << "This prog: " << prog_data.size() << std::endl;
+        log << "This prog: " << prog_data.size() << std::endl;
         for (auto i = prog_data.begin(); i != prog_data.end(); ++i)
             log << *i;
 
@@ -119,19 +123,22 @@ log << "This prog: " << prog_data.size() << std::endl;
         std::vector<char> true_data(true_size, 0);
         true_answer.read(&true_data[0], true_size); 
 
-log << "\nThis true: " << true_size << std::endl;     
+        log << "\nThis true: " << true_size << std::endl;     
         for (auto i = true_data.begin(); i != true_data.end(); ++i)
             log << *i;
 
         prog_answer.close();
         true_answer.close();
 
+
         if (prog_data == true_data) {
-            log << "Test success" << std::endl;
+            log << "\nTest success" << std::endl;
+            ret << "0" << std::endl;
             return 0;
         }  
-        log << "Test failed" << std::endl;
-        return 1;
+        log << "\nTest failed" << std::endl;
+        ret << "3" << std::endl;
+        return 3;
     } 
 
     else {
