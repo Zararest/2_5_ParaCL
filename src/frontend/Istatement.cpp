@@ -29,7 +29,6 @@ void Istatement::add_next_statement(Istatement* next_statement){
 
         next_statement_->add_next_statement(next_statement);
     }
-    
 }
 
 Iresponse* Istatement::transfer_req(Irequest& cur_req){

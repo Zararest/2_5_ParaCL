@@ -1,8 +1,14 @@
 %language "c++"
 
 %skeleton "lalr1.cc"
+
 %defines
 %define api.value.type variant
+%define parse.error verbose
+
+%locations 
+
+
 %param {yy::ParaDriver* driver}
 
 %code requires{
@@ -29,28 +35,28 @@
 
     namespace yy{
 
-        parser::token_type yylex(parser::semantic_type* yyval, ParaDriver* driver);
+        parser::token_type yylex(parser::semantic_type* yyval, parser::location_type* loc, ParaDriver* driver);
     }
 }
 
-%token <int> SCOL
-%token <int> FLB
-%token <int> FRB
-%token <int> LB
-%token <int> RB
-%token <int> IF_
-%token <int> WHILE_
-%token <int> ASSIGN_
-%token <int> OR
-%token <int> AND
-%token <int> PRINT_
-%token <int> INPUT
+%token <int> SCOL       ";"
+%token <int> FLB        "{"
+%token <int> FRB        "}"
+%token <int> LB         "("
+%token <int> RB         ")"
+%token <int> IF_        "if"
+%token <int> WHILE_     "while"
+%token <int> ASSIGN_    "="
+%token <int> OR         "||"
+%token <int> AND        "&&"
+%token <int> PRINT_     "print"
+%token <int> INPUT      "?"
 
-%token <pair<int, int>> NUM
-%token <pair<std::string*, int>> VAR
-%token <pair<std::string*, int>> LOGIC
-%token <pair<std::string*, int>> OP_MUL
-%token <pair<std::string*, int>> OP_SUM 
+%token <pair<int, int>> NUM             "number"
+%token <pair<std::string*, int>> VAR    "variable"
+%token <pair<std::string*, int>> LOGIC  "logic operator"
+%token <pair<std::string*, int>> OP_MUL "math operator (* /)"
+%token <pair<std::string*, int>> OP_SUM "math operator (+ -)"
 
 %nterm <Num*> num_
 %nterm <Var*> var_
@@ -82,18 +88,23 @@ program: statement_list                     { driver->add_root($1); }
 ;       
 
 statement_list: statement                   { $$ = $1; }
-                | statement_list statement  { $1->add_next_statement($2); $$ = $1;}
+                | statement_list statement  { if ($1 != nullptr){
+                                                  $1->add_next_statement($2);
+                                                  $$ = $1;
+                                              } else{
+                                                  $$ = $2;
+                                              } }
                 
 
 statement:  if                              { $$ = $1; }
             | while                         { $$ = $1; }
             | assign                        { $$ = $1; }
             | print                         { $$ = $1; }
+            | error SCOL                    { $$ = nullptr; YYERROR; }
 ;
 
 var_:       VAR                             { $$ = new Var(*($1.first));
-                                              $$->set_line_num($1.second);
-                                              delete $1.first; }
+                                              $$->set_line_num($1.second); }
 ;
 
 num_:       NUM                             { $$ = new Num($1.first);
@@ -128,6 +139,8 @@ expr:   expr_and expr_                    { if ($2 != nullptr){
 
                                                 $$ = $1; 
                                             } }
+        | error SCOL                        { $$ = nullptr; YYERROR; }
+        | error RB                          { $$ = nullptr; YYERROR; }
 ;
 expr_:  OR expr_and expr_                 { if ($3 != nullptr){ 
 
@@ -144,7 +157,7 @@ expr_and:   expr_log expr_and_            { if ($2 != nullptr){
                                                 $$ = new LogicOperator(std::make_pair(And, false), $1, $2); 
                                             }else { 
 
-                                                $$ = $1;; 
+                                                $$ = $1;  
                                             } }
 ;
 expr_and_:  AND expr_log expr_and_        { if ($3 != nullptr){ 
@@ -170,12 +183,10 @@ expr_log_:  LOGIC expr_sum expr_log_      { if ($3 != nullptr){
 
                                                 Ioperator* next_op = $3->make_log_op($2);
                                                 $$ = new Wrapper(*($1.first), next_op);
-                                                delete $3;  
-                                                delete $1.first;                                          
+                                                delete $3;                                            
                                             }else { 
                                                 
                                                 $$ = new Wrapper(*($1.first), $2); 
-                                                delete $1.first;
                                             } }
             | %empty                      { $$ = nullptr; }
 ;
@@ -194,11 +205,9 @@ expr_sum_:  OP_SUM expr_mul expr_sum_     { if ($3 != nullptr){
                                                 Ioperator* next_op = $3->make_math_op($2);
                                                 $$ = new Wrapper(*($1.first), next_op);
                                                 delete $3; 
-                                                delete $1.first;
                                             }else { 
                                                 
                                                 $$ = new Wrapper(*($1.first), $2); 
-                                                delete $1.first;
                                             } }
             | %empty                      { $$ = nullptr; }
 ;
@@ -217,11 +226,9 @@ expr_mul_:  OP_MUL operand expr_mul_      { if ($3 != nullptr){
                                                 Ioperator* next_op = $3->make_math_op($2);                    
                                                 $$ = new Wrapper(*($1.first), next_op);
                                                 delete $3;
-                                                delete $1.first;
                                             }else { 
 
                                                 $$ = new Wrapper(*($1.first), $2); 
-                                                delete $1.first;
                                             } }
             | %empty                      { $$ = nullptr; }
 ;
@@ -231,13 +238,13 @@ expr_mul_:  OP_MUL operand expr_mul_      { if ($3 != nullptr){
 
 namespace yy{
 
-    parser::token_type yylex(parser::semantic_type* yylval, ParaDriver* driver){
+    parser::token_type yylex(parser::semantic_type* yylval, parser::location_type* loc, ParaDriver* driver){
 
         return driver->yylex(yylval);
     }
 
-    void parser::error(const std::string& token){ 
+    void parser::error(const location_type& loc, const std::string& token){ 
         
-        std::cout << "Undefined expression" << std::endl; // << "in line " << yylloc.first_line << std::endl;  
+        std::cout << token << " [" << loc << "]" << std::endl;
     }    
 }

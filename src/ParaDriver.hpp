@@ -15,6 +15,7 @@ class ParaDriver final{
     FlexLexer *plex_;
     ParaCL::Inode* root = nullptr;
     std::ostream& out = std::cout;
+    std::vector<std::string> tokens;
 
 public:
 
@@ -25,7 +26,11 @@ public:
     ~ParaDriver(){
 
         ParaCL::Deleter_req deleter;
-        root->get_request(deleter);
+        if (root != nullptr){
+
+            root->get_request(deleter);
+            delete root;
+        }
     }
 
     ParaDriver& operator =(const ParaDriver&) = delete;
@@ -71,8 +76,9 @@ public:
             || token == yy::parser::token::LOGIC
             || token == yy::parser::token::OP_MUL
             || token == yy::parser::token::OP_SUM){
-        
-            yylval->as<std::pair<std::string*, int>>() = std::make_pair(new std::string(plex_->YYText()), plex_->lineno());
+
+            tokens.push_back(plex_->YYText());    
+            yylval->as<std::pair<std::string*, int>>() = std::make_pair(&tokens.back(), plex_->lineno());
 
             return token;
         }
