@@ -16,8 +16,8 @@ BOOST_AUTO_TEST_CASE(Objects_manager){
     std::ifstream req{"../tests/bin/Requests"};
     std::ifstream ans{"../tests/bin/Ans"};
     std::ofstream out{"../tests/bin/out"};
-    Object_manager manager;
-    Object* tmp_obj = nullptr;
+    ParaCL::Object_manager manager;
+    ParaCL::Object* tmp_obj = nullptr;
 
     assert(input.is_open());
     assert(req.is_open());
@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(Objects_manager){
         num_of_obj++;
         input >> name >> value;
 
-        tmp_obj = new VarInt(name, value);
+        tmp_obj = new ParaCL::VarInt(name, value);
         manager.add_object(tmp_obj);
 
         if (num_of_obj % 5 == 0){
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(Objects_manager){
     do{
         req >> name >> value;
 
-        VarInt* cur_var = static_cast<VarInt*>(manager.get_object(name));
+        ParaCL::VarInt* cur_var = static_cast<ParaCL::VarInt*>(manager.get_object(name));
         cur_var->set_value(cur_var->get_value() + value);
         
         out << cur_var->get_name() << " " << cur_var->get_value() << std::endl;

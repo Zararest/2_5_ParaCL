@@ -1,6 +1,8 @@
 #include "headers/Objects_manager.h"
 #include <cassert>
 
+using namespace ParaCL;
+
 bool operator ==(const Objects_stack& lhs, const Objects_stack& rhs){
 
     return lhs.cmp(rhs);
@@ -39,7 +41,7 @@ bool Object_manager::add_object(Object* obj){
     return true;
 }
 
-Object* Object_manager::get_object(const std::string& name){
+Object* Object_manager::get_object(const std::string& name) const{
 
     auto stack_it = objects_.find(name);
     if (stack_it == objects_.end()){ return nullptr; }

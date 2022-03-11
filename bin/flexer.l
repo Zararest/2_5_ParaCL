@@ -5,9 +5,6 @@
     
 #include "Paragrammar.tab.hh"
 
-using std::cerr;
-using std::endl;
-
 %}
 
 WS      [ \t\n\v]+
@@ -50,7 +47,7 @@ WHILE {WHILE_}{WS}*{LB}
 
 %%
 
-{WS}                /* skip blanks and tabs */
+{WS}                
 {OR}                { return yy::parser::token_type::OR; }
 {AND}               { return yy::parser::token_type::AND; }
 {OP_SUM}            { return yy::parser::token_type::OP_SUM; }

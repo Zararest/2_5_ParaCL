@@ -2,6 +2,8 @@
 #include "../../frontend/headers/Irequest.h"
 #include "../../linter/headers/Print_req.h"
 
+namespace ParaCL{
+
 class Deleter_req: public Irequest{
 
     Addr_req standart_addr_req;
@@ -22,3 +24,4 @@ public:
     Iresponse* process_req(LogicOperator& node){ delete_next_operators(node); return nullptr; };
     Iresponse* process_req(MathOperator& node){ delete_next_operators(node); return nullptr; };
 };
+}

@@ -2,7 +2,9 @@
 #include "Istatement.h"
 #include "Ioperator.h"
 
-struct Iresponse{   //response
+namespace ParaCL{
+
+struct Iresponse{
 
     virtual ~Iresponse(){}
 };
@@ -23,3 +25,4 @@ struct Irequest{
 
     virtual ~Irequest(){}
 };
+}

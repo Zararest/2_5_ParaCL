@@ -1,6 +1,8 @@
 #pragma once 
 #include "Ioperator.h"
 
+namespace ParaCL{
+
 class Wrapper{
 
     int type_ = 0;
@@ -10,7 +12,7 @@ class Wrapper{
 
 public:
 
-    Wrapper(std::string& op, Ioperator* node): node_{node}{
+    Wrapper(const std::string& op, Ioperator* node): node_{node}{
 
         if (define_math_op(op) != Nothing_math){
 
@@ -41,3 +43,4 @@ public:
         return new LogicOperator(std::make_pair(type_, equal_), lhs, node_);
     }
 };
+}

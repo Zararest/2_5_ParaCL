@@ -2,7 +2,9 @@
 #include <utility>
 #include <iostream>
 
-std::pair<int, bool> define_log_op(std::string& op){
+using namespace ParaCL;
+
+std::pair<int, bool> define_log_op(const std::string& op){
 
     if (op == std::string("==")){ return std::make_pair(Equal, true); }
     if (op == std::string("!=")){ return std::make_pair(Equal, false); }
@@ -16,7 +18,7 @@ std::pair<int, bool> define_log_op(std::string& op){
     return std::make_pair(Nothing_log, false);
 }
 
-int define_math_op(std::string& op){
+int define_math_op(const std::string& op){
     
     if (op == std::string("+")){ return Plus; }
     if (op == std::string("-")){ return Minus; }
@@ -138,7 +140,7 @@ Var::Var(const std::string& name):
     name_{name}
 {}
 
-std::string Var::get_name(){
+std::string Var::get_name() const{
 
     std::string tmp{name_};
     return tmp;

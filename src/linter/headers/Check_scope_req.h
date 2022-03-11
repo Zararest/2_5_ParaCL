@@ -5,6 +5,8 @@
 #include <vector>
 #include <unordered_set>
 
+namespace ParaCL{
+
 class Check_scope_req : public Irequest {
 // May be we want string&?
 	std::vector<std::unordered_set<std::string>> decl_var;
@@ -35,3 +37,4 @@ public:
     Iresponse* process_req(LogicOperator& node);
     Iresponse* process_req(MathOperator& node);
 };
+}

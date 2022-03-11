@@ -2,6 +2,8 @@
 #include <iostream>
 #include <cassert>
 
+using namespace ParaCL;
+
 Iresponse* Var_name_req::process_req(Var& node){
 
     return new Var_name_resp(node.get_name());

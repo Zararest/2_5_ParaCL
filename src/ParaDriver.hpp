@@ -13,7 +13,7 @@ namespace yy{
 class ParaDriver final{
 
     FlexLexer *plex_;
-    Inode* root = nullptr;
+    ParaCL::Inode* root = nullptr;
     std::ostream& out = std::cout;
 
 public:
@@ -24,7 +24,7 @@ public:
     ParaDriver(ParaDriver&&) = delete;
     ~ParaDriver(){
 
-        Deleter_req deleter;
+        ParaCL::Deleter_req deleter;
         root->get_request(deleter);
     }
 
@@ -33,7 +33,7 @@ public:
 
     void execute(){
 
-        Interpreter interp;
+        ParaCL::Interpreter interp;
 
         if (root != nullptr){
 
@@ -43,7 +43,7 @@ public:
 
     bool check_scope() {
 
-        Check_scope_req check_scope_tree;
+        ParaCL::Check_scope_req check_scope_tree;
 
         if (root != nullptr){
 
@@ -55,7 +55,7 @@ public:
 
     void print(){
             
-        Print_req print_tree{"../bin/graph.dot"};
+        ParaCL::Print_req print_tree{"../bin/graph.dot"};
 
         if (root != nullptr){
 
@@ -96,7 +96,7 @@ public:
         return !res;
     }
 
-    void add_root(Inode* node){
+    void add_root(ParaCL::Inode* node){
 
         root = node;
     }

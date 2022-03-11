@@ -1,6 +1,8 @@
 #include "headers/Check_scope_req.h"
 #include <iostream>
 
+using namespace ParaCL;
+
 void Check_scope_req::check_next_statement(Istatement& node){
 
     Iresponse* resp = node.transfer_req(standart_addr_req);

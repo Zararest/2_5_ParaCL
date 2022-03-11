@@ -1,5 +1,7 @@
 #include "headers/Deleter_req.h"
 
+using namespace ParaCL;
+
 void Deleter_req::delete_next_operators(Ioperator& node){
 
     node.transfer_req_left(*this);

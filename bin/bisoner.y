@@ -18,6 +18,8 @@
     std::pair<int, bool> define_log_op(std::string& op);
 
     namespace yy{ class ParaDriver; }
+
+    using namespace ParaCL;
     using std::pair;
 }
 
@@ -56,10 +58,10 @@
 %nterm <Ioperator*> operand 
 %nterm <Istatement*> statement
 %nterm <Istatement*> statement_list
-%nterm <If*> if
-%nterm <While*> while 
-%nterm <Assign*> assign
-%nterm <Print*> print
+%nterm <Istatement*> if
+%nterm <Istatement*> while 
+%nterm <Istatement*> assign
+%nterm <Istatement*> print
 %nterm <Ioperator*> expr
 %nterm <Ioperator*> expr_
 %nterm <Ioperator*> expr_and

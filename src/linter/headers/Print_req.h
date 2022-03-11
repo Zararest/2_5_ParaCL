@@ -2,7 +2,9 @@
 #include "../../frontend/headers/Irequest.h"
 #include <fstream>
 
-class Addr_resp: public Iresponse{
+namespace ParaCL{
+
+class Addr_resp final: public Iresponse{
 
     Inode* node_addr = nullptr; 
 
@@ -12,8 +14,7 @@ public:
     Inode* get_addr(){ return node_addr; }
 };
 
-
-class Addr_req: public Irequest{
+class Addr_req final: public Irequest{
 
     Addr_resp standart_resp;
 
@@ -63,3 +64,4 @@ public:
     Iresponse* process_req(LogicOperator& node);
     Iresponse* process_req(MathOperator& node);
 };
+}

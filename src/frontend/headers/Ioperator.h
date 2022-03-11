@@ -2,10 +2,12 @@
 #include "Inode.h"
 #include <string>
 
-int define_math_op(std::string& op);
-std::pair<int, bool> define_log_op(std::string& op);
+int define_math_op(const std::string& op);
+std::pair<int, bool> define_log_op(const std::string& op);
 std::string get_math_op(int op);
 std::string get_log_op(std::pair<int, bool> op);
+
+namespace ParaCL{
 
 class Ioperator: public Inode{
 
@@ -36,7 +38,7 @@ public:
 
     Var(const std::string& name);
 
-    std::string get_name();
+    std::string get_name() const;
     void set_name(std::string& name);
 
     Iresponse* get_request(Irequest& cur_req) override;
@@ -49,7 +51,7 @@ public:
 
     Num(int value);
 
-    int get_value(){ return value_; };
+    int get_value() const{ return value_; };
     void set_value(int value){ value_ = value; };
 
     Iresponse* get_request(Irequest& cur_req) override;
@@ -82,7 +84,7 @@ public:
     
     LogicOperator(std::pair<int, bool> type, Ioperator* left, Ioperator* right);
 
-    std::pair<int, bool> get_operator(){ return std::make_pair(type_, equal_); }
+    std::pair<int, bool> get_operator() const{ return std::make_pair(type_, equal_); }
     void set_operator(std::pair<int, bool> op);
 
     Iresponse* get_request(Irequest& cur_req) override;
@@ -106,8 +108,9 @@ public:
 
     MathOperator(int type, Ioperator* left, Ioperator* right);
 
-    int get_operator(){ return type_; }
+    int get_operator() const{ return type_; }
     void set_operator(int type){ type_ = type; }
 
     Iresponse* get_request(Irequest& cur_req) override;
 };
+}

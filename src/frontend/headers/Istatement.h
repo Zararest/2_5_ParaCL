@@ -2,6 +2,8 @@
 #include "Inode.h"
 #include "Ioperator.h"
 
+namespace ParaCL{
+
 class Istatement: public Inode{
 
 protected:
@@ -76,3 +78,4 @@ public:
     
     Iresponse* get_request(Irequest& cur_req) override;
 };
+}

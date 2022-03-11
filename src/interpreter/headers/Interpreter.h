@@ -1,20 +1,12 @@
 #pragma once
 #include "../../frontend/headers/Irequest.h"
 #include "Objects_manager.h"
+#include "Object_types.h"
+#include "Var_name_req.h"
 
-class VarInt final: public Object{
+namespace ParaCL{
 
-    int value_ = 0;
-
-public:
-
-    VarInt(const std::string& name, int value): Object{name}, value_{value}{}
-    
-    int get_value(){ return value_; }
-    void set_value(int value){ value_ = value; }
-};  
-
-class Value: public Iresponse{
+class Value final: public Iresponse{
 
     int value_ = 0;
 
@@ -24,23 +16,6 @@ public:
     void set_value(int value){ value_ = value; }
     int get_value(){ return value_; }
 };
-
-
-class Var_name_resp: public Iresponse{
-
-    std::string var_name_ref;
-
-public:
-
-    Var_name_resp(const std::string& var_name): var_name_ref{var_name}{}
-    std::string get_var_name() const{ return var_name_ref; }
-};
-
-struct Var_name_req: public Irequest{
-
-    Iresponse* process_req(Var& node);
-};
-
 
 class Interpreter final: public Irequest{
 
@@ -60,3 +35,4 @@ public:
     Iresponse* process_req(LogicOperator& node);
     Iresponse* process_req(MathOperator& node);
 };
+}

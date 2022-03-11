@@ -1,5 +1,8 @@
 #include "./headers/Irequest.h"
 #include <iostream>
+
+using namespace ParaCL;
+
 Istatement::Istatement(Istatement* next_statement):
 
     Inode{nullptr},
@@ -41,6 +44,7 @@ Iresponse* Istatement::transfer_req(Irequest& cur_req){
 }
 
 Istatement::~Istatement(){}
+
 
 If::If(Ioperator* condition, Istatement* scope):
 

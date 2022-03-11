@@ -1,6 +1,8 @@
 #include "headers/Print_req.h"
 #include <iostream>
 
+using namespace ParaCL;
+
 void Print_req::print_next_statement(Istatement& node){
 
     Iresponse* resp = node.transfer_req(standart_addr_req);
@@ -8,7 +10,7 @@ void Print_req::print_next_statement(Istatement& node){
     
     if (next != nullptr){
 
-        out_file << "\"" << &node << "\" -> \"" << next << "\"" << std::endl;   //чтобы выдеклить следующий startement
+        out_file << "\"" << &node << "\" -> \"" << next << "\"" << std::endl;
         out_file << "\"" << &node << "\" -> \"" << next << "\"" << std::endl; 
 
         node.transfer_req(*this);
@@ -28,7 +30,7 @@ Print_req::~Print_req(){
 }
 
 Iresponse* Print_req::process_req(If& node){
-    //std::cout << "If" << std::endl;
+    
     out_file << "\"" << &node << "\" [label = \"If\" fillcolor=lightblue]" << std::endl;
 
     Iresponse* resp = node.transfer_req_condition(standart_addr_req);
