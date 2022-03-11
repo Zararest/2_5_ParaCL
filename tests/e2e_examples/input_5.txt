@@ -1,0 +1,11 @@
+a = 5;
+b = 10;
+
+if (a + b) {
+	print a;
+}
+
+if (a + b - 15) {
+	print b;
+}
+

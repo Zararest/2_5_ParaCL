@@ -10,6 +10,7 @@ set(GRAMMAR "./bin/bisoner.y" CACHE STRING "file with grammar" FORCE)
 set(FRONTEND_DIR "./src/frontend/")
 set(INTERPRETER_DIR "./src/interpreter/")
 set(LINTER_DIR "./src/linter/")
+set(TEST_DIR "./tests/")
 
 flex_target(scanner
   ./bin/flexer.l
@@ -41,6 +42,19 @@ add_executable(${PROJECT_NAME} ./main.cpp
 
 add_executable(Tests  ./tests/test.cpp
                       ${INTERPRETER_DIR}Objects_manager.cpp) 
+
+add_executable(e2e_test ./tests/e2e_test.cpp)
+
+add_test(Simplest e2e_test ${TEST_DIR}e2e_examples/input_1.txt ${TEST_DIR}e2e_examples/answer_1.txt)
+add_test(Operators e2e_test ${TEST_DIR}e2e_examples/input_2.txt ${TEST_DIR}e2e_examples/answer_2.txt)
+add_test(SimpleConditionIf e2e_test ${TEST_DIR}e2e_examples/input_3.txt ${TEST_DIR}e2e_examples/answer_3.txt)
+add_test(VarOnRight e2e_test ${TEST_DIR}e2e_examples/input_4.txt ${TEST_DIR}e2e_examples/answer_4.txt)
+add_test(NumInConditionIf e2e_test ${TEST_DIR}e2e_examples/input_5.txt ${TEST_DIR}e2e_examples/answer_5.txt)
+add_test(ExprInConditionIf e2e_test ${TEST_DIR}e2e_examples/input_6.txt ${TEST_DIR}e2e_examples/answer_6.txt)
+add_test(SimpleParenthesisExpr e2e_test ${TEST_DIR}e2e_examples/input_7.txt ${TEST_DIR}e2e_examples/answer_7.txt)
+add_test(HardParenthesisExpr e2e_test ${TEST_DIR}e2e_examples/input_8.txt ${TEST_DIR}e2e_examples/answer_8.txt)
+
+enable_testing()
 
 target_link_libraries(Tests Boost::program_options)
 

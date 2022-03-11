@@ -1,0 +1,20 @@
+foo = 5;
+bar = 10;
+
+if (foo > bar) {
+	print foo;
+}
+
+if (foo != bar) {
+	print bar;
+}
+
+if (foo < bar) {
+	print foo;
+}
+
+equal = 10;
+
+if (foo == equal) {
+	print equal;
+}

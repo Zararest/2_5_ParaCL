@@ -89,7 +89,7 @@ Iresponse* Interpreter::process_req(Print& node){
 
     VarInt* lhs = static_cast<VarInt*>(obj_manager.get_object(var_name));
 
-    std::cout << lhs->get_value();
+    std::cout << lhs->get_value() << std::endl;
 
     node.transfer_req(*this);
 

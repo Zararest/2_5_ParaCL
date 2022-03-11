@@ -1,0 +1,12 @@
+a = 3;
+b = 4;
+c = 7;
+
+d = a + (a * (b + c));
+print d;
+
+e = a * (b - a) * (b + c) + (c - b) + 1;
+print e;
+
+f = 2 * (a + b) + 3 * (c - 5);
+print f;
