@@ -1,0 +1,14 @@
+a = b;
+b = c + d;
+c = e + (b * a);
+
+if (a + f < b / g) {
+
+	a = c + d_in;
+	beef = a;
+
+	while (a + f_in < b / g_in) {
+		beef = deadbeef;
+		w = a;
+	}
+}
