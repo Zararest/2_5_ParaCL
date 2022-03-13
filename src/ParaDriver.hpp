@@ -80,11 +80,12 @@ public:
         if (token == yy::parser::token::VAR 
             || token == yy::parser::token::LOGIC
             || token == yy::parser::token::OP_MUL
-            || token == yy::parser::token::OP_SUM){
+            || token == yy::parser::token::OP_SUM
+            || token == yy::parser::token::OP_SUB){
 
             tokens.push_back(new std::string(plex_->YYText())); 
             yylval->as<std::pair<const std::string*, int>>() = std::make_pair(tokens.back(), plex_->lineno());
-
+        
             return token;
         }
 

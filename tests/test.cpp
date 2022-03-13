@@ -12,6 +12,10 @@
 #define MAX_NUM 3
 #define MAX_FILE_NAME 20
 
+int yyFlexLexer::yywrap() {
+    return 1;
+}
+
 BOOST_AUTO_TEST_SUITE(Modules_tests)
 
 BOOST_AUTO_TEST_CASE(Objects_manager){
@@ -70,7 +74,7 @@ void run_programm(){
 
     FlexLexer* lexer = new yyFlexLexer;
     yy::ParaDriver driver(lexer);
-      
+
     driver.parse();
     driver.print();
 
@@ -78,7 +82,7 @@ void run_programm(){
 
         driver.execute();
     }
-
+    
     delete lexer;
 }
 
@@ -87,29 +91,40 @@ int test_case(int num){
     char num_line[MAX_NUM];
     sprintf(num_line, "%i", num);
 
-    std::string input_name("input_");
+    std::string cur_dir("../tests/e2e_examples/");
+    std::string input_name("./input_");
     input_name.append(num_line);
-    input_name.append(".txt ");
+    input_name.append(".txt");
 
-    std::string output_name("./out/output_");
+    std::string output_name("out/output_");
     output_name.append(num_line);
-    output_name.append(".txt ");
+    output_name.append(".txt");
 
     std::ifstream in(input_name);
+    assert(in.is_open());
+    std::streambuf *cinbuf = std::cin.rdbuf(); //save old buf
     std::cin.rdbuf(in.rdbuf());
 
     std::ofstream out(output_name);
+    assert(out.is_open());
+    std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
     std::cout.rdbuf(out.rdbuf());
 
     run_programm();
+
+    std::cin.rdbuf(cinbuf);
+    std::cout.rdbuf(coutbuf);
+    out.close();
 
     std::string answer_name("answer_");
     answer_name.append(num_line);
     answer_name.append(".txt");
 
     std::string message("diff ");
-    message.append(answer_name);
     message.append(output_name);
+    message.append(" ");
+    message.append(answer_name);
+    message.append(" > ../out_diff");
 
     return system(message.c_str());
 }

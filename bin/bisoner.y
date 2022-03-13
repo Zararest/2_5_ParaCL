@@ -56,7 +56,8 @@
 %token <pair<const std::string*, int>> VAR    "variable"
 %token <pair<const std::string*, int>> LOGIC  "logic operator"
 %token <pair<const std::string*, int>> OP_MUL "math operator (* /)"
-%token <pair<const std::string*, int>> OP_SUM "math operator (+ -)"
+%token <pair<const std::string*, int>> OP_SUM "+"
+%token <pair<const std::string*, int>> OP_SUB "-"
 
 %nterm <Num*> num_
 %nterm <Var*> var_
@@ -76,6 +77,8 @@
 %nterm <Wrapper*> expr_log_
 %nterm <Ioperator*> expr_sum
 %nterm <Wrapper*> expr_sum_
+%nterm <Ioperator*> expr_sub
+%nterm <Wrapper*> expr_sub_
 %nterm <Ioperator*> expr_mul
 %nterm <Wrapper*> expr_mul_
 
@@ -100,7 +103,8 @@ statement:  if                              { $$ = $1; }
             | while                         { $$ = $1; }
             | assign                        { $$ = $1; }
             | print                         { $$ = $1; }
-            | error SCOL                    { $$ = nullptr; YYERROR; }
+            | error SCOL                    { $$ = nullptr; 
+                                              std::cout << "parsing continued from line " << $2 + 1 << std::endl; }
 ;
 
 var_:       VAR                             { $$ = new Var(*($1.first));
@@ -139,8 +143,8 @@ expr:   expr_and expr_                    { if ($2 != nullptr){
 
                                                 $$ = $1; 
                                             } }
-        | error SCOL                        { $$ = nullptr; YYERROR; }
-        | error RB                          { $$ = nullptr; YYERROR; }
+        | error SCOL                        { $$ = nullptr; std::cout << "parsing continued from line " << $2 + 1 << std::endl; }
+        | error RB                          { $$ = nullptr; }
 ;
 expr_:  OR expr_and expr_                 { if ($3 != nullptr){ 
 
@@ -191,7 +195,7 @@ expr_log_:  LOGIC expr_sum expr_log_      { if ($3 != nullptr){
             | %empty                      { $$ = nullptr; }
 ;
 
-expr_sum:   expr_mul expr_sum_            { if ($2 != nullptr){ 
+expr_sum:   expr_sub expr_sum_            { if ($2 != nullptr){ 
 
                                                 $$ = $2->make_math_op($1);
                                                 delete $2;
@@ -200,7 +204,28 @@ expr_sum:   expr_mul expr_sum_            { if ($2 != nullptr){
                                                 $$ = $1; 
                                             } }
 ;
-expr_sum_:  OP_SUM expr_mul expr_sum_     { if ($3 != nullptr){ 
+expr_sum_:  OP_SUM expr_sub expr_sum_     { if ($3 != nullptr){ 
+
+                                                Ioperator* next_op = $3->make_math_op($2);
+                                                $$ = new Wrapper(*($1.first), next_op);
+                                                delete $3; 
+                                            }else { 
+                                                
+                                                $$ = new Wrapper(*($1.first), $2); 
+                                            } }
+            | %empty                      { $$ = nullptr; }
+;
+
+expr_sub:   expr_mul expr_sub_            { if ($2 != nullptr){ 
+
+                                                $$ = $2->make_math_op($1);
+                                                delete $2;
+                                            }else { 
+
+                                                $$ = $1; 
+                                            } }
+;
+expr_sub_:  OP_SUB expr_mul expr_sub_     { if ($3 != nullptr){ 
 
                                                 Ioperator* next_op = $3->make_math_op($2);
                                                 $$ = new Wrapper(*($1.first), next_op);
@@ -245,6 +270,6 @@ namespace yy{
 
     void parser::error(const location_type& loc, const std::string& token){ 
         
-        std::cout << token << " [" << loc << "]" << std::endl;
+        std::cout << token;
     }    
 }

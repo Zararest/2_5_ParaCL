@@ -1,39 +1,20 @@
 digraph Dump{node[color=red,fontsize=14, style=filled]
-"0x4dfb710" [label = "Assign" fillcolor=green]
-"0x4dfb710" -> "0x4dfb610"
-"0x4dfb610" [label = "Var:a" fillcolor=yellow]
-"0x4dfb710" -> "0x4dfb6a0"
-"0x4dfb6a0" [label = "Num:5" fillcolor=yellow]
-"0x4dfb710" -> "0x4dfbfe0"
-"0x4dfb710" -> "0x4dfbfe0"
-"0x4dfbfe0" [label = "Assign" fillcolor=green]
-"0x4dfbfe0" -> "0x4dfb830"
-"0x4dfb830" [label = "Var:b" fillcolor=yellow]
-"0x4dfbfe0" -> "0x4dfbf70"
-"0x4dfbf70" [label = "+" fillcolor=coral]
-"0x4dfbf70" -> "0x4dfb980"
-"0x4dfb980" [label = "Var:a" fillcolor=yellow]
-"0x4dfbf70" -> "0x4dfba70"
-"0x4dfba70" [label = "Num:6" fillcolor=yellow]
-"0x4dfbfe0" -> "0x4dfc1c0"
-"0x4dfbfe0" -> "0x4dfc1c0"
-"0x4dfc1c0" [label = "Print" fillcolor=purple]
-"0x4dfc1c0" -> "0x4dfc130"
-"0x4dfc130" [label = "Var:b" fillcolor=yellow]
-"0x4dfc1c0" -> "0x4dfc6e0"
-"0x4dfc1c0" -> "0x4dfc6e0"
-"0x4dfc6e0" [label = "Assign" fillcolor=green]
-"0x4dfc6e0" -> "0x4dfc290"
-"0x4dfc290" [label = "Var:b" fillcolor=yellow]
-"0x4dfc6e0" -> "0x4dfc670"
-"0x4dfc670" [label = "+" fillcolor=coral]
-"0x4dfc670" -> "0x4dfc380"
-"0x4dfc380" [label = "Var:a" fillcolor=yellow]
-"0x4dfc670" -> "0x4dfc590"
-"0x4dfc590" [label = "Var:a" fillcolor=yellow]
-"0x4dfc6e0" -> "0x4dfc840"
-"0x4dfc6e0" -> "0x4dfc840"
-"0x4dfc840" [label = "Print" fillcolor=purple]
-"0x4dfc840" -> "0x4dfc7b0"
-"0x4dfc7b0" [label = "Var:b" fillcolor=yellow]
+"0x55586f210ad0" [label = "Assign" fillcolor=green]
+"0x55586f210ad0" -> "0x55586f210890"
+"0x55586f210890" [label = "Var:a" fillcolor=yellow]
+"0x55586f210ad0" -> "0x55586f210a90"
+"0x55586f210a90" [label = "+" fillcolor=coral]
+"0x55586f210a90" -> "0x55586f2109b0"
+"0x55586f2109b0" [label = "-" fillcolor=coral]
+"0x55586f2109b0" -> "0x55586f2108e0"
+"0x55586f2108e0" [label = "Num:1" fillcolor=yellow]
+"0x55586f2109b0" -> "0x55586f210970"
+"0x55586f210970" [label = "Num:10" fillcolor=yellow]
+"0x55586f210a90" -> "0x55586f210a50"
+"0x55586f210a50" [label = "Num:10" fillcolor=yellow]
+"0x55586f210ad0" -> "0x55586f210b90"
+"0x55586f210ad0" -> "0x55586f210b90"
+"0x55586f210b90" [label = "Print" fillcolor=purple]
+"0x55586f210b90" -> "0x55586f210b40"
+"0x55586f210b40" [label = "Var:a" fillcolor=yellow]
 }

@@ -1,5 +1,5 @@
-a = 1;
-b = 2;
+f = 1;
+ajdnjdn = 3;
 
-print a;
-print b;
+print f;
+print ajdnjdn;

@@ -59,7 +59,6 @@ Iresponse* Check_scope_req::process_req(While& node){
     if (condition != nullptr){
 
         node.transfer_req_condition(*this);
-        cur_pos = node.get_line_num();
         Check_vector();
     }
 
@@ -102,8 +101,7 @@ Iresponse* Check_scope_req::process_req(Assign& node){
 
     if (rhs != nullptr){
 
-        node.transfer_req_rhs(*this);
-        cur_pos = node.get_line_num();
+        node.transfer_req_rhs(*this);;
         Check_vector();
     }
 
@@ -121,7 +119,6 @@ Iresponse* Check_scope_req::process_req(Print& node){
 
     	node.transfer_req_var(*this);
 // And there we can optimize
-        cur_pos = node.get_line_num();
 		Check_vector();
     }
 
@@ -133,6 +130,7 @@ Iresponse* Check_scope_req::process_req(Print& node){
 Iresponse* Check_scope_req::process_req(Var& node) {
 
 	tmp_var.push_back(node.get_name());
+    cur_pos = node.get_line_num();
     return nullptr;
 }
 

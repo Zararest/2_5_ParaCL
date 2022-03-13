@@ -8,7 +8,7 @@
             "name": "g++ - Build and debug active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "/home/uwu/Proga/Intel/2_5_ParaCL/build/ParaCL",
+            "program": "/home/uwu/Proga/Intel/2_5_ParaCL/build/Tests",
             "args": ["/home/uwu/Proga/Intel/2_5_ParaCL/bin/input"],
             "stopAtEntry": true,
             "cwd": "${fileDirname}",

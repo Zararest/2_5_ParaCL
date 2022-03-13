@@ -21,7 +21,8 @@ LETTER  [a-z]|[A-Z]
 UNDERLI "_"
 VAR     ({LETTER}|{UNDERLI})({UNDERLI}|{NUM}|{LETTER})*
 
-OP_SUM  [\+\-]
+OP_SUM  [\+]
+OP_SUB  [\-]
 OP_MUL  [\*\/]
 
 UNEQUAL "!="
@@ -51,6 +52,7 @@ WHILE {WHILE_}{WS}*{LB}
 {OR}                { return yy::parser::token_type::OR; }
 {AND}               { return yy::parser::token_type::AND; }
 {OP_SUM}            { return yy::parser::token_type::OP_SUM; }
+{OP_SUB}            { return yy::parser::token_type::OP_SUB; }
 {OP_MUL}            { return yy::parser::token_type::OP_MUL; }
 {NUM}               { return yy::parser::token_type::NUM; }
 {LOGIC}             { return yy::parser::token_type::LOGIC; }

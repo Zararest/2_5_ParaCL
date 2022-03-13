@@ -1,7 +1,23 @@
-a = 5;
-b = a + 6;
-print b;
+foo = 5;
+bar = 10;
 
-b = a + a;
+if (foo > bar) {
+	print foo;
+}
 
-print b;
+if (foo != bar) {
+	print bar;
+}
+
+c = 6;
+
+if (foo < bar) {
+	print c;
+}
+
+equal = 10;
+d = 12;
+
+if (foo == equal) {
+	print d;
+}
