@@ -53,10 +53,10 @@
 %token <int> INPUT      "?"
 
 %token <pair<int, int>> NUM             "number"
-%token <pair<std::string*, int>> VAR    "variable"
-%token <pair<std::string*, int>> LOGIC  "logic operator"
-%token <pair<std::string*, int>> OP_MUL "math operator (* /)"
-%token <pair<std::string*, int>> OP_SUM "math operator (+ -)"
+%token <pair<const std::string*, int>> VAR    "variable"
+%token <pair<const std::string*, int>> LOGIC  "logic operator"
+%token <pair<const std::string*, int>> OP_MUL "math operator (* /)"
+%token <pair<const std::string*, int>> OP_SUM "math operator (+ -)"
 
 %nterm <Num*> num_
 %nterm <Var*> var_

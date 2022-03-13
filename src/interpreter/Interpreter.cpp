@@ -164,6 +164,7 @@ Iresponse* Interpreter::process_req(LogicOperator& node){
             break;
 
         case Nothing_log:
+            std::cout << "error in log op" << std::endl;
             new_resp->set_value(0);
             break;
     }
@@ -202,6 +203,7 @@ Iresponse* Interpreter::process_req(MathOperator& node){
             break;
 
         case Nothing_math:
+            std::cout << "error in math op" << std::endl;
             new_resp->set_value(0);
             break;
     }

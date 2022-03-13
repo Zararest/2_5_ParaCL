@@ -41,25 +41,25 @@ add_executable(${PROJECT_NAME} ./main.cpp
 )
 
 add_executable(Tests  ./tests/test.cpp
-                      ${INTERPRETER_DIR}Objects_manager.cpp) 
+  ${FRONTEND_DIR}Ioperator.cpp
+  ${FRONTEND_DIR}Istatement.cpp
 
-add_executable(e2e_test ./tests/e2e_test.cpp)
+  ${LINTER_DIR}Print_req.cpp
+  ${LINTER_DIR}Check_scope_req.cpp
+  ${INTERPRETER_DIR}Interpreter.cpp
+  ${INTERPRETER_DIR}Objects_manager.cpp
+  ${INTERPRETER_DIR}Deleter_req.cpp
 
-enable_testing()
-
-add_test(Simplest ./e2e_test ${TEST_DIR}e2e_examples/input_1.txt ${TEST_DIR}e2e_examples/answer_1.txt)
-add_test(Operators ./e2e_test ${TEST_DIR}e2e_examples/input_2.txt ${TEST_DIR}e2e_examples/answer_2.txt)
-add_test(SimpleConditionIf ./e2e_test ${TEST_DIR}e2e_examples/input_3.txt ${TEST_DIR}e2e_examples/answer_3.txt)
-add_test(VarOnRight ./e2e_test ${TEST_DIR}e2e_examples/input_4.txt ${TEST_DIR}e2e_examples/answer_4.txt)
-add_test(NumInConditionIf ./e2e_test ${TEST_DIR}e2e_examples/input_5.txt ${TEST_DIR}e2e_examples/answer_5.txt)
-add_test(ExprInConditionIf ./e2e_test ${TEST_DIR}e2e_examples/input_6.txt ${TEST_DIR}e2e_examples/answer_6.txt)
-add_test(SimpleParenthesisExpr ./e2e_test ${TEST_DIR}e2e_examples/input_7.txt ${TEST_DIR}e2e_examples/answer_7.txt)
-add_test(HardParenthesisExpr ./e2e_test ${TEST_DIR}e2e_examples/input_8.txt ${TEST_DIR}e2e_examples/answer_8.txt)
-add_test(NestedScope ./e2e_test ${TEST_DIR}e2e_examples/input_9.txt ${TEST_DIR}e2e_examples/answer_9.txt)
-add_test(Factorial ./e2e_test ${TEST_DIR}e2e_examples/input_10.txt ${TEST_DIR}e2e_examples/answer_10.txt)
+  ${BISON_parser_OUTPUTS}
+  ${FLEX_scanner_OUTPUTS}
+)
 
 target_link_libraries(Tests Boost::program_options)
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+target_compile_features(Tests PRIVATE cxx_std_20)
+target_include_directories(Tests PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(Tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

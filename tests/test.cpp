@@ -1,10 +1,16 @@
-#include "../src/interpreter/headers/Interpreter.h"
 #include <iostream>
 #include <fstream>
 #include <cassert>
+#include <string>
 
 #define BOOST_TEST_MODULE First_TestSuite
 #include <boost/test/included/unit_test.hpp>
+
+#include <FlexLexer.h>
+#include "../src/ParaDriver.hpp"
+
+#define MAX_NUM 3
+#define MAX_FILE_NAME 20
 
 BOOST_AUTO_TEST_SUITE(Modules_tests)
 
@@ -55,6 +61,121 @@ BOOST_AUTO_TEST_CASE(Objects_manager){
     }
 
     BOOST_REQUIRE_EQUAL(0, 0);
+}
+
+
+BOOST_AUTO_TEST_SUITE_END()
+
+void run_programm(){
+
+    FlexLexer* lexer = new yyFlexLexer;
+    yy::ParaDriver driver(lexer);
+      
+    driver.parse();
+    driver.print();
+
+    if (driver.check_scope()){
+
+        driver.execute();
+    }
+
+    delete lexer;
+}
+
+int test_case(int num){
+
+    char num_line[MAX_NUM];
+    sprintf(num_line, "%i", num);
+
+    std::string input_name("input_");
+    input_name.append(num_line);
+    input_name.append(".txt ");
+
+    std::string output_name("./out/output_");
+    output_name.append(num_line);
+    output_name.append(".txt ");
+
+    std::ifstream in(input_name);
+    std::cin.rdbuf(in.rdbuf());
+
+    std::ofstream out(output_name);
+    std::cout.rdbuf(out.rdbuf());
+
+    run_programm();
+
+    std::string answer_name("answer_");
+    answer_name.append(num_line);
+    answer_name.append(".txt");
+
+    std::string message("diff ");
+    message.append(answer_name);
+    message.append(output_name);
+
+    return system(message.c_str());
+}
+
+BOOST_AUTO_TEST_SUITE(Vadims_tests)
+
+BOOST_AUTO_TEST_CASE(Input1){
+
+    int ret = chdir("../tests/e2e_examples");
+
+    BOOST_REQUIRE_EQUAL(test_case(1), 0);
+}
+
+BOOST_AUTO_TEST_CASE(Input2){
+
+    BOOST_REQUIRE_EQUAL(test_case(2), 0);
+}
+
+BOOST_AUTO_TEST_CASE(Input3){
+
+    BOOST_REQUIRE_EQUAL(test_case(3), 0);
+}
+
+BOOST_AUTO_TEST_CASE(Input4){
+
+    BOOST_REQUIRE_EQUAL(test_case(4), 0);
+}
+
+BOOST_AUTO_TEST_CASE(Input5){
+
+    BOOST_REQUIRE_EQUAL(test_case(5), 0);
+}
+
+BOOST_AUTO_TEST_CASE(Input6){
+
+    BOOST_REQUIRE_EQUAL(test_case(6), 0);
+}
+
+BOOST_AUTO_TEST_CASE(Input7){
+
+    BOOST_REQUIRE_EQUAL(test_case(7), 0);
+}
+
+BOOST_AUTO_TEST_CASE(Input8){
+
+    BOOST_REQUIRE_EQUAL(test_case(8), 0);
+}
+
+BOOST_AUTO_TEST_CASE(Input9){
+
+    BOOST_REQUIRE_EQUAL(test_case(9), 0);
+}
+
+BOOST_AUTO_TEST_CASE(Input10){
+
+    BOOST_REQUIRE_EQUAL(test_case(10), 0);
+}
+
+BOOST_AUTO_TEST_CASE(Input11){
+
+    BOOST_REQUIRE_EQUAL(test_case(11), 0);
+}
+
+BOOST_AUTO_TEST_CASE(Input12){
+
+    BOOST_REQUIRE_EQUAL(test_case(12), 0);
 }
 
 
