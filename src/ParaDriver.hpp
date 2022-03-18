@@ -16,6 +16,7 @@ class ParaDriver final{
     ParaCL::Inode* root = nullptr;
     std::ostream& out = std::cout;
     std::vector<std::string*> tokens;
+    bool error_occurred = false;
 
 public:
 
@@ -45,7 +46,7 @@ public:
 
         ParaCL::Interpreter interp;
 
-        if (root != nullptr){
+        if (root != nullptr && !error_occurred){
 
             root->get_request(interp);
         }
@@ -111,6 +112,11 @@ public:
     void add_root(ParaCL::Inode* node){
 
         root = node;
+    }
+
+    void set_error(){
+
+        error_occurred = true;
     }
 };
 

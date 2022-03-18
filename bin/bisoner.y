@@ -27,6 +27,10 @@
 
     using namespace ParaCL;
     using std::pair;
+
+    extern size_t cur_col, cur_col_end, cur_line;
+    extern std::string line; 
+    extern bool error_occurred;
 }
 
 %code{
@@ -103,8 +107,7 @@ statement:  if                              { $$ = $1; }
             | while                         { $$ = $1; }
             | assign                        { $$ = $1; }
             | print                         { $$ = $1; }
-            | error SCOL                    { $$ = nullptr; 
-                                              std::cout << "parsing continued from line " << $2 + 1 << std::endl; }
+            | error SCOL                    { $$ = nullptr; error_occurred = true; }
 ;
 
 var_:       VAR                             { $$ = new Var(*($1.first));
@@ -143,8 +146,8 @@ expr:   expr_and expr_                    { if ($2 != nullptr){
 
                                                 $$ = $1; 
                                             } }
-        | error SCOL                        { $$ = nullptr; std::cout << "parsing continued from line " << $2 + 1 << std::endl; }
-        | error RB                          { $$ = nullptr; }
+        | error SCOL                        { $$ = nullptr; error_occurred = true; }
+        | error RB                          { $$ = nullptr; error_occurred = true; }
 ;
 expr_:  OR expr_and expr_                 { if ($3 != nullptr){ 
 
@@ -265,11 +268,20 @@ namespace yy{
 
     parser::token_type yylex(parser::semantic_type* yylval, parser::location_type* loc, ParaDriver* driver){
 
+        if (error_occurred){ driver->set_error(); }
         return driver->yylex(yylval);
     }
 
     void parser::error(const location_type& loc, const std::string& token){ 
         
-        std::cout << token;
+        std::cout << token << " [" << cur_line + 1 << ", " << cur_col + 1 << "]" << std::endl;
+        std::cout << line << std::endl;
+
+        for (int i = 0; i < cur_col; i++){
+
+            std::cout << "_";
+        }
+
+        std::cout << "^" << std::endl;
     }    
 }

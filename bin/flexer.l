@@ -5,9 +5,15 @@
     
 #include "Paragrammar.tab.hh"
 
+size_t cur_col = 0, cur_col_end = 0, cur_line = 0;
+std::string line;  
+bool error_occurred = false;
+
+#define YY_USER_ACTION { cur_col = cur_col_end; cur_col_end += yyleng; }
+
 %}
 
-WS      [ \t\n\v]+
+WS      [ \t\v]+
 PRINT   "print"
 INPUT   "?"
 SCOLON  ";"
@@ -49,6 +55,7 @@ WHILE {WHILE_}{WS}*{LB}
 %%
 
 {WS}                
+\n.*                { cur_col = 0; cur_col_end = 0; line.clear(); line.append(yytext + 1); yyless(1); cur_line++; }
 {OR}                { return yy::parser::token_type::OR; }
 {AND}               { return yy::parser::token_type::AND; }
 {OP_SUM}            { return yy::parser::token_type::OP_SUM; }
@@ -67,6 +74,6 @@ WHILE {WHILE_}{WS}*{LB}
 {FRB}               { return yy::parser::token_type::FRB; }
 {LB}                { return yy::parser::token_type::LB; }
 {RB}                { return yy::parser::token_type::RB; }
-.                   { return 1; }
+.                   { return -1; }
 
 %%

@@ -1,9 +1,12 @@
 foo = 5;
 bar = 10;
 
+lejat + sosat =;
 if (foo > bar) {
 	print foo;
 }
+
+ParaCL error detection;
 
 if (foo != bar) {
 	print bar;
