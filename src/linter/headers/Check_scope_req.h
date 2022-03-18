@@ -1,40 +1,47 @@
 #pragma once
 #include "../../frontend/headers/Irequest.h"
 #include "Print_req.h"
+#include "../../interpreter/headers/Objects_manager.h"
 #include <fstream>
 #include <vector>
 #include <unordered_set>
 
 namespace ParaCL{
 
+class Undefined_objects_resp: public Iresponse{
+
+    std::vector<std::pair<std::string, int>> arr_of_obj;
+
+public:
+
+    void add_object(const std::string& name, int line);
+    void add_objects_from_resp(Undefined_objects_resp& other_resp);
+    std::pair<std::string, int> get_object();
+    void pop_back();
+    int get_num_of_objects();
+};
+
 class Check_scope_req : public Irequest {
-// May be we want string&?
-	std::vector<std::unordered_set<std::string>> decl_var;
-	std::vector<std::string> tmp_var;
-    int cur_pos = 0;
-    Addr_req standart_addr_req;
+
+	Object_manager manager;
     bool error_occurred = false;
 
-    void check_next_statement(Istatement& node);
+    void print_undef_objects(Undefined_objects_resp& undef_objects);
+    void define_undef_objects(Undefined_objects_resp& undef_objects);
 
 public: 
-
-    Check_scope_req();
-    ~Check_scope_req();
-    void Check_var(std::string const &var);
-    void Check_vector();
 
     bool is_success(){ return !error_occurred; }
 
     Iresponse* process_req(If& node);
     Iresponse* process_req(While& node);
-    Iresponse* process_req(Assign& node);
+    Iresponse* process_req(Scope& node);
+    Iresponse* process_req(Expression& node);
     Iresponse* process_req(Print& node);
 
     Iresponse* process_req(Var& node);
-    Iresponse* process_req(Num& node);
-    Iresponse* process_req(Input& node);
     Iresponse* process_req(LogicOperator& node);
     Iresponse* process_req(MathOperator& node);
+    Iresponse* process_req(Assign& node);
 };
 }

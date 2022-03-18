@@ -63,7 +63,7 @@ WHILE {WHILE_}{WS}*{LB}
 {OP_MUL}            { return yy::parser::token_type::OP_MUL; }
 {NUM}               { return yy::parser::token_type::NUM; }
 {LOGIC}             { return yy::parser::token_type::LOGIC; }
-{ASSIGN}            { return yy::parser::token_type::ASSIGN_; }
+{ASSIGN}            { return yy::parser::token_type::ASSIGN; }
 {IF}                { return yy::parser::token_type::IF_; }
 {WHILE}             { return yy::parser::token_type::WHILE_; }
 {PRINT}             { return yy::parser::token_type::PRINT_; }

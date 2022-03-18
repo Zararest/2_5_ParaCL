@@ -1,34 +1,53 @@
 #pragma once
 #include "Inode.h"
 #include "Ioperator.h"
+#include <vector>
 
 namespace ParaCL{
 
-class Istatement: public Inode{
+struct Istatement: public Inode{
 
-protected:
+    Istatement();
+};
 
-    Istatement* next_statement_ = nullptr;
+
+class Scope final: public Istatement{
+
+    std::vector<Istatement*> statements_;
 
 public:
 
-    Istatement(Istatement* next_statement);
+    void add_statement(Istatement* new_statement);
+    int get_size();
+    void reverse_statements();
 
-    void add_next_statement(Istatement* next_statement);
-    Iresponse* transfer_req(Irequest& cur_req);
+    Iresponse* transfer_req_to_statement(Irequest& cur_req, int num_of_statement);
 
-    virtual ~Istatement() = 0; 
+    Iresponse* get_request(Irequest& cur_req) override;
 };
 
+
+class Expression final: public Istatement{
+
+    Ioperator* expression_;
+
+public:
+
+    Expression(Ioperator* expr);
+
+    Iresponse* transfer_req_expression(Irequest& cur_req);
+
+    Iresponse* get_request(Irequest& cur_req) override;
+};
 
 class If final: public Istatement{
 
     Ioperator* condition_ = nullptr;
-    Istatement* if_scope_ = nullptr;
+    Scope* if_scope_ = nullptr;
 
 public:
 
-    If(Ioperator* condition, Istatement* scope);
+    If(Ioperator* condition, Scope* scope);
 
     Iresponse* transfer_req_condition(Irequest& cur_req);
     Iresponse* transfer_req_scope(Irequest& cur_req);
@@ -39,29 +58,14 @@ public:
 class While final: public Istatement{
 
     Ioperator* condition_ = nullptr;
-    Istatement* while_scope_ = nullptr;
+    Scope* while_scope_ = nullptr;
 
 public:
 
-    While(Ioperator* condition, Istatement* scope);
+    While(Ioperator* condition, Scope* scope);
 
     Iresponse* transfer_req_condition(Irequest& cur_req);
     Iresponse* transfer_req_scope(Irequest& cur_req);
-
-    Iresponse* get_request(Irequest& cur_req) override;
-};
-
-class Assign final: public Istatement{
-
-    Ioperator* lhs_ = nullptr;
-    Ioperator* rhs_ = nullptr;
-
-public:
-
-    Assign(Ioperator* lhs, Ioperator* rhs);
-
-    Iresponse* transfer_req_lhs(Irequest& cur_req);
-    Iresponse* transfer_req_rhs(Irequest& cur_req);
 
     Iresponse* get_request(Irequest& cur_req) override;
 };

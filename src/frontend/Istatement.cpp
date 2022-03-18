@@ -3,51 +3,74 @@
 
 using namespace ParaCL;
 
-Istatement::Istatement(Istatement* next_statement):
+Istatement::Istatement():
 
-    Inode{nullptr},
-    next_statement_{next_statement}
-{
+    Inode{nullptr}
+{}
 
-    if (next_statement != nullptr){
+void Scope::add_statement(Istatement* new_statement){
 
-        next_statement->prev_ = this;
+    statements_.push_back(new_statement);
+}
+
+int Scope::get_size(){
+
+    return statements_.size();
+}
+
+void Scope::reverse_statements(){
+
+    int size = statements_.size();
+
+    for (int i = 0; i < size / 2 - 1; i++){
+
+        std::swap(statements_[i], statements_[size - 1 - i]); 
     }
 }
 
-void Istatement::add_next_statement(Istatement* next_statement){
+Iresponse* Scope::transfer_req_to_statement(Irequest& cur_req, int num_of_statement){
 
-    if (next_statement_ == nullptr){
-    
-        if (next_statement != nullptr){
-
-            next_statement->prev_ = this;
-        }
-
-        next_statement_ = next_statement;
-    } else{
-
-        next_statement_->add_next_statement(next_statement);
-    }
-}
-
-Iresponse* Istatement::transfer_req(Irequest& cur_req){
-
-    if (next_statement_ != nullptr){
-
-        return next_statement_->get_request(cur_req);
+    if (num_of_statement < statements_.size() 
+        && num_of_statement >= 0 
+        && statements_[num_of_statement] != nullptr){
+        
+        return statements_[num_of_statement]->get_request(cur_req);
     } else{
 
         return cur_req.process_terminal();
     }
 }
 
-Istatement::~Istatement(){}
+Iresponse* Scope::get_request(Irequest& cur_req){
+
+    return cur_req.process_req(*this); 
+}
 
 
-If::If(Ioperator* condition, Istatement* scope):
+Expression::Expression(Ioperator* expr): 
 
-    Istatement{nullptr},
+    expression_{expr}
+{}
+
+Iresponse* Expression::transfer_req_expression(Irequest& cur_req){
+
+    if (expression_ != nullptr){
+        
+        return expression_->get_request(cur_req);
+    } else{
+
+        return cur_req.process_terminal();
+    }
+}
+
+Iresponse* Expression::get_request(Irequest& cur_req){
+
+    return cur_req.process_req(*this); 
+}
+
+
+If::If(Ioperator* condition, Scope* scope):
+
     condition_{condition},
     if_scope_{scope}
 {
@@ -90,9 +113,8 @@ Iresponse* If::get_request(Irequest& cur_req){
 }
 
 
-While::While(Ioperator* condition, Istatement* scope):
+While::While(Ioperator* condition, Scope* scope):
 
-    Istatement{nullptr},
     condition_{condition},
     while_scope_{scope}
 {
@@ -135,44 +157,8 @@ Iresponse* While::get_request(Irequest& cur_req){
 }
 
 
-Assign::Assign(Ioperator* lhs, Ioperator* rhs):
-
-    Istatement{nullptr},
-    lhs_{lhs},
-    rhs_{rhs}
-{}
-
-Iresponse* Assign::transfer_req_lhs(Irequest& cur_req){
-
-    if (lhs_ != nullptr){
-
-        return lhs_->get_request(cur_req);
-    } else{
-
-        return cur_req.process_terminal();
-    }
-}
-
-Iresponse* Assign::transfer_req_rhs(Irequest& cur_req){
-
-    if (rhs_ != nullptr){
-
-        return rhs_->get_request(cur_req);
-    } else{
-
-        return cur_req.process_terminal();
-    }
-}
-
-Iresponse* Assign::get_request(Irequest& cur_req){
-
-    return cur_req.process_req(*this); 
-}
-
-
 Print::Print(Ioperator* var):
 
-    Istatement{nullptr},
     out_var{var}
 {}
 

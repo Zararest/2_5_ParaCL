@@ -109,8 +109,9 @@ public:
         return !res;
     }
 
-    void add_root(ParaCL::Inode* node){
+    void add_root(ParaCL::Scope* node){
 
+        node->reverse_statements();
         root = node;
     }
 

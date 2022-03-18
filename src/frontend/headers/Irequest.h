@@ -14,7 +14,8 @@ struct Irequest{
     virtual Iresponse* process_terminal(){ return nullptr; }
     virtual Iresponse* process_req(If& node){ return nullptr; }
     virtual Iresponse* process_req(While& node){ return nullptr; }
-    virtual Iresponse* process_req(Assign& node){ return nullptr; }
+    virtual Iresponse* process_req(Scope& node){ return nullptr; }
+    virtual Iresponse* process_req(Expression& node){ return nullptr; }
     virtual Iresponse* process_req(Print& node){ return nullptr; }
 
     virtual Iresponse* process_req(Var& node){ return nullptr; }
@@ -22,6 +23,7 @@ struct Irequest{
     virtual Iresponse* process_req(Input& node){ return nullptr; }
     virtual Iresponse* process_req(LogicOperator& node){ return nullptr; }
     virtual Iresponse* process_req(MathOperator& node){ return nullptr; }
+    virtual Iresponse* process_req(Assign& node){ return nullptr; }
 
     virtual ~Irequest(){}
 };

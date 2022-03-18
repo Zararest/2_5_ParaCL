@@ -26,7 +26,8 @@ public:
 
     Iresponse* process_req(If& node);
     Iresponse* process_req(While& node);
-    Iresponse* process_req(Assign& node);
+    Iresponse* process_req(Scope& node);
+    Iresponse* process_req(Expression& node);
     Iresponse* process_req(Print& node);
 
     Iresponse* process_req(Var& node);
@@ -34,5 +35,6 @@ public:
     Iresponse* process_req(Input& node);
     Iresponse* process_req(LogicOperator& node);
     Iresponse* process_req(MathOperator& node);
+    Iresponse* process_req(Assign& node);
 };
 }

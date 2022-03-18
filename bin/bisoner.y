@@ -50,7 +50,7 @@
 %token <int> RB         ")"
 %token <int> IF_        "if"
 %token <int> WHILE_     "while"
-%token <int> ASSIGN_    "="
+%token <int> ASSIGN     "="
 %token <int> OR         "||"
 %token <int> AND        "&&"
 %token <int> PRINT_     "print"
@@ -69,13 +69,16 @@
 %nterm <Istatement*> program
 %nterm <Ioperator*> operand 
 %nterm <Istatement*> statement
-%nterm <Istatement*> statement_list
+%nterm <Scope*> scope
 %nterm <Istatement*> if
 %nterm <Istatement*> while 
-%nterm <Istatement*> assign
 %nterm <Istatement*> print
+%nterm <Istatement*> expr_statement
+%nterm <Istatement*> scope_statement
 %nterm <Ioperator*> expr
 %nterm <Ioperator*> expr_
+%nterm <Ioperator*> expr_assign
+%nterm <Ioperator*> expr_assign_
 %nterm <Ioperator*> expr_and
 %nterm <Ioperator*> expr_and_
 %nterm <Ioperator*> expr_log 
@@ -91,23 +94,30 @@
 
 %%
 
-program: statement_list                     { driver->add_root($1); }
-         | %empty                           { driver->add_root(nullptr); }
+program: scope                      { driver->add_root($1); }
 ;       
 
-statement_list: statement                   { $$ = $1; }
-                | statement_list statement  { if ($1 != nullptr){
-                                                  $1->add_next_statement($2);
-                                                  $$ = $1;
-                                              } else{
-                                                  $$ = $2;
-                                              } }
-                
+scope:  statement                   { $$ = new Scope; $$->add_statement($1); }
+        | scope statement           { if ($2 != nullptr){
+                                        $1->add_statement($2);
+                                        $$ = $1;
+                                    } else{
+                                        $$ = $1;
+                                    } }
+;     
+
+expr_statement: expr SCOL           { $$ = new Expression($1); }
+;
+
+scope_statement: FLB scope FRB      { $$ = $2; }
+                 | FLB FRB          { $$ = nullptr; }
+;
 
 statement:  if                              { $$ = $1; }
             | while                         { $$ = $1; }
-            | assign                        { $$ = $1; }
+            | expr_statement                { $$ = $1; }
             | print                         { $$ = $1; }
+            | scope_statement               { $$ = $1; }
             | error SCOL                    { $$ = nullptr; error_occurred = true; }
 ;
 
@@ -130,22 +140,24 @@ operand:    var_                            { $$ = $1; }
             | LB expr RB                    { $$ = $2; }
 ;
 
-if: IF_ expr RB FLB statement_list FRB           { $$ = new If($2, $5);
-                                                   $$->set_line_num($1); }
+if: IF_ expr RB FLB scope FRB           { $$ = new If($2, $5);
+                                          $$->set_line_num($1); }
+    | IF_ expr RB FLB FRB               { $$ = new If($2, nullptr);
+                                          $$->set_line_num($1); }
 ;
 
-while:  WHILE_ expr RB FLB statement_list FRB    { $$ = new While($2, $5);
-                                                   $$->set_line_num($1); }
-;
-
-assign: var_ ASSIGN_ expr SCOL               { $$ = new Assign($1, $3); $$->set_line_num($2); }
+while:  WHILE_ expr RB FLB scope FRB    { $$ = new While($2, $5);
+                                                   $$->set_line_num($1); }   
+        | WHILE_ expr RB FLB FRB        { $$ = new While($2, nullptr);
+                                                   $$->set_line_num($1);}                               
 ;
 
 print:  PRINT_ expr SCOL                     { $$ = new Print($2);
                                                $$->set_line_num($1); }
 ;
 
-expr:   expr_and expr_                    { if ($2 != nullptr){ 
+
+expr:   expr_assign expr_                 { if ($2 != nullptr){ 
 
                                                 $$ = new LogicOperator(std::make_pair(Or, false), $1, $2); 
                                             }else { 
@@ -155,7 +167,7 @@ expr:   expr_and expr_                    { if ($2 != nullptr){
         | error SCOL                        { $$ = nullptr; error_occurred = true; }
         | error RB                          { $$ = nullptr; error_occurred = true; }
 ;
-expr_:  OR expr_and expr_                 { if ($3 != nullptr){ 
+expr_:  OR expr_assign expr_              { if ($3 != nullptr){ 
 
                                                 $$ = new LogicOperator(std::make_pair(Or, false), $2, $3); 
                                             }else { 
@@ -163,6 +175,24 @@ expr_:  OR expr_and expr_                 { if ($3 != nullptr){
                                                 $$ = $2; 
                                             }  }
         | %empty                          { $$ = nullptr; }
+;
+
+expr_assign: expr_and expr_assign_            { if ($2 != nullptr){ 
+
+                                                    $$ = new Assign($1, $2); 
+                                                }else { 
+
+                                                    $$ = $1; 
+                                                } }
+;
+expr_assign_:   ASSIGN expr_and expr_assign_  { if ($3 != nullptr){ 
+
+                                                    $$ = new Assign($2, $3); 
+                                                }else { 
+                                                
+                                                    $$ = $2; 
+                                                } }
+                | %empty                      { $$ = nullptr; }
 ;
 
 expr_and:   expr_log expr_and_            { if ($2 != nullptr){ 
@@ -281,11 +311,11 @@ namespace yy{
     void parser::error(const location_type& loc, const std::string& token){ 
         
         std::cout << token << " [" << cur_line + 1 << ", " << cur_col + 1 << "]" << std::endl;
-        std::cout << line << std::endl;
+        std::cout <<  line << std::endl;
 
         for (int i = 0; i < cur_col; i++){
 
-            std::cout << "_";
+            std::cout << "~";
         }
 
         std::cout << "^" << std::endl;

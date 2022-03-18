@@ -47,6 +47,7 @@ public:
 class Num final: public Ioperator{
 
     int value_ = 0; 
+
 public:
 
     Num(int value);
@@ -110,6 +111,13 @@ public:
 
     int get_operator() const{ return type_; }
     void set_operator(int type){ type_ = type; }
+
+    Iresponse* get_request(Irequest& cur_req) override;
+};
+
+struct Assign final: public Ioperator{
+
+    Assign(Ioperator* left, Ioperator* right);
 
     Iresponse* get_request(Irequest& cur_req) override;
 };

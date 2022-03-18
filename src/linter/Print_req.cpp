@@ -3,20 +3,6 @@
 
 using namespace ParaCL;
 
-void Print_req::print_next_statement(Istatement& node){
-
-    Iresponse* resp = node.transfer_req(standart_addr_req);
-    Inode* next = static_cast<Addr_resp*>(resp)->get_addr();
-    
-    if (next != nullptr){
-
-        out_file << "\"" << &node << "\" -> \"" << next << "\"" << std::endl;
-        out_file << "\"" << &node << "\" -> \"" << next << "\"" << std::endl; 
-
-        node.transfer_req(*this);
-    }
-}
-
 Print_req::Print_req(const char* name): out_file{name}{
 
     out_file << "digraph Dump{" <<
@@ -52,8 +38,6 @@ Iresponse* Print_req::process_req(If& node){
         node.transfer_req_scope(*this);
     }
 
-    print_next_statement(node);
-
     return nullptr;
 }
 
@@ -79,34 +63,40 @@ Iresponse* Print_req::process_req(While& node){
         node.transfer_req_scope(*this);
     }   
 
-    print_next_statement(node);
+    return nullptr;
+}
+
+Iresponse* Print_req::process_req(Scope& node){
+
+    out_file << "\"" << &node << "\" [label = \"Scope\" fillcolor=grey68]" << std::endl;
+
+    for (int i = 0; i < node.get_size(); i++){
+
+        Iresponse* resp = node.transfer_req_to_statement(standart_addr_req, i);
+        Inode* statement = static_cast<Addr_resp*>(resp)->get_addr();
+
+        if (statement != nullptr){
+
+            out_file << "\"" << &node << "\" -> \"" << statement << "\"" << std::endl;
+            node.transfer_req_to_statement(*this, i);
+        }
+    }
 
     return nullptr;
 }
 
-Iresponse* Print_req::process_req(Assign& node){
-    
-    out_file << "\"" << &node << "\" [label = \"Assign\" fillcolor=green]" << std::endl;
+Iresponse* Print_req::process_req(Expression& node){
 
-    Iresponse* resp = node.transfer_req_lhs(standart_addr_req);
-    Inode* var = static_cast<Addr_resp*>(resp)->get_addr();
+    out_file << "\"" << &node << "\" [label = \"Expr\" fillcolor=grey68]" << std::endl;
 
-    if (var != nullptr){
+    Iresponse* resp = node.transfer_req_expression(standart_addr_req);
+    Inode* expr = static_cast<Addr_resp*>(resp)->get_addr();
 
-        out_file << "\"" << &node << "\" -> \"" << var << "\"" << std::endl;
-        node.transfer_req_lhs(*this);
+    if (expr != nullptr){
+
+        out_file << "\"" << &node << "\" -> \"" << expr << "\"" << std::endl;
+        node.transfer_req_expression(*this);
     }
-
-    resp = node.transfer_req_rhs(standart_addr_req);
-    Inode* rhs = static_cast<Addr_resp*>(resp)->get_addr();
-
-    if (rhs != nullptr){
-
-        out_file << "\"" << &node << "\" -> \"" << rhs << "\"" << std::endl;
-        node.transfer_req_rhs(*this);
-    }
-
-    print_next_statement(node);
 
     return nullptr;
 }
@@ -123,8 +113,6 @@ Iresponse* Print_req::process_req(Print& node){
         out_file << "\"" << &node << "\" -> \"" << var << "\"" << std::endl;
         node.transfer_req_var(*this);
     }
-
-    print_next_statement(node);
 
     return nullptr;
 }
@@ -185,6 +173,31 @@ Iresponse* Print_req::process_req(MathOperator& node){
     if (lhs != nullptr){
 
         out_file << "\"" << &node << "\" -> \"" << lhs << "\"" << std::endl;
+        node.transfer_req_left(*this);
+    }
+
+    resp = node.transfer_req_right(standart_addr_req);
+    Inode* rhs = static_cast<Addr_resp*>(resp)->get_addr();
+
+    if (rhs != nullptr){
+
+        out_file << "\"" << &node << "\" -> \"" << rhs << "\"" << std::endl;
+        node.transfer_req_right(*this);
+    }
+
+    return nullptr;
+}
+
+Iresponse* Print_req::process_req(Assign& node){
+    
+    out_file << "\"" << &node << "\" [label = \"Assign\" fillcolor=green]" << std::endl;
+
+    Iresponse* resp = node.transfer_req_left(standart_addr_req);
+    Inode* var = static_cast<Addr_resp*>(resp)->get_addr();
+
+    if (var != nullptr){
+
+        out_file << "\"" << &node << "\" -> \"" << var << "\"" << std::endl;
         node.transfer_req_left(*this);
     }
 

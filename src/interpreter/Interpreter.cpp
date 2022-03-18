@@ -13,6 +13,15 @@ Iresponse* Var_name_req::process_req(Var& node){
 Iresponse* Interpreter::process_req(If& node){
 
     Iresponse* condition_ret = node.transfer_req_condition(*this);
+
+    if (condition_ret == nullptr){
+
+        std::cout << "Runtime error: no condition in if [" << 
+        node.get_line_num() << "]" << std::endl;
+
+        return nullptr;
+    }
+
     int condition_val = static_cast<Value*>(condition_ret)->get_value();
     delete condition_ret;
 
@@ -21,14 +30,21 @@ Iresponse* Interpreter::process_req(If& node){
         node.transfer_req_scope(*this);
     }
 
-    node.transfer_req(*this);
-
     return nullptr;
 }
 
 Iresponse* Interpreter::process_req(While& node){
 
     Iresponse* condition_ret = node.transfer_req_condition(*this);
+
+    if (condition_ret == nullptr){
+
+        std::cout << "Runtime error: no condition in while [" << 
+        node.get_line_num() << "]" << std::endl;
+
+        return nullptr;
+    }
+
     int condition_val = static_cast<Value*>(condition_ret)->get_value();
     delete condition_ret;
 
@@ -41,15 +57,38 @@ Iresponse* Interpreter::process_req(While& node){
         delete condition_ret;
     }
 
-    node.transfer_req(*this);
+    return nullptr;
+}
+
+Iresponse* Interpreter::process_req(Scope& node){
+
+    for (int i = 0; i < node.get_size(); i++){
+
+        node.transfer_req_to_statement(*this, i);
+    }
+
+    return nullptr;
+}
+
+Iresponse* Interpreter::process_req(Expression& node){
+
+    node.transfer_req_expression(*this);
 
     return nullptr;
 }
 
 Iresponse* Interpreter::process_req(Assign& node){
 
-    Iresponse* lhs_ret = node.transfer_req_lhs(standart_var_req);
-    assert(lhs_ret != nullptr);
+    Iresponse* lhs_ret = node.transfer_req_left(standart_var_req);
+    
+    if (lhs_ret == nullptr){
+
+        std::cout << "Runtime error: expected object [" <<
+        node.get_line_num() << "]" << std::endl;
+
+        return nullptr;
+    }
+
     Var_name_resp* tmp = static_cast<Var_name_resp*>(lhs_ret);
     const std::string& lhs_name = tmp->get_var_name();
     delete lhs_ret;
@@ -60,34 +99,42 @@ Iresponse* Interpreter::process_req(Assign& node){
 
         obj_manager.add_object(new VarInt(lhs_name, 0));
         lhs = static_cast<VarInt*>(obj_manager.get_object(lhs_name));
+        assert(lhs != nullptr);
+    }
+    
+    Iresponse* rhs_ret = node.transfer_req_right(*this);
+    
+    if (rhs_ret == nullptr){
+
+        std::cout << "Runtime error: expected value [" <<
+        node.get_line_num() << "]" << std::endl;
+
+        return nullptr;
     }
 
-    Iresponse* rhs_ret = node.transfer_req_rhs(*this);
-    int value = 0;
-
-    assert(rhs_ret != nullptr);
-    value = static_cast<Value*>(rhs_ret)->get_value();
-    delete rhs_ret;
-
+    int value = static_cast<Value*>(rhs_ret)->get_value();
+    
     lhs->set_value(value);
 
-    node.transfer_req(*this);
-
-    return nullptr;
+    return rhs_ret;
 }
 
 Iresponse* Interpreter::process_req(Print& node){
 
-    Iresponse* var_ret = node.transfer_req_var(standart_var_req);
-    assert(var_ret != nullptr);
-    const std::string& var_name = static_cast<Var_name_resp*>(var_ret)->get_var_name();
-    delete var_ret;
+    Iresponse* rhs_ret = node.transfer_req_var(*this);
 
-    VarInt* lhs = static_cast<VarInt*>(obj_manager.get_object(var_name));
+    if (rhs_ret == nullptr){
 
-    std::cout << lhs->get_value() << std::endl;
+        std::cout << "Runtime error: expected value [" <<
+        node.get_line_num() << "]" << std::endl;
 
-    node.transfer_req(*this);
+        return nullptr;
+    }
+
+    int value = static_cast<Value*>(rhs_ret)->get_value();
+    delete rhs_ret;
+
+    std::cout << value << std::endl;
 
     return nullptr;
 }
@@ -95,7 +142,15 @@ Iresponse* Interpreter::process_req(Print& node){
 Iresponse* Interpreter::process_req(Var& node){
 
     VarInt* var = static_cast<VarInt*>(obj_manager.get_object(node.get_name()));
-    assert(var != nullptr);
+    
+    if (var == nullptr){
+
+        std::cout << "Runtime error: undefined object" << node.get_name() << "[" <<
+        node.get_line_num() << "]" << std::endl;
+
+        return nullptr;
+    }
+
     Iresponse* ret = new Value(var->get_value());
 
     return ret;
@@ -121,10 +176,12 @@ Iresponse* Interpreter::process_req(Input& node){
 Iresponse* Interpreter::process_req(LogicOperator& node){
 
     Iresponse* lhs_ret = node.transfer_req_left(*this);
+    assert(lhs_ret);
     int lhs = static_cast<Value*>(lhs_ret)->get_value();
     delete lhs_ret;
 
     Iresponse* rhs_ret = node.transfer_req_right(*this);
+    assert(rhs_ret);
     int rhs = static_cast<Value*>(rhs_ret)->get_value();
 
     Value* new_resp = static_cast<Value*>(rhs_ret);
@@ -165,8 +222,7 @@ Iresponse* Interpreter::process_req(LogicOperator& node){
             break;
 
         case Nothing_log:
-            std::cout << "error in log op" << std::endl;
-            new_resp->set_value(0);
+            assert(false);
             break;
     }
 
@@ -176,10 +232,12 @@ Iresponse* Interpreter::process_req(LogicOperator& node){
 Iresponse* Interpreter::process_req(MathOperator& node){
 
     Iresponse* lhs_ret = node.transfer_req_left(*this);
+    assert(lhs_ret != nullptr);
     int lhs = static_cast<Value*>(lhs_ret)->get_value();
     delete lhs_ret;
 
     Iresponse* rhs_ret = node.transfer_req_right(*this);
+    assert(rhs_ret != nullptr);
     int rhs = static_cast<Value*>(rhs_ret)->get_value();
 
     Value* new_resp = static_cast<Value*>(rhs_ret);
@@ -204,7 +262,7 @@ Iresponse* Interpreter::process_req(MathOperator& node){
             break;
 
         case Nothing_math:
-            std::cout << "error in math op" << std::endl;
+            assert(false);
             new_resp->set_value(0);
             break;
     }

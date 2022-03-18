@@ -1,198 +1,219 @@
 #include "headers/Check_scope_req.h"
 #include <iostream>
+#include <cassert>
 
 using namespace ParaCL;
 
-void Check_scope_req::check_next_statement(Istatement& node){
+void Undefined_objects_resp::add_object(const std::string& name, int line){
 
-    Iresponse* resp = node.transfer_req(standart_addr_req);
-    Inode* next = static_cast<Addr_resp*>(resp)->get_addr();
-    
-    if (next != nullptr){
+    for (auto it : arr_of_obj){
 
-        node.transfer_req(*this);
+        if (it.first == name){
+
+            return;
+        }
+    }    
+
+    arr_of_obj.push_back(std::make_pair(name, line));   
+}
+
+std::pair<std::string, int> Undefined_objects_resp::get_object(){
+
+    return arr_of_obj.back();
+}
+
+void Undefined_objects_resp::pop_back(){
+
+    arr_of_obj.pop_back();
+}
+
+int Undefined_objects_resp::get_num_of_objects(){
+
+    return arr_of_obj.size();
+}
+
+void Undefined_objects_resp::add_objects_from_resp(Undefined_objects_resp& other_resp){
+
+    for (auto it : other_resp.arr_of_obj){
+
+        arr_of_obj.push_back(it);
     }
 }
 
-Check_scope_req::Check_scope_req() {
 
-    std::unordered_set<std::string> top_ht;
-    decl_var.push_back(top_ht);
+void Check_scope_req::print_undef_objects(Undefined_objects_resp& undef_objects){
+
+    for (int i = 0; i < undef_objects.get_num_of_objects(); i++){
+
+        auto obj = undef_objects.get_object();
+        std::cout << "undentifier \"" << obj.first << "\" is undefined [" << 
+        obj.second << "]" << std::endl;
+
+        undef_objects.pop_back();
+    }
 }
-Check_scope_req::~Check_scope_req() {}
+
+void Check_scope_req::define_undef_objects(Undefined_objects_resp& undef_objects){
+
+    assert(undef_objects.get_num_of_objects() == 1);
+
+    auto obj = undef_objects.get_object();
+    manager.add_object(new Object(obj.first));
+
+    undef_objects.pop_back();
+}
 
 Iresponse* Check_scope_req::process_req(If& node){
 
-    Iresponse* resp = node.transfer_req_condition(standart_addr_req);
-    Inode* condition = static_cast<Addr_resp*>(resp)->get_addr();
+    Iresponse* condition_resp = node.transfer_req_condition(*this);
 
-    if (condition != nullptr) {
+    if (condition_resp != nullptr) {
         
-        node.transfer_req_condition(*this);
-        Check_vector();
-        
+        print_undef_objects(*static_cast<Undefined_objects_resp*>(condition_resp));
     }
 
-    resp = node.transfer_req_scope(standart_addr_req);
-    Inode* scope = static_cast<Addr_resp*>(resp)->get_addr();
+    delete condition_resp;
 
-    if (scope != nullptr){
-
-    	std::unordered_set<std::string> decl_ht;
-    	decl_var.push_back(decl_ht); 
-
-        node.transfer_req_scope(*this);
-        //  tmp_var.clear();       There we can don't clean because next is right branch, when clear
-        decl_var.pop_back();
-    }
-
-    check_next_statement(node);
+    node.transfer_req_scope(*this);
 
     return nullptr;
 }
 
 Iresponse* Check_scope_req::process_req(While& node){
     
-    Iresponse* resp = node.transfer_req_condition(standart_addr_req);
-    Inode* condition = static_cast<Addr_resp*>(resp)->get_addr();
+    Iresponse* condition_resp = node.transfer_req_condition(*this);
 
-    if (condition != nullptr){
-
-        node.transfer_req_condition(*this);
-        Check_vector();
+    if (condition_resp != nullptr) {
+        
+        print_undef_objects(*static_cast<Undefined_objects_resp*>(condition_resp));
     }
 
-    resp = node.transfer_req_scope(standart_addr_req);
-    Inode* scope = static_cast<Addr_resp*>(resp)->get_addr();
+    delete condition_resp;
 
-    if (scope != nullptr) {
-
-    	std::unordered_set<std::string> decl_ht;
-    	decl_var.push_back(decl_ht); 
-        
-        node.transfer_req_scope(*this);
-        //  tmp_var.clear();         There too
-        decl_var.pop_back();
-    }   
-
-    check_next_statement(node);
+    node.transfer_req_scope(*this);
 
     return nullptr;
 }
 
-Iresponse* Check_scope_req::process_req(Assign& node){
+Iresponse* Check_scope_req::process_req(Scope& node){
 
-    Iresponse* resp = node.transfer_req_lhs(standart_addr_req);
-    Inode* var = static_cast<Addr_resp*>(resp)->get_addr();
+    manager.add_scope();
 
-    if (var != nullptr){
+    for (int i = 0; i < node.get_size(); i++){
 
-    	std::unordered_set<std::string>& decl_ht = decl_var.back();
-
-        node.transfer_req_lhs(*this);
-
-        auto only_elem = tmp_var.begin();
-        decl_var.back().insert(*(only_elem));
-        tmp_var.clear();
+        node.transfer_req_to_statement(*this, i);
     }
 
-    resp = node.transfer_req_rhs(standart_addr_req);
-    Inode* rhs = static_cast<Addr_resp*>(resp)->get_addr();
+    manager.remove_scope();
 
-    if (rhs != nullptr){
+    return nullptr;
+}
 
-        node.transfer_req_rhs(*this);;
-        Check_vector();
+Iresponse* Check_scope_req::process_req(Expression& node){
+
+    Iresponse* expression_resp = node.transfer_req_expression(*this);
+
+    if (expression_resp != nullptr) {
+        
+        print_undef_objects(*static_cast<Undefined_objects_resp*>(expression_resp));
     }
 
-    check_next_statement(node);
+    delete expression_resp;
 
     return nullptr;
 }
 
 Iresponse* Check_scope_req::process_req(Print& node){
     
-    Iresponse* resp = node.transfer_req_var(standart_addr_req);
-    Inode* var = static_cast<Addr_resp*>(resp)->get_addr();
+    Iresponse* expression_resp = node.transfer_req_var(*this);
 
-    if (var != nullptr){
-
-    	node.transfer_req_var(*this);
-// And there we can optimize
-		Check_vector();
+    if (expression_resp != nullptr) {
+        
+        print_undef_objects(*static_cast<Undefined_objects_resp*>(expression_resp));
     }
 
-    check_next_statement(node);
+    delete expression_resp;
 
     return nullptr;
 }
 
 Iresponse* Check_scope_req::process_req(Var& node) {
 
-	tmp_var.push_back(node.get_name());
-    cur_pos = node.get_line_num();
+    Object* manager_ret = manager.get_object(node.get_name());
+
+    if (manager_ret == nullptr){
+
+        Undefined_objects_resp* ret = new Undefined_objects_resp;
+        ret->add_object(node.get_name(), node.get_line_num());
+
+        return ret;
+    }
+
     return nullptr;
 }
 
-Iresponse* Check_scope_req::process_req(Num& node) { return nullptr; }
-Iresponse* Check_scope_req::process_req(Input& node) { return nullptr; }
-
 Iresponse* Check_scope_req::process_req(LogicOperator& node) {
  
-    Iresponse* resp = node.transfer_req_left(standart_addr_req);
-    Inode* lhs = static_cast<Addr_resp*>(resp)->get_addr();
+    Iresponse* lhs_resp = node.transfer_req_left(*this);
+    Undefined_objects_resp* ret = nullptr;
 
-    if (lhs != nullptr){
+    if (lhs_resp != nullptr){
 
-        node.transfer_req_left(*this);
+        ret = static_cast<Undefined_objects_resp*>(lhs_resp);
     }
 
-    resp = node.transfer_req_right(standart_addr_req);
-    Inode* rhs = static_cast<Addr_resp*>(resp)->get_addr();
+    Iresponse* rhs_resp = node.transfer_req_right(*this);
 
-    if (rhs != nullptr){
+    if (rhs_resp != nullptr){
 
-        node.transfer_req_right(*this);
+        if (lhs_resp != nullptr){
+
+            ret->add_objects_from_resp(*static_cast<Undefined_objects_resp*>(rhs_resp));
+            delete rhs_resp;
+        } else{
+
+            ret = static_cast<Undefined_objects_resp*>(rhs_resp);
+        }
     }
 
-    return nullptr;
+    return ret;
 }
 
 Iresponse* Check_scope_req::process_req(MathOperator& node) {
     
-    Iresponse* resp = node.transfer_req_left(standart_addr_req);
-    Inode* lhs = static_cast<Addr_resp*>(resp)->get_addr();
+    Undefined_objects_resp* ret = nullptr;
+    Iresponse* lhs_resp = node.transfer_req_left(*this);
 
-    if (lhs != nullptr){
+    if (lhs_resp != nullptr){
 
-        node.transfer_req_left(*this);
+        ret = static_cast<Undefined_objects_resp*>(lhs_resp);
     }
 
-    resp = node.transfer_req_right(standart_addr_req);
-    Inode* rhs = static_cast<Addr_resp*>(resp)->get_addr();
+    Iresponse* rhs_resp = node.transfer_req_right(*this);
 
-    if (rhs != nullptr){
+    if (rhs_resp != nullptr){
 
-        node.transfer_req_right(*this);
+        if (lhs_resp != nullptr){
+
+            ret->add_objects_from_resp(*static_cast<Undefined_objects_resp*>(rhs_resp));
+            delete rhs_resp;
+        } else{
+
+            ret = static_cast<Undefined_objects_resp*>(rhs_resp);
+        }
     }
 
-    return nullptr;
+    return ret;
 }
 
-void Check_scope_req::Check_vector() {
+Iresponse* Check_scope_req::process_req(Assign& node){
 
-	for (auto it = tmp_var.begin(); it != tmp_var.end(); ++it) {
-    	Check_var(*it);
-	}
-    tmp_var.clear();
-}
+    Iresponse* lhs_resp = node.transfer_req_left(*this);
 
-void Check_scope_req::Check_var(std::string const &var) {
-	
-	for (auto it = decl_var.begin(); it != decl_var.end(); ++it) {
+    if (lhs_resp != nullptr){
 
-    	if (it->end() != std::find(it->begin(), it->end(), var)) return;
-	}
-    std::cout << "Var " << var << " don't defined in this scope [" << cur_pos << "]" << std::endl;
-    error_occurred = true;
+        define_undef_objects(*static_cast<Undefined_objects_resp*>(lhs_resp));
+    }
+
+    return node.transfer_req_right(*this);
 }

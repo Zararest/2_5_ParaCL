@@ -216,8 +216,17 @@ MathOperator::MathOperator(int type, Ioperator* left, Ioperator* right):
     }
 }
 
-
 Iresponse* MathOperator::get_request(Irequest& cur_req){
+
+    return cur_req.process_req(*this); 
+}
+
+
+Assign::Assign(Ioperator* left, Ioperator* right): 
+    Ioperator{left, right}
+{}
+
+Iresponse* Assign::get_request(Irequest& cur_req){
 
     return cur_req.process_req(*this); 
 }
