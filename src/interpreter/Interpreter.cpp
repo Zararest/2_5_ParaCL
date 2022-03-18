@@ -9,6 +9,7 @@ Iresponse* Var_name_req::process_req(Var& node){
     return new Var_name_resp(node.get_name());
 }
 
+
 Iresponse* Interpreter::process_req(If& node){
 
     Iresponse* condition_ret = node.transfer_req_condition(*this);
@@ -64,13 +65,8 @@ Iresponse* Interpreter::process_req(Assign& node){
     Iresponse* rhs_ret = node.transfer_req_rhs(*this);
     int value = 0;
 
-    if (rhs_ret == nullptr){
-
-        std::cin >> value;
-    } else{
-
-        value = static_cast<Value*>(rhs_ret)->get_value();
-    }
+    assert(rhs_ret != nullptr);
+    value = static_cast<Value*>(rhs_ret)->get_value();
     delete rhs_ret;
 
     lhs->set_value(value);
@@ -114,7 +110,12 @@ Iresponse* Interpreter::process_req(Num& node){
 
 Iresponse* Interpreter::process_req(Input& node){
 
-    return nullptr;
+    int input_val = 0;
+    std::cin >> input_val;
+
+    Iresponse* ret = new Value(input_val);
+
+    return ret;
 }
 
 Iresponse* Interpreter::process_req(LogicOperator& node){

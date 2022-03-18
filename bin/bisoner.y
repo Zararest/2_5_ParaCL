@@ -56,13 +56,14 @@
 %token <int> PRINT_     "print"
 %token <int> INPUT      "?"
 
-%token <pair<int, int>> NUM             "number"
+%token <pair<int, int>> NUM                   "number"
 %token <pair<const std::string*, int>> VAR    "variable"
 %token <pair<const std::string*, int>> LOGIC  "logic operator"
 %token <pair<const std::string*, int>> OP_MUL "math operator (* /)"
 %token <pair<const std::string*, int>> OP_SUM "+"
 %token <pair<const std::string*, int>> OP_SUB "-"
 
+%nterm <Input*> input_
 %nterm <Num*> num_
 %nterm <Var*> var_
 %nterm <Istatement*> program
@@ -118,8 +119,14 @@ num_:       NUM                             { $$ = new Num($1.first);
                                               $$->set_line_num($1.second); }
 ;
 
+input_:      INPUT                           {
+                                              $$ = new Input();
+                                              $$->set_line_num($1); }
+;
+
 operand:    var_                            { $$ = $1; }
             | num_                          { $$ = $1; }
+            | input_                        { $$ = $1; }
             | LB expr RB                    { $$ = $2; }
 ;
 
@@ -132,10 +139,9 @@ while:  WHILE_ expr RB FLB statement_list FRB    { $$ = new While($2, $5);
 ;
 
 assign: var_ ASSIGN_ expr SCOL               { $$ = new Assign($1, $3); $$->set_line_num($2); }
-        | var_ ASSIGN_ INPUT SCOL            { $$ = new Assign($1, new Input); $$->set_line_num($2); }
 ;
 
-print:  PRINT_ var_ SCOL                     { $$ = new Print($2);
+print:  PRINT_ expr SCOL                     { $$ = new Print($2);
                                                $$->set_line_num($1); }
 ;
 
