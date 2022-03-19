@@ -111,7 +111,6 @@ public:
 
     void add_root(ParaCL::Scope* node){
 
-        node->reverse_statements();
         root = node;
     }
 

@@ -62,10 +62,14 @@ Iresponse* Interpreter::process_req(While& node){
 
 Iresponse* Interpreter::process_req(Scope& node){
 
+    obj_manager.add_scope();
+
     for (int i = 0; i < node.get_size(); i++){
 
         node.transfer_req_to_statement(*this, i);
     }
+
+    obj_manager.remove_scope();
 
     return nullptr;
 }
@@ -90,7 +94,7 @@ Iresponse* Interpreter::process_req(Assign& node){
     }
 
     Var_name_resp* tmp = static_cast<Var_name_resp*>(lhs_ret);
-    const std::string& lhs_name = tmp->get_var_name();
+    std::string lhs_name = tmp->get_var_name();
     delete lhs_ret;
 
     VarInt* lhs = static_cast<VarInt*>(obj_manager.get_object(lhs_name));
@@ -145,7 +149,7 @@ Iresponse* Interpreter::process_req(Var& node){
     
     if (var == nullptr){
 
-        std::cout << "Runtime error: undefined object" << node.get_name() << "[" <<
+        std::cout << "Runtime error: undefined object " << node.get_name() << "[" <<
         node.get_line_num() << "]" << std::endl;
 
         return nullptr;
@@ -176,12 +180,12 @@ Iresponse* Interpreter::process_req(Input& node){
 Iresponse* Interpreter::process_req(LogicOperator& node){
 
     Iresponse* lhs_ret = node.transfer_req_left(*this);
-    assert(lhs_ret);
+    assert(lhs_ret != nullptr);
     int lhs = static_cast<Value*>(lhs_ret)->get_value();
     delete lhs_ret;
 
     Iresponse* rhs_ret = node.transfer_req_right(*this);
-    assert(rhs_ret);
+    assert(rhs_ret != nullptr);
     int rhs = static_cast<Value*>(rhs_ret)->get_value();
 
     Value* new_resp = static_cast<Value*>(rhs_ret);

@@ -43,13 +43,16 @@ void Undefined_objects_resp::add_objects_from_resp(Undefined_objects_resp& other
 
 void Check_scope_req::print_undef_objects(Undefined_objects_resp& undef_objects){
 
-    for (int i = 0; i < undef_objects.get_num_of_objects(); i++){
+    int size = undef_objects.get_num_of_objects();
+    
+    for (int i = 0; i < size; i++){
 
         auto obj = undef_objects.get_object();
-        std::cout << "undentifier \"" << obj.first << "\" is undefined [" << 
+        std::cout << "identifier \"" << obj.first << "\" is undefined [" << 
         obj.second << "]" << std::endl;
 
         undef_objects.pop_back();
+        error_occurred = true;
     }
 }
 

@@ -1,13 +1,2 @@
 digraph Dump{node[color=red,fontsize=14, style=filled]
-"0x55649f1df620" [label = "Print" fillcolor=purple]
-"0x55649f1df620" -> "0x55649f1df5e0"
-"0x55649f1df5e0" [label = "+" fillcolor=coral]
-"0x55649f1df5e0" -> "0x55649f1df440"
-"0x55649f1df440" [label = "Num:2" fillcolor=yellow]
-"0x55649f1df5e0" -> "0x55649f1df5a0"
-"0x55649f1df5a0" [label = "*" fillcolor=coral]
-"0x55649f1df5a0" -> "0x55649f1df4d0"
-"0x55649f1df4d0" [label = "Num:2" fillcolor=yellow]
-"0x55649f1df5a0" -> "0x55649f1df560"
-"0x55649f1df560" [label = "Num:2" fillcolor=yellow]
 }

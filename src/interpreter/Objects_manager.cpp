@@ -31,7 +31,7 @@ bool Object_manager::add_object(Object* obj){
 
     if (stack_it == objects_.end()){
 
-        auto empl_ret = objects_.emplace(obj->get_name(), obj->get_name());//через emplace создаем новый стек с именем
+        auto empl_ret = objects_.emplace(std::make_pair(obj->get_name(), obj->get_name()));//через emplace создаем новый стек с именем
         empl_ret.first->second.push_back(obj, num_of_scopes);
     } else{
 
@@ -60,13 +60,17 @@ void Object_manager::remove_scope(){
     while (objects_stack.size() != 0 && objects_stack.back().second == num_of_scopes){
 
         auto stack_it = objects_.find(objects_stack.back().first);
+        assert(stack_it != objects_.end());
+        assert(stack_it->second.size() > 0);
         stack_it->second.pop_back();
 
         if (stack_it->second.size() == 0){
 
             objects_.erase(stack_it);
         }
-    }
 
+        objects_stack.pop_back();
+    }
+    
     num_of_scopes--;
 }
