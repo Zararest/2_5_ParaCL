@@ -16,7 +16,7 @@ Iresponse* Interpreter::process_req(If& node){
 
     if (condition_ret == nullptr){
 
-        std::cout << "Runtime error: no condition in if [" << 
+        std::cout << "\x1b[1;31mRuntime error:\x1b[0m no condition in if [" << 
         node.get_line_num() << "]" << std::endl;
 
         return nullptr;
@@ -39,7 +39,7 @@ Iresponse* Interpreter::process_req(While& node){
 
     if (condition_ret == nullptr){
 
-        std::cout << "Runtime error: no condition in while [" << 
+        std::cout << "\x1b[1;31mRuntime error:\x1b[0m no condition in while [" << 
         node.get_line_num() << "]" << std::endl;
 
         return nullptr;
@@ -87,7 +87,7 @@ Iresponse* Interpreter::process_req(Assign& node){
     
     if (lhs_ret == nullptr){
 
-        std::cout << "Runtime error: expected object [" <<
+        std::cout << "\x1b[1;31mRuntime error:\x1b[0m expected object [" <<
         node.get_line_num() << "]" << std::endl;
 
         return nullptr;
@@ -110,7 +110,7 @@ Iresponse* Interpreter::process_req(Assign& node){
     
     if (rhs_ret == nullptr){
 
-        std::cout << "Runtime error: expected value [" <<
+        std::cout << "\x1b[1;31mRuntime error:\x1b[0m expected value [" <<
         node.get_line_num() << "]" << std::endl;
 
         return nullptr;
@@ -129,7 +129,7 @@ Iresponse* Interpreter::process_req(Print& node){
 
     if (rhs_ret == nullptr){
 
-        std::cout << "Runtime error: expected value [" <<
+        std::cout << "\x1b[1;31mRuntime error:\x1b[0m expected value [" <<
         node.get_line_num() << "]" << std::endl;
 
         return nullptr;
@@ -149,7 +149,7 @@ Iresponse* Interpreter::process_req(Var& node){
     
     if (var == nullptr){
 
-        std::cout << "Runtime error: undefined object " << node.get_name() << "[" <<
+        std::cout << "\x1b[1;31mRuntime error:\x1b[0m undefined object " << node.get_name() << "[" <<
         node.get_line_num() << "]" << std::endl;
 
         return nullptr;

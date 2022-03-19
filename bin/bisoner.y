@@ -43,6 +43,7 @@
     }
 }
 
+%token  NOTHING    
 %token <int> SCOL       ";"
 %token <int> FLB        "{"
 %token <int> FRB        "}"
@@ -95,6 +96,7 @@
 %%
 
 program: scope                      { driver->add_root($1); }
+         | NOTHING scope            { driver->add_root($2); }
 ;       
 
 scope:  statement                   { $$ = new Scope; $$->add_statement($1); }
@@ -114,10 +116,13 @@ scope_statement: FLB scope FRB      { $$ = $2; }
 ;
 
 statement:  if                              { $$ = $1; }
+            | if SCOL                       { $$ = $1; }
             | while                         { $$ = $1; }
+            | while SCOL                    { $$ = $1; }
             | expr_statement                { $$ = $1; }
             | print                         { $$ = $1; }
             | scope_statement               { $$ = $1; }
+            | scope_statement SCOL          { $$ = $1; }
             | error SCOL                    { $$ = nullptr; error_occurred = true; }
 ;
 
@@ -129,7 +134,7 @@ num_:       NUM                             { $$ = new Num($1.first);
                                               $$->set_line_num($1.second); }
 ;
 
-input_:      INPUT                           {
+input_:     INPUT                           {
                                               $$ = new Input();
                                               $$->set_line_num($1); }
 ;
@@ -315,9 +320,9 @@ namespace yy{
 
         for (int i = 0; i < cur_col; i++){
 
-            std::cout << "~";
+            std::cout << "\x1b[1;31m~";
         }
 
-        std::cout << "^" << std::endl;
+        std::cout << "\x1b[1;31m^\x1b[0m" << std::endl;
     }    
 }

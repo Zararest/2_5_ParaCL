@@ -17,6 +17,7 @@ class ParaDriver final{
     std::ostream& out = std::cout;
     std::vector<std::string*> tokens;
     bool error_occurred = false;
+    bool first_token = true;
 
 public:
 
@@ -78,6 +79,13 @@ public:
 
         parser::token_type token = static_cast<parser::token_type>(plex_->yylex());
         
+        /*if (first_token && token == yy::parser::token::SCOL){
+
+            return yy::parser::token::NOTHING;
+        }
+
+        first_token = false;*/
+
         if (token == yy::parser::token::VAR 
             || token == yy::parser::token::LOGIC
             || token == yy::parser::token::OP_MUL

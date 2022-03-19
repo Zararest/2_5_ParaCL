@@ -16,7 +16,11 @@ bool error_occurred = false;
 WS      [ \t\v]+
 PRINT   "print"
 INPUT   "?"
-SCOLON  ";"
+SCOL    ";"
+NEW_LIN "\n"
+
+SCOLON     ({SCOL})({SCOL}|{WS})*
+SCOLON_SET ({SCOL}|{NEW_LIN})+
 
 
 DIGIT   [0-9]
@@ -54,7 +58,7 @@ WHILE {WHILE_}{WS}*{LB}
 
 %%
 
-{WS}                
+{WS}            
 \n.*                { cur_col = 0; cur_col_end = 0; line.clear(); line.append(yytext + 1); yyless(1); cur_line++; }
 {OR}                { return yy::parser::token_type::OR; }
 {AND}               { return yy::parser::token_type::AND; }
@@ -74,6 +78,6 @@ WHILE {WHILE_}{WS}*{LB}
 {FRB}               { return yy::parser::token_type::FRB; }
 {LB}                { return yy::parser::token_type::LB; }
 {RB}                { return yy::parser::token_type::RB; }
-.                   { return -1; }
+.                   { return -1; }  
 
 %%
