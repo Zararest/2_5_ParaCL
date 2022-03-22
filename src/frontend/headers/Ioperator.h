@@ -9,6 +9,11 @@ std::string get_log_op(std::pair<int, bool> op);
 
 namespace ParaCL{
 
+/**
+ * @brief Интерфейс операторов.
+ * У каждого оператора есть правый и левый потомок, поэтому реализованы методы transfer_req_left() и transfer_req_right(),
+ * который позволяет вызвать функцию process_request() текущего класса запроса из левого или правого узла.
+ */
 class Ioperator: public Inode{
 
 protected:

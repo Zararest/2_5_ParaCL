@@ -44,7 +44,10 @@ public:
 
 bool operator ==(const Objects_stack& lhs, const Objects_stack& rhs);
 
-
+/**
+ * @brief Класс для работы с переменными.
+ * На первом уровне есть только переменные типа int, но эта абстракция позволяет легко добавлять новые типы данных.
+ */
 class Object_manager final{
 
     std::unordered_map<std::string, Objects_stack> objects_;

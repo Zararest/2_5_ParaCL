@@ -6,6 +6,10 @@
 
 namespace ParaCL{
 
+/**
+ * @brief Возвращаемое значение интерперетатора.
+ * Поскольку интерпретатор тоже является запросом, он возвращает из выражений значение через этот класс.
+ */
 class Value final: public Iresponse{
 
     int value_ = 0;
@@ -17,6 +21,10 @@ public:
     int get_value(){ return value_; }
 };
 
+/**
+ * @brief Интерпретатор.
+ * Переход между узлами осуществляется с помощью методов transfer_req_XXX, которые реализованы в каждом узле дерева.
+ */
 class Interpreter final: public Irequest{
 
     Object_manager obj_manager;
