@@ -1,3 +1,13 @@
+/**
+ * @file Objects_manager.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-22
+ * 
+ * @copyright Copyright (c) 2022
+ * Класс работы с объектами. Поддерживает накладывание друг на друга переменных с один именем, но из разных скоупов(как в С).
+ */
 #pragma once
 #include <string>
 #include <unordered_map>

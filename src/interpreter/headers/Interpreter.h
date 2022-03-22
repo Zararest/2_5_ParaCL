@@ -1,3 +1,13 @@
+/**
+ * @file Interpreter.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-22
+ * 
+ * @copyright Copyright (c) 2022
+ * Класс интерпретатор наследуется от запроса Irequest и использует Object_manager
+ */
 #pragma once
 #include "../../frontend/headers/Irequest.h"
 #include "Objects_manager.h"

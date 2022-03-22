@@ -1,6 +1,15 @@
+/**
+ * @file Check_scope_req.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-22
+ * 
+ * @copyright Copyright (c) 2022
+ * Проверка на то определены переменные или нет
+ */
 #pragma once
 #include "../../frontend/headers/Irequest.h"
-#include "Print_req.h"
 #include "../../interpreter/headers/Objects_manager.h"
 #include <fstream>
 #include <vector>

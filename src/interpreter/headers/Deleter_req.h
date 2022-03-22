@@ -1,6 +1,16 @@
+/**
+ * @file Deleter_req.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-22
+ * 
+ * @copyright Copyright (c) 2022
+ * Наследник класса Irequest.
+ */
 #pragma once
 #include "../../frontend/headers/Irequest.h"
-#include "../../linter/headers/Print_req.h"
+#include "../../linter/headers/Nodes_addr_req.h" //здесь лежит класс запроса адреса узла
 
 namespace ParaCL{
 
@@ -8,7 +18,7 @@ namespace ParaCL{
  * @brief Удаление дерева.
  * 
  */
-class Deleter_req: public Irequest{
+class Deleter_req final: public Irequest{
 
     Addr_req standart_addr_req;
 

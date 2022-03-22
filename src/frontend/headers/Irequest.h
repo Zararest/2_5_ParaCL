@@ -25,7 +25,7 @@ struct Iresponse{
  */
 struct Irequest{
     
-    virtual Iresponse* process_terminal(){ return nullptr; }
+    virtual Iresponse* process_terminal(){ return nullptr; }//вызывается в тех случаях, когда был вызван transfer_req_, но следующей ветви нету
     virtual Iresponse* process_req(If& node){ return nullptr; }
     virtual Iresponse* process_req(While& node){ return nullptr; }
     virtual Iresponse* process_req(Scope& node){ return nullptr; }

@@ -1,3 +1,13 @@
+/**
+ * @file Ioperator.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-22
+ * 
+ * @copyright Copyright (c) 2022
+ * Все операторы содержат метод get_request(Irequest&). Они наследуются от Ioperator, в котором есть метод transfer_req_(Irequest&)
+ */
 #pragma once
 #include "Inode.h"
 #include <string>
