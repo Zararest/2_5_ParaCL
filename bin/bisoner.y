@@ -43,7 +43,6 @@
     }
 }
 
-%token  NOTHING    
 %token <int> SCOL       ";"
 %token <int> FLB        "{"
 %token <int> FRB        "}"
@@ -95,8 +94,10 @@
 
 %%
 
+//на этапе управляемой токенизации избавились от лишних ;
+
 program: scope                      { driver->add_root($1); }
-         | NOTHING scope            { driver->add_root($2); }
+        | %empty                    { driver->add_root(nullptr); }
 ;       
 
 scope:  statement                   { $$ = new Scope; $$->add_statement($1); }
@@ -108,21 +109,11 @@ scope:  statement                   { $$ = new Scope; $$->add_statement($1); }
                                     } }
 ;     
 
-expr_statement: expr SCOL           { $$ = new Expression($1); }
-;
-
-scope_statement: FLB scope FRB      { $$ = $2; }
-                 | FLB FRB          { $$ = nullptr; }
-;
-
 statement:  if                              { $$ = $1; }
-            | if SCOL                       { $$ = $1; }
             | while                         { $$ = $1; }
-            | while SCOL                    { $$ = $1; }
             | expr_statement                { $$ = $1; }
             | print                         { $$ = $1; }
             | scope_statement               { $$ = $1; }
-            | scope_statement SCOL          { $$ = $1; }
             | error SCOL                    { $$ = nullptr; error_occurred = true; }
 ;
 
@@ -143,6 +134,13 @@ operand:    var_                            { $$ = $1; }
             | num_                          { $$ = $1; }
             | input_                        { $$ = $1; }
             | LB expr RB                    { $$ = $2; }
+;
+
+expr_statement: expr SCOL           { $$ = new Expression($1); }
+;
+
+scope_statement: FLB scope FRB      { $$ = $2; }
+                 | FLB FRB          { $$ = nullptr; }
 ;
 
 if: IF_ expr RB FLB scope FRB           { $$ = new If($2, $5);

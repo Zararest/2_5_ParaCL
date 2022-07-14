@@ -19,9 +19,6 @@ INPUT   "?"
 SCOL    ";"
 NEW_LIN "\n"
 
-SCOLON     ({SCOL})({SCOL}|{WS})*
-SCOLON_SET ({SCOL}|{NEW_LIN})+
-
 
 DIGIT   [0-9]
 DIGIT1  [1-9]
@@ -73,7 +70,7 @@ WHILE {WHILE_}{WS}*{LB}
 {PRINT}             { return yy::parser::token_type::PRINT_; }
 {VAR}               { return yy::parser::token_type::VAR; }
 {INPUT}             { return yy::parser::token_type::INPUT; }
-{SCOLON}            { return yy::parser::token_type::SCOL; }
+{SCOL}              { return yy::parser::token_type::SCOL; }
 {FLB}               { return yy::parser::token_type::FLB; }
 {FRB}               { return yy::parser::token_type::FRB; }
 {LB}                { return yy::parser::token_type::LB; }

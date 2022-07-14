@@ -10,6 +10,14 @@
 
 namespace yy{
 
+enum struct Terminator{ //аналогично терминатором можно сделать \n
+
+    Nothing,
+    Semicolon,
+    Brace,
+    Non_term
+};
+
 class ParaDriver final{
 
     FlexLexer *plex_;
@@ -17,7 +25,18 @@ class ParaDriver final{
     std::ostream& out = std::cout;
     std::vector<std::string*> tokens;
     bool error_occurred = false;
-    bool first_token = true;
+    Terminator prev_token_priority = Terminator::Semicolon;
+
+    Terminator get_token_priority(const parser::token_type& token){
+
+        if (token == parser::token::SCOL)
+            return Terminator::Semicolon;
+            
+        if (token == parser::token::FRB)
+            return Terminator::Brace;
+
+        return Terminator::Non_term;
+    }
 
 public:
 
@@ -75,22 +94,31 @@ public:
         }
     }
 
-    parser::token_type yylex(parser::semantic_type *yylval) {
+    parser::token_type yylex(parser::semantic_type *yylval) { //не считывает нормально ошибку в первой строке
 
-        parser::token_type token = static_cast<parser::token_type>(plex_->yylex());
+        parser::token_type token;
+        Terminator token_priority;
+
+        do {
+            token = static_cast<parser::token_type>(plex_->yylex());
+            token_priority = get_token_priority(token);
+
+        } while (token_priority <= prev_token_priority);
         
-        /*if (first_token && token == yy::parser::token::SCOL){
+        if (token_priority == Terminator::Brace)
+            prev_token_priority = Terminator::Semicolon;     
 
-            return yy::parser::token::NOTHING;
-        }
+        if (token_priority == Terminator::Non_term)
+            prev_token_priority = Terminator::Nothing;
+        
+        if (token_priority == Terminator::Semicolon)
+            prev_token_priority = Terminator::Semicolon;
 
-        first_token = false;*/
-
-        if (token == yy::parser::token::VAR 
-            || token == yy::parser::token::LOGIC
-            || token == yy::parser::token::OP_MUL
-            || token == yy::parser::token::OP_SUM
-            || token == yy::parser::token::OP_SUB){
+        if (token == parser::token::VAR 
+            || token == parser::token::LOGIC
+            || token == parser::token::OP_MUL
+            || token == parser::token::OP_SUM
+            || token == parser::token::OP_SUB){
 
             tokens.push_back(new std::string(plex_->YYText())); 
             yylval->as<std::pair<const std::string*, int>>() = std::make_pair(tokens.back(), plex_->lineno());
@@ -98,7 +126,7 @@ public:
             return token;
         }
 
-        if (token == yy::parser::token::NUM){
+        if (token == parser::token::NUM){
 
             yylval->as<std::pair<int, int>>() = std::make_pair(atoi(plex_->YYText()), plex_->lineno());
 
