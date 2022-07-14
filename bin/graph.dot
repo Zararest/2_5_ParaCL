@@ -1,7 +1,51 @@
 digraph Dump{node[color=red,fontsize=14, style=filled]
-"0x556bb7bd5680" [label = "Scope" fillcolor=grey68]
-"0x556bb7bd5680" -> "0x556bb7bd5650"
-"0x556bb7bd5650" [label = "While" fillcolor=red]
-"0x556bb7bd5650" -> "0x556bb7bd5620"
-"0x556bb7bd5620" [label = "Input" fillcolor=crimson]
+"0x55ffcfe02750" [label = "Scope" fillcolor=grey68]
+"0x55ffcfe02750" -> "0x55ffcfe02720"
+"0x55ffcfe02720" [label = "Expr" fillcolor=grey68]
+"0x55ffcfe02720" -> "0x55ffcfe026f0"
+"0x55ffcfe026f0" [label = "Assign" fillcolor=green]
+"0x55ffcfe026f0" -> "0x55ffcfe02670"
+"0x55ffcfe02670" [label = "Var:n" fillcolor=yellow]
+"0x55ffcfe026f0" -> "0x55ffcfe026c0"
+"0x55ffcfe026c0" [label = "Input" fillcolor=crimson]
+"0x55ffcfe02750" -> "0x55ffcfe029e0"
+"0x55ffcfe029e0" [label = "If" fillcolor=lightblue]
+"0x55ffcfe029e0" -> "0x55ffcfe028f0"
+"0x55ffcfe028f0" [label = "<=" fillcolor=cyan]
+"0x55ffcfe028f0" -> "0x55ffcfe02800"
+"0x55ffcfe02800" [label = "Var:n" fillcolor=yellow]
+"0x55ffcfe028f0" -> "0x55ffcfe028b0"
+"0x55ffcfe028b0" [label = "Num:0" fillcolor=yellow]
+"0x55ffcfe029e0" -> "0x55ffcfe029a0"
+"0x55ffcfe029a0" [label = "Scope" fillcolor=grey68]
+"0x55ffcfe029a0" -> "0x55ffcfe02970"
+"0x55ffcfe02970" [label = "Print" fillcolor=purple]
+"0x55ffcfe02970" -> "0x55ffcfe02930"
+"0x55ffcfe02930" [label = "Num:0" fillcolor=yellow]
+"0x55ffcfe02750" -> "0x55ffcfe02f10"
+"0x55ffcfe02f10" [label = "While" fillcolor=red]
+"0x55ffcfe02f10" -> "0x55ffcfe02b50"
+"0x55ffcfe02b50" [label = ">" fillcolor=cyan]
+"0x55ffcfe02b50" -> "0x55ffcfe02a40"
+"0x55ffcfe02a40" [label = "Var:n" fillcolor=yellow]
+"0x55ffcfe02b50" -> "0x55ffcfe02b10"
+"0x55ffcfe02b10" [label = "Num:0" fillcolor=yellow]
+"0x55ffcfe02f10" -> "0x55ffcfe02c10"
+"0x55ffcfe02c10" [label = "Scope" fillcolor=grey68]
+"0x55ffcfe02c10" -> "0x55ffcfe02be0"
+"0x55ffcfe02be0" [label = "Print" fillcolor=purple]
+"0x55ffcfe02be0" -> "0x55ffcfe02b90"
+"0x55ffcfe02b90" [label = "Var:n" fillcolor=yellow]
+"0x55ffcfe02c10" -> "0x55ffcfe02ee0"
+"0x55ffcfe02ee0" [label = "Expr" fillcolor=grey68]
+"0x55ffcfe02ee0" -> "0x55ffcfe02eb0"
+"0x55ffcfe02eb0" [label = "Assign" fillcolor=green]
+"0x55ffcfe02eb0" -> "0x55ffcfe02c80"
+"0x55ffcfe02c80" [label = "Var:n" fillcolor=yellow]
+"0x55ffcfe02eb0" -> "0x55ffcfe02e70"
+"0x55ffcfe02e70" [label = "-" fillcolor=coral]
+"0x55ffcfe02e70" -> "0x55ffcfe02d00"
+"0x55ffcfe02d00" [label = "Var:n" fillcolor=yellow]
+"0x55ffcfe02e70" -> "0x55ffcfe02e10"
+"0x55ffcfe02e10" [label = "Num:1" fillcolor=yellow]
 }
