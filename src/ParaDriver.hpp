@@ -114,7 +114,7 @@ public:
         if (token_priority == Terminator::Semicolon)
             prev_token_priority = Terminator::Semicolon;
 
-        if (token == parser::token::VAR 
+        if (token == parser::token::WORD
             || token == parser::token::LOGIC
             || token == parser::token::OP_MUL
             || token == parser::token::OP_SUM

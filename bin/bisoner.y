@@ -43,6 +43,7 @@
     }
 }
 
+%token <int> COMMA      ","
 %token <int> SCOL       ";"
 %token <int> FLB        "{"
 %token <int> FRB        "}"
@@ -54,10 +55,11 @@
 %token <int> OR         "||"
 %token <int> AND        "&&"
 %token <int> PRINT_     "print"
-%token <int> INPUT      "?"
+%token <int> INPUT      "?" 
+%token <int> TYPEDEF_   "typedef"
 
 %token <pair<int, int>> NUM                   "number"
-%token <pair<const std::string*, int>> VAR    "variable"
+%token <pair<const std::string*, int>> WORD   "word"
 %token <pair<const std::string*, int>> LOGIC  "logic operator"
 %token <pair<const std::string*, int>> OP_MUL "math operator (* /)"
 %token <pair<const std::string*, int>> OP_SUM "+"
@@ -89,6 +91,13 @@
 %nterm <Wrapper*> expr_sub_
 %nterm <Ioperator*> expr_mul
 %nterm <Wrapper*> expr_mul_
+%nterm <Inode*> decl                  //надо поправить 
+%nterm <Inode*> type_
+%nterm <Inode*> function
+%nterm <Inode*> global_object
+%nterm <Inode*> global_object_set
+%nterm <Inode*> type_decl
+%nterm <Inode*> decl_set
 
 %start program
 
@@ -96,9 +105,43 @@
 
 //на этапе управляемой токенизации избавились от лишних ;
 
-program: scope                      { driver->add_root($1); }
+/*------------------
+* Правила для функций и переменных
+* 1) определение функции аналогично С                                                              +
+* 2) переменные могут быть: string, int, float, пользовательский тип                    
+* 3) пользовательские типы определяются через ключевое слово typedef (*название*) {*перечисление*} +
+* 4) програма состоит из функций, пользовательских определений и препроцессора
+* 5) на этапе парсинга происходит промтейший препроцессор 
+*   5.1) #entry *название первой функции*
+* 6) пока из соображений простоты все перечисления идут с ;
+------------------*/
+
+/* TODO
+* 1) сделать нормальную таблицу символов
+*   1.1) в таблице хранится позиция для каждого токена 
+    1.2) в таблице есть временный файл с исходным кодом 
+    1.3) в таблице хранится начало каждой строки
+*/
+
+program: global_object_set          {  }
         | %empty                    { driver->add_root(nullptr); }
-;       
+;
+
+global_object_set:  global_object                       {}
+                    | global_object_set global_object   {}
+
+global_object:  function                                {}
+                | type_decl                             {}
+
+
+function:   type_ WORD LB decl_set RB  scope_statement  {} 
+            | type_ WORD LB  RB  scope_statement        {}
+
+type_decl:  TYPEDEF_ WORD RB FLB decl_set FRB           {}
+
+decl_set:   decl SCOL                                   {}
+            | decl_set decl SCOL                        {}
+
 
 scope:  statement                   { $$ = new Scope; $$->add_statement($1); }
         | scope statement           { if ($2 != nullptr){
@@ -114,10 +157,15 @@ statement:  if                              { $$ = $1; }
             | expr_statement                { $$ = $1; }
             | print                         { $$ = $1; }
             | scope_statement               { $$ = $1; }
+            | decl  SCOL                    {}
             | error SCOL                    { $$ = nullptr; error_occurred = true; }
 ;
 
-var_:       VAR                             { $$ = new Var(*($1.first));
+decl:       type_ var_                      {}  
+
+type_:      WORD                            {}    
+
+var_:       WORD                            { $$ = new Var(*($1.first));
                                               $$->set_line_num($1.second); }
 ;
 

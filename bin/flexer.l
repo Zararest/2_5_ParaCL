@@ -18,6 +18,7 @@ PRINT   "print"
 INPUT   "?"
 SCOL    ";"
 NEW_LIN "\n"
+COMMA   ","
 
 
 DIGIT   [0-9]
@@ -26,7 +27,7 @@ NUM     ({DIGIT1}{DIGIT}*)|"0"
 
 LETTER  [a-z]|[A-Z]
 UNDERLI "_"
-VAR     ({LETTER}|{UNDERLI})({UNDERLI}|{NUM}|{LETTER})*
+WORD    ({LETTER}|{UNDERLI})({UNDERLI}|{NUM}|{LETTER})*
 
 OP_SUM  [\+]
 OP_SUB  [\-]
@@ -53,6 +54,9 @@ IF  {IF_}{WS}*{LB}
 WHILE_ "while"
 WHILE {WHILE_}{WS}*{LB}
 
+TYPEDEF_ "typedef"
+TYPEDEF  {TYPEDEF_}{WS}*{LB}
+
 %%
 
 {WS}            
@@ -68,8 +72,10 @@ WHILE {WHILE_}{WS}*{LB}
 {IF}                { return yy::parser::token_type::IF_; }
 {WHILE}             { return yy::parser::token_type::WHILE_; }
 {PRINT}             { return yy::parser::token_type::PRINT_; }
-{VAR}               { return yy::parser::token_type::VAR; }
+{TYPEDEF}           { return yy::parser::token_type::TYPEDEF_; }
+{WORD}              { return yy::parser::token_type::WORD; }
 {INPUT}             { return yy::parser::token_type::INPUT; }
+{COMMA}             { return yy::parser::token_type::COMMA; }
 {SCOL}              { return yy::parser::token_type::SCOL; }
 {FLB}               { return yy::parser::token_type::FLB; }
 {FRB}               { return yy::parser::token_type::FRB; }

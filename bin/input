@@ -1,16 +1,19 @@
-;;;;{};
-a = 1;
-;;;; 
-while (0){
 
-    while (0){
+typedef (smth) { smth_1 a; smth_2 b; }
 
-        while (0){
+int func(){
 
-            a = 1;
-        }
-    }
 }
-;;;;
-print a;
-;;;
+
+typedef (my_pair) { int a; float b; }
+
+char main(int b;){
+
+    int a;
+    float b;
+    my_pair tmp;
+
+    while (1){}
+
+    print 1;
+}
