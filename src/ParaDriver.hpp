@@ -72,7 +72,7 @@ public:
         }
     }
 
-    bool check_scope() {
+    bool check_scope(){
 
         ParaCL::Check_scope_req check_scope_tree;
 
