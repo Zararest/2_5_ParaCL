@@ -40,8 +40,8 @@ class ParaDriver final{
 
 public:
 
-    ParaDriver(FlexLexer *plex) : plex_(plex) {}
-    ParaDriver(FlexLexer *plex, std::ofstream& out_file) : plex_(plex), out(out_file) {}
+    ParaDriver(FlexLexer *plex) : plex_{plex} {}
+    ParaDriver(FlexLexer *plex, std::ofstream& out_file) : plex_{plex}, out{out_file} {}
     ParaDriver(const ParaDriver&) = delete;
     ParaDriver(ParaDriver&&) = delete;
     ~ParaDriver(){

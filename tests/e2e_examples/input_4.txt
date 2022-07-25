@@ -1,9 +1,11 @@
-a = 5;
-b = (a + 6) * 4;
-print b;
-b = a + a;
-print b;
-c = a * b;
-print c;
-d = c - a + b;
-print d;
+int main(){
+    a = 5;
+    b = (a + 6) * 4;
+    print b;
+    b = a + a;
+    print b;
+    c = a * b;
+    print c;
+    d = c - a + b;
+    print d;
+}

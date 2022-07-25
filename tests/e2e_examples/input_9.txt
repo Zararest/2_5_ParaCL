@@ -1,13 +1,15 @@
-a = 5;
-b = 4;
+int main(){
+	a = 5;
+	b = 4;
 
-if (a > b) {
-	
-	if (a == (b + 1)) {
-		print a;
-	}
+	if (a > b) {
+		
+		if (a == (b + 1)) {
+			print a;
+		}
 
-	if (a == a) {
-		print b;
+		if (a == a) {
+			print b;
+		}
 	}
 }

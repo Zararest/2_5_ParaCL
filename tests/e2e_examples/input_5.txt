@@ -1,11 +1,12 @@
-a = 5;
-b = 10;
+int main(){
+	a = 5;
+	b = 10;
 
-if (a + b) {
-	print a;
+	if (a + b) {
+		print a;
+	}
+
+	if (a + b - 15) {
+		print b;
+	}
 }
-
-if (a + b - 15) {
-	print b;
-}
-

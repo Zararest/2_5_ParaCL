@@ -1,13 +1,14 @@
+int main(){
+	a = 6;
+	c = 8;
 
-a = 6;
-c = 8;
+	if (a > 5 && c < 10) {
+		d = 17;
+		print d;
+	}
 
-if (a > 5 && c < 10) {
-	d = 17;
-	print d;
-}
-
-if (a == 5 || c == 10) {
-	e = 18;
-	print e;
+	if (a == 5 || c == 10) {
+		e = 18;
+		print e;
+	}
 }

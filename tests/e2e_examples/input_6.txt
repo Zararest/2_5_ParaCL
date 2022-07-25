@@ -1,21 +1,23 @@
-a = 5;
-b = 10;
-c = a * b;
+int main(){
+	a = 5;
+	b = 10;
+	c = a * b;
 
-if (a + b == 15) {
-	print a;
-}
+	if (a + b == 15) {
+		print a;
+	}
 
-if (c > a + b) {
-	print b;
-}
+	if (c > a + b) {
+		print b;
+	}
 
-if (c + a != b + a) {
-	print c;
-}
+	if (c + a != b + a) {
+		print c;
+	}
 
-c = c + 5;
+	c = c + 5;
 
-if (c + a < b + a) {
-	print c;
+	if (c + a < b + a) {
+		print c;
+	}
 }

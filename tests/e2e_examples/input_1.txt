@@ -1,5 +1,8 @@
-f = 1;
-ajdnjdn = 3;
+int main(){
 
-print f;
-print ajdnjdn;
+    f = 1;
+    ajdnjdn = 3;
+
+    print f;
+    print ajdnjdn;    
+}

@@ -1,23 +1,26 @@
-foo = 5;
-bar = 10;
+int main(){
 
-if (foo > bar) {
-	print foo;
-}
+	foo = 5;
+	bar = 10;
 
-if (foo != bar) {
-	print bar;
-}
+	if (foo > bar) {
+		print foo;
+	}
 
-C = 6;
+	if (foo != bar) {
+		print bar;
+	}
 
-if (foo < bar) {
-	print C;
-}
+	C = 6;
 
-equal = 10;
-d = 12;
+	if (foo < bar) {
+		print C;
+	}
 
-if (bar == equal) {
-	print d;
+	equal = 10;
+	d = 12;
+
+	if (bar == equal) {
+		print d;
+	}
 }

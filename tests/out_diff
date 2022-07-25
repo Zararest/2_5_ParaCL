@@ -1,0 +1,15 @@
+1,3c1,10
+< syntax error, unexpected =, expecting word [1, 38]
+< 
+< [1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m~[1;31m^[0m
+---
+> identifier "b" is undefined [1]
+> identifier "d" is undefined [2]
+> identifier "c" is undefined [2]
+> identifier "e" is undefined [3]
+> identifier "g" is undefined [5]
+> identifier "f" is undefined [5]
+> identifier "d_in" is undefined [7]
+> identifier "g_in" is undefined [10]
+> identifier "f_in" is undefined [10]
+> identifier "deadbeef" is undefined [11]
