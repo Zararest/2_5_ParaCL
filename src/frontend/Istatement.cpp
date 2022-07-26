@@ -3,9 +3,14 @@
 
 using namespace ParaCL;
 
-Istatement::Istatement():
+Istatement::Istatement(TokenHandle handle):
 
-    Inode{nullptr}
+    Inode{nullptr, handle}
+{}
+
+Scope::Scope(): 
+
+    Istatement{TokenHandle{}}
 {}
 
 void Scope::add_statement(Istatement* new_statement){
@@ -47,8 +52,9 @@ Iresponse* Scope::get_request(Irequest& cur_req){
 }
 
 
-Expression::Expression(Ioperator* expr): 
+Expression::Expression(Ioperator* expr, TokenHandle handle): 
 
+    Istatement{handle},
     expression_{expr}
 {}
 
@@ -69,8 +75,9 @@ Iresponse* Expression::get_request(Irequest& cur_req){
 }
 
 
-If::If(Ioperator* condition, Scope* scope):
-
+If::If(Ioperator* condition, Scope* scope, TokenHandle handle):
+    
+    Istatement{handle},
     condition_{condition},
     if_scope_{scope}
 {
@@ -113,8 +120,9 @@ Iresponse* If::get_request(Irequest& cur_req){
 }
 
 
-While::While(Ioperator* condition, Scope* scope):
+While::While(Ioperator* condition, Scope* scope, TokenHandle handle):
 
+    Istatement{handle},
     condition_{condition},
     while_scope_{scope}
 {
@@ -157,8 +165,9 @@ Iresponse* While::get_request(Irequest& cur_req){
 }
 
 
-Print::Print(Ioperator* var):
+Print::Print(Ioperator* var, TokenHandle handle):
 
+    Istatement{handle},
     out_var{var}
 {}
 

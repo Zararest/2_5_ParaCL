@@ -33,7 +33,7 @@ protected:
 
 public:
 
-    Ioperator(Ioperator* left, Ioperator* right);
+    Ioperator(Ioperator* left, Ioperator* right, TokenHandle handle);
 
     void add_left(Ioperator* new_left);
     void add_right(Ioperator* new_right);
@@ -51,7 +51,7 @@ class Var final: public Ioperator{
 
 public:
 
-    Var(const std::string& name);
+    Var(TokenHandle handle);
 
     std::string get_name() const;
     void set_name(std::string& name);
@@ -65,7 +65,7 @@ class Num final: public Ioperator{
 
 public:
 
-    Num(int value);
+    Num(TokenHandle handle);
 
     int get_value() const{ return value_; };
     void set_value(int value){ value_ = value; };
@@ -75,7 +75,7 @@ public:
 
 struct Input final: public Ioperator{
 
-    Input();
+    Input(TokenHandle handle);
 
     Iresponse* get_request(Irequest& cur_req) override;
 };
@@ -98,7 +98,7 @@ class LogicOperator final: public Ioperator{
 
 public:
     
-    LogicOperator(std::pair<int, bool> type, Ioperator* left, Ioperator* right);
+    LogicOperator(Ioperator* left, Ioperator* right, TokenHandle handle);
 
     std::pair<int, bool> get_operator() const{ return std::make_pair(type_, equal_); }
     void set_operator(std::pair<int, bool> op);
@@ -122,7 +122,7 @@ class MathOperator final: public Ioperator{
 
 public:
 
-    MathOperator(int type, Ioperator* left, Ioperator* right);
+    MathOperator(Ioperator* left, Ioperator* right, TokenHandle handle);
 
     int get_operator() const{ return type_; }
     void set_operator(int type){ type_ = type; }
@@ -132,7 +132,7 @@ public:
 
 struct Assign final: public Ioperator{
 
-    Assign(Ioperator* left, Ioperator* right);
+    Assign(Ioperator* left, Ioperator* right, TokenHandle handle);
 
     Iresponse* get_request(Irequest& cur_req) override;
 };

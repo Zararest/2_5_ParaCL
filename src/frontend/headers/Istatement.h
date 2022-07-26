@@ -18,7 +18,7 @@ namespace ParaCL{
 
 struct Istatement: public Inode{
 
-    Istatement();
+    Istatement(TokenHandle handle);
 };
 
 
@@ -27,6 +27,8 @@ class Scope final: public Istatement{
     std::vector<Istatement*> statements_;
 
 public:
+
+    Scope();
 
     void add_statement(Istatement* new_statement);
     int get_size();
@@ -44,7 +46,7 @@ class Expression final: public Istatement{
 
 public:
 
-    Expression(Ioperator* expr);
+    Expression(Ioperator* expr, TokenHandle handle);
 
     Iresponse* transfer_req_expression(Irequest& cur_req);
 
@@ -58,7 +60,7 @@ class If final: public Istatement{
 
 public:
 
-    If(Ioperator* condition, Scope* scope);
+    If(Ioperator* condition, Scope* scope, TokenHandle handle);
 
     Iresponse* transfer_req_condition(Irequest& cur_req);
     Iresponse* transfer_req_scope(Irequest& cur_req);
@@ -73,7 +75,7 @@ class While final: public Istatement{
 
 public:
 
-    While(Ioperator* condition, Scope* scope);
+    While(Ioperator* condition, Scope* scope, TokenHandle handle);
 
     Iresponse* transfer_req_condition(Irequest& cur_req);
     Iresponse* transfer_req_scope(Irequest& cur_req);
@@ -87,7 +89,7 @@ class Print final: public Istatement{
 
 public:
 
-    Print(Ioperator* var);
+    Print(Ioperator* var, TokenHandle handle);
 
     Iresponse* transfer_req_var(Irequest& cur_req);
     

@@ -11,7 +11,7 @@ class TokenHandle{
 public:
 
     TokenHandle(int line, int col): file_pos{line, col}{}    
-    TokenHandle(): TokenHandle{0, 0}{}
+    TokenHandle(): TokenHandle{-1, -1}{}
 
     bool operator ==(TokenHandle rhs) const{
 

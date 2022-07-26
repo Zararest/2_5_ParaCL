@@ -91,9 +91,9 @@ std::string get_log_op(std::pair<int, bool> op){
     return std::string("error");
 }
 
-Ioperator::Ioperator(Ioperator* left, Ioperator* right):   
+Ioperator::Ioperator(Ioperator* left, Ioperator* right, TokenHandle handle):   
     
-    Inode{nullptr},
+    Inode{nullptr, handle},
     left_{left},
     right_{right}
 {
@@ -134,10 +134,9 @@ Iresponse* Ioperator::transfer_req_right(Irequest& cur_req){
 Ioperator::~Ioperator(){}
 
 
-Var::Var(const std::string& name):
+Var::Var(TokenHandle handle):
 
-    Ioperator{nullptr, nullptr},
-    name_{name}
+    Ioperator{nullptr, nullptr, handle}
 {}
 
 std::string Var::get_name() const{
@@ -158,10 +157,9 @@ Iresponse* Var::get_request(Irequest& cur_req){
 }
 
 
-Num::Num(int value):
+Num::Num(TokenHandle handle):
     
-    Ioperator{nullptr, nullptr},
-    value_{value}   
+    Ioperator{nullptr, nullptr, handle}
 {}
 
 Iresponse* Num::get_request(Irequest& cur_req){
@@ -170,9 +168,9 @@ Iresponse* Num::get_request(Irequest& cur_req){
 }
 
 
-Input::Input():
+Input::Input(TokenHandle handle):
 
-    Ioperator{nullptr, nullptr}
+    Ioperator{nullptr, nullptr, handle}
 {}
 
 Iresponse* Input::get_request(Irequest& cur_req){
@@ -181,17 +179,10 @@ Iresponse* Input::get_request(Irequest& cur_req){
 }
 
 
-LogicOperator::LogicOperator(std::pair<int, bool> type, Ioperator* left, Ioperator* right):
+LogicOperator::LogicOperator(Ioperator* left, Ioperator* right, TokenHandle handle):
 
-    Ioperator{left, right},
-    type_{type.first},
-    equal_{type.second}
-{   
-    if (left != nullptr){
-
-        set_line_num(left->get_line_num());
-    }
-}
+    Ioperator{left, right, handle}
+{}
 
 void LogicOperator::set_operator(std::pair<int, bool> op){
 
@@ -205,16 +196,10 @@ Iresponse* LogicOperator::get_request(Irequest& cur_req){
 }
 
 
-MathOperator::MathOperator(int type, Ioperator* left, Ioperator* right):
+MathOperator::MathOperator(Ioperator* left, Ioperator* right, TokenHandle handle):
 
-    Ioperator{left, right},
-    type_{type}
-{
-    if (left != nullptr){
-
-        set_line_num(left->get_line_num());
-    }
-}
+    Ioperator{left, right, handle}
+{}
 
 Iresponse* MathOperator::get_request(Irequest& cur_req){
 
@@ -222,8 +207,9 @@ Iresponse* MathOperator::get_request(Irequest& cur_req){
 }
 
 
-Assign::Assign(Ioperator* left, Ioperator* right): 
-    Ioperator{left, right}
+Assign::Assign(Ioperator* left, Ioperator* right, TokenHandle handle): 
+
+    Ioperator{left, right, handle}
 {}
 
 Iresponse* Assign::get_request(Irequest& cur_req){
