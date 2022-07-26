@@ -9,8 +9,8 @@
  * Наследник класса Irequest.
  */
 #pragma once
-#include "../../frontend/headers/Irequest.h"
-#include "../../linter/headers/Nodes_addr_req.h" //здесь лежит класс запроса адреса узла
+#include "frontend/Irequest.h"
+#include "linter/Nodes_addr_req.h" //здесь лежит класс запроса адреса узла
 
 namespace ParaCL{
 

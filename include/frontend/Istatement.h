@@ -10,8 +10,8 @@
  * (реализация последнего метода сильно зависит от класса)
  */
 #pragma once
-#include "Inode.h"
-#include "Ioperator.h"
+#include "frontend/Inode.h"
+#include "frontend/Ioperator.h"
 #include <vector>
 
 namespace ParaCL{

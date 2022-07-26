@@ -9,7 +9,7 @@
  * Распечатка дерева в graphviz.
  */
 #pragma once
-#include "Nodes_addr_req.h"
+#include "linter/Nodes_addr_req.h"
 #include <fstream>
 
 namespace ParaCL{

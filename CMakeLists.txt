@@ -24,11 +24,10 @@ bison_target(parser
 
 add_flex_bison_dependency(scanner parser)
 
-include_directories(./src/headers)
-
 add_executable(${PROJECT_NAME} ./main.cpp  
   ${FRONTEND_DIR}Ioperator.cpp
   ${FRONTEND_DIR}Istatement.cpp
+  ${FRONTEND_DIR}Symbol_table.cpp
 
   ${LINTER_DIR}Print_req.cpp
   ${LINTER_DIR}Check_scope_req.cpp
@@ -43,6 +42,7 @@ add_executable(${PROJECT_NAME} ./main.cpp
 add_executable(Tests  ./tests/test.cpp
   ${FRONTEND_DIR}Ioperator.cpp
   ${FRONTEND_DIR}Istatement.cpp
+  ${FRONTEND_DIR}Symbol_table.cpp
 
   ${LINTER_DIR}Print_req.cpp
   ${LINTER_DIR}Check_scope_req.cpp
@@ -57,9 +57,12 @@ add_executable(Tests  ./tests/test.cpp
 target_link_libraries(Tests Boost::program_options)
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(${PROJECT_NAME}
+  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+  PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
+  PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_compile_features(Tests PRIVATE cxx_std_20)
-target_include_directories(Tests PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-target_include_directories(Tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(Tests PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
+  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+  PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

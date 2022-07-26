@@ -9,7 +9,7 @@
  * Все операторы содержат метод get_request(Irequest&). Они наследуются от Ioperator, в котором есть метод transfer_req_(Irequest&)
  */
 #pragma once
-#include "Inode.h"
+#include "frontend/Inode.h"
 #include <string>
 
 int define_math_op(const std::string& op);

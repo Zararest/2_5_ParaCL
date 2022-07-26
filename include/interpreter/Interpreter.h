@@ -9,10 +9,10 @@
  * Класс интерпретатор наследуется от запроса Irequest и использует Object_manager
  */
 #pragma once
-#include "../../frontend/headers/Irequest.h"
-#include "Objects_manager.h"
-#include "Object_types.h"
-#include "Var_name_req.h"
+#include "frontend/Irequest.h"
+#include "interpreter/Objects_manager.h"
+#include "interpreter/Object_types.h"
+#include "interpreter/Var_name_req.h"
 
 namespace ParaCL{
 

@@ -16,10 +16,10 @@
     #include <iostream>
     #include <string>
 
-    #include "../src/frontend/headers/Symbol_table.h"
-    #include "../src/frontend/headers/Ioperator.h"
-    #include "../src/frontend/headers/Istatement.h"
-    #include "../src/frontend/headers/Operator_wrapper.h"
+    #include "../include/frontend/Symbol_table.h"
+    #include "../include/frontend/Ioperator.h"
+    #include "../include/frontend/Istatement.h"
+    #include "../include/frontend/Operator_wrapper.h"
     
     int define_math_op(std::string& op);
     std::pair<int, bool> define_log_op(std::string& op);
@@ -205,7 +205,6 @@ print:  PRINT_ expr SCOL                     { $$ = new Print($2, $1); }
 
 expr:   expr_assign expr_                 { if ($2 != nullptr){ 
 
-                                                //$$ = new LogicOperator(std::make_pair(Or, false), $1, $2); 
                                                 $$ = $2->make_log_op($1);
                                                 delete $2;
                                             }else { 
@@ -220,7 +219,6 @@ expr_:  OR expr_assign expr_              { if ($3 != nullptr){
                                                 Ioperator* next_op = $3->make_log_op($2);
                                                 $$ = new Wrapper($1, next_op);
                                                 delete $3;
-                                                //$$ = new LogicOperator(std::make_pair(Or, false), $2, $3); 
                                             }else { 
                                                 
                                                 $$ = new Wrapper($1, $2);  
@@ -230,7 +228,6 @@ expr_:  OR expr_assign expr_              { if ($3 != nullptr){
 
 expr_assign: expr_and expr_assign_            { if ($2 != nullptr){ 
 
-                                                    //$$ = new Assign($1, $2);
                                                     $$ = $2->make_assign($1); 
                                                     delete $2;
                                                 }else { 
@@ -243,7 +240,6 @@ expr_assign_:   ASSIGN expr_and expr_assign_  { if ($3 != nullptr){
                                                     Ioperator* next_op = $3->make_assign($2);
                                                     $$ = new Wrapper($1, next_op);
                                                     delete $3;
-                                                    //$$ = new Assign($2, $3); 
                                                 }else { 
                                                 
                                                     $$ = new Wrapper($1, $2); 
@@ -253,7 +249,6 @@ expr_assign_:   ASSIGN expr_and expr_assign_  { if ($3 != nullptr){
 
 expr_and:   expr_log expr_and_            { if ($2 != nullptr){ 
 
-                                                //$$ = new LogicOperator(std::make_pair(And, false), $1, $2); 
                                                 $$ = $2->make_log_op($1);
                                                 delete $2;
                                             }else { 
@@ -266,7 +261,6 @@ expr_and_:  AND expr_log expr_and_        { if ($3 != nullptr){
                                                 Ioperator* next_op = $3->make_log_op($2);
                                                 $$ = new Wrapper($1, next_op);
                                                 delete $3;
-                                                //$$ = new LogicOperator(std::make_pair(And, false), $2, $3); 
                                             }else {
 
                                                 $$ = new Wrapper($1, $2); 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "./Symbol_table.h"
+#include "frontend/Symbol_table.h"
 
 namespace ParaCL{
 
@@ -27,7 +27,6 @@ public:
     virtual ~Inode(){}
 
     void add_prev(Inode* prev){ prev_ = prev; };
-    //void set_handle(TokenHandle handle){ token = handle; }
     TokenHandle get_handle(){ return token; }
 
     virtual Iresponse* get_request(Irequest& cur_req) = 0;

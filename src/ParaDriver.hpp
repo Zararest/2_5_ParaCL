@@ -3,10 +3,10 @@
 #include "../build/Paragrammar.tab.hh"
 #include <FlexLexer.h>
 #include <cstring>
-#include "./linter/headers/Print_req.h"
-#include "./linter/headers/Check_scope_req.h"
-#include "./interpreter/headers/Interpreter.h"
-#include "./interpreter/headers/Deleter_req.h"
+#include "linter/Print_req.h"
+#include "linter/Check_scope_req.h"
+#include "interpreter/Interpreter.h"
+#include "interpreter/Deleter_req.h"
 
 namespace yy{
 

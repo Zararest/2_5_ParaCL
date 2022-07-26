@@ -1,4 +1,4 @@
-#include "./headers/Symbol_table.h"
+#include "frontend/Symbol_table.h"
 
 std::string SymbolTable::get_line(int line_num) const{
 

@@ -1,4 +1,4 @@
-#include "headers/Check_scope_req.h"
+#include "linter/Check_scope_req.h"
 #include <iostream>
 #include <cassert>
 

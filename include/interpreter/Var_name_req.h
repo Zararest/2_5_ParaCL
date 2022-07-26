@@ -9,7 +9,7 @@
  * Запрос имени переменной(необходим когда другой запрос находится например в узле Assign и надо узнать имя lhs)
  */
 #pragma once
-#include "../../frontend/headers/Irequest.h"
+#include "frontend/Irequest.h"
 
 namespace ParaCL{
 

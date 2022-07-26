@@ -9,7 +9,7 @@
  * Запрос адреса следующего узла(необходим в распечатке и удалении дерева).
  */
 #pragma once
-#include "../../frontend/headers/Irequest.h"
+#include "../frontend/Irequest.h"
 
 namespace ParaCL{
 

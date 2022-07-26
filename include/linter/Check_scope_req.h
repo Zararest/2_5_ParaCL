@@ -9,8 +9,8 @@
  * Проверка на то определены переменные или нет
  */
 #pragma once
-#include "../../frontend/headers/Irequest.h"
-#include "../../interpreter/headers/Objects_manager.h"
+#include "frontend/Irequest.h"
+#include "interpreter/Objects_manager.h"
 #include <fstream>
 #include <vector>
 #include <unordered_set>

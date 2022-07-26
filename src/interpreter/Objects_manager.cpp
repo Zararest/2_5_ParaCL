@@ -1,4 +1,4 @@
-#include "headers/Objects_manager.h"
+#include "interpreter/Objects_manager.h"
 #include <cassert>
 
 using namespace ParaCL;

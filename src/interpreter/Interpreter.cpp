@@ -1,4 +1,4 @@
-#include "headers/Interpreter.h"
+#include "interpreter/Interpreter.h"
 #include <iostream>
 #include <cassert>
 

@@ -1,8 +1,9 @@
+#pragma once
 #include <unordered_map>
 #include <vector>
 #include <string>
 
-#include "../../../build/Paragrammar.tab.hh"
+#include "../build/Paragrammar.tab.hh"
 
 class TokenHandle{
 
