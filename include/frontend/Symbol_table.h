@@ -3,7 +3,9 @@
 #include <vector>
 #include <string>
 
-#include "../build/Paragrammar.tab.hh"
+
+
+namespace ParaCL{
 
 class TokenHandle{
 
@@ -29,15 +31,18 @@ public:
         return file_pos.second;
     }
 };
+}
 
 template<>
-struct std::hash<TokenHandle>{
+struct std::hash<ParaCL::TokenHandle>{
 
-    std::size_t operator ()(const TokenHandle& token){
+    std::size_t operator ()(const ParaCL::TokenHandle& token) const{
 
         return std::hash<int>()(token.get_col()) | std::hash<int>()(token.get_line());
     }
 };
+
+namespace ParaCL{
 
 class SymbolTable{
 
@@ -66,3 +71,4 @@ public:
     std::string get_token(TokenHandle handle) const;
     void add_token(int line, int col, std::string token);
 };
+}

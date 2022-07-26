@@ -1,4 +1,7 @@
 #include "frontend/Symbol_table.h"
+#include "../../build/Paragrammar.tab.hh"
+
+using namespace ParaCL;
 
 std::string SymbolTable::get_line(int line_num) const{
 

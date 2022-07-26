@@ -24,6 +24,7 @@ namespace ParaCL{
  * У каждого оператора есть правый и левый потомок, поэтому реализованы методы transfer_req_left() и transfer_req_right(),
  * который позволяет вызвать функцию process_request() текущего класса запроса из левого или правого узла.
  */
+
 class Ioperator: public Inode{
 
 protected:

@@ -15,8 +15,7 @@
 
     #include <iostream>
     #include <string>
-
-    #include "../include/frontend/Symbol_table.h"
+    
     #include "../include/frontend/Ioperator.h"
     #include "../include/frontend/Istatement.h"
     #include "../include/frontend/Operator_wrapper.h"
